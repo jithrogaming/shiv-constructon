@@ -1,0 +1,3169 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Shiv Construction</title>
+  
+  <meta name="theme-color" content="#ea580c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Shiv Construction">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=512&q=80">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: #090e17;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .app-frame {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: #f8fafc;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 35px rgba(0,0,0,0.8);
+      overflow-x: hidden;
+      margin: 0 auto;
+    }
+
+    .view-screen {
+      display: none;
+      width: 100%;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .view-screen.active {
+      display: flex;
+    }
+
+    /* SPLASH */
+    #screenSplash {
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      background: 
+        radial-gradient(circle at 50% 30%, rgba(245, 158, 11, 0.45) 0%, transparent 65%),
+        linear-gradient(to bottom, rgba(10, 17, 30, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%),
+        url('https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
+    }
+    .build-dream-tag { font-size: 11px; font-weight: 900; color: #ffd27d; text-transform: uppercase; letter-spacing: 2px; }
+    .title-shiv {
+      font-family: 'Montserrat', sans-serif; font-size: 54px; font-weight: 900;
+      line-height: 0.95; text-transform: uppercase;
+      background: linear-gradient(180deg, #fff7cc 0%, #ffc000 35%, #ff7300 70%, #cc3700 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .title-construction {
+      font-family: 'Montserrat', sans-serif; font-size: 30px; font-weight: 900;
+      background: linear-gradient(180deg, #fff2b2 0%, #ffa500 40%, #ff5e00 75%, #b32d00 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .splash-loader {
+      margin-top: 35px; width: 42px; height: 42px; border: 4px solid rgba(255, 183, 3, 0.2);
+      border-top: 4px solid #ffb703; border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* HEADER */
+    .top-header-orange {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      color: white; padding: 12px 16px; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 100;
+      width: 100%;
+    }
+    .nav-btn-round {
+      background: rgba(255,255,255,0.2); border: none; color: white; width: 34px; height: 34px;
+      border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; font-size: 16px;
+    }
+
+    /* DASHBOARD HUB */
+    .dashboard-grid {
+      padding: 18px 14px; display: flex; flex-direction: column; gap: 14px; flex: 1; overflow-y: auto; width: 100%;
+    }
+    .dash-card {
+      background: white; border-radius: 16px; padding: 16px; border: 1.5px solid #e2e8f0;
+      display: flex; align-items: center; gap: 14px; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: transform 0.1s; width: 100%;
+    }
+    .dash-card:active { transform: scale(0.98); }
+    .dash-icon-box {
+      width: 52px; height: 52px; border-radius: 14px; display: flex;
+      align-items: center; justify-content: center; font-size: 24px; font-weight: bold; flex-shrink: 0;
+    }
+    .dash-title { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
+    .dash-desc { font-size: 12px; color: #64748b; font-weight: 600; }
+
+    .dc-att { border-left: 6px solid #dc2626; }
+    .dc-att .dash-icon-box { background: #fee2e2; color: #dc2626; }
+    .dc-est { border-left: 6px solid #ea580c; }
+    .dc-est .dash-icon-box { background: #fff1e6; color: #ea580c; }
+    .dc-bill { border-left: 6px solid #1976b5; }
+    .dc-bill .dash-icon-box { background: #e8f1ff; color: #1976b5; }
+    .dc-kharch { border-left: 6px solid #db2777; }
+    .dc-kharch .dash-icon-box { background: #fdf2f8; color: #db2777; }
+    .dc-backup { border-left: 6px solid #059669; }
+    .dc-backup .dash-icon-box { background: #ecfdf5; color: #059669; }
+
+    .content-pad { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; width: 100%; }
+
+    /* SITE SELECT STRIP */
+    .site-select-strip {
+      background: #e0f2fe; padding: 8px 10px; display: flex; align-items: center; gap: 5px;
+      border-radius: 10px; border: 1.5px solid #bae6fd; width: 100%; overflow-x: auto;
+    }
+    .site-select-strip select {
+      flex: 1; min-width: 130px; background: white; font-weight: bold; border: 1.5px solid #38bdf8;
+      border-radius: 8px; padding: 7px; font-size: 12px; outline: none;
+    }
+    .btn-strip-action {
+      background: #0284c7; color: white; border: none; padding: 7px 9px;
+      border-radius: 7px; font-size: 11px; font-weight: bold; cursor: pointer; white-space: nowrap;
+    }
+
+    /* HELPER / CALENDAR */
+    .search-box { padding: 12px 14px 4px 14px; width: 100%; }
+    .search-input { width: 100%; background: white; border: 1.5px solid #cbd5e1; padding: 10px 14px; border-radius: 12px; font-size: 14px; outline: none; }
+    .h-card {
+      background: white; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 12px 14px;
+      display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03); margin-bottom: 8px; width: 100%;
+    }
+    .h-card.inactive { opacity: 0.55; background: #f1f5f9; }
+    .h-photo { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; background: #ffedd5; flex-shrink: 0; }
+    .h-card-main { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .h-title-name { font-size: 16px; font-weight: 800; color: #0f172a; }
+    .h-address { font-size: 11px; color: #64748b; margin-top: 3px; }
+    .h-phone { font-size: 12px; color: #64748b; margin-top: 3px; }
+    .h-wage-txt { font-size: 15px; font-weight: 800; color: #16a34a; text-align: right; }
+    .tag-badge { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 8px; display: inline-block; margin-top: 4px; }
+    .tag-act { background: #dcfce7; color: #15803d; }
+    .tag-inact { background: #fee2e2; color: #b91c1c; }
+
+    .calendar-card {
+      background: white; border-radius: 16px; padding: 12px; border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04); width: 100%;
+    }
+    .cal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .cal-title { font-size: 15px; font-weight: 800; }
+    .btn-arrow { background: #f1f5f9; border: 1px solid #cbd5e1; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .weekdays-row { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 6px; }
+    .grid-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .date-cell { 
+      aspect-ratio: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; 
+      display: flex; flex-direction: column; justify-content: space-between; padding: 3px; cursor: pointer; 
+      position: relative;
+    }
+    .date-cell.empty { background: transparent; border: none; cursor: default; }
+    .d-number { font-size: 12px; font-weight: 800; color: #334155; }
+    
+    .st-P { background: #15803d !important; border-color: #166534 !important; }
+    .st-P .d-number { color: white !important; }
+    .st-HD { background: #2563eb !important; border-color: #1d4ed8 !important; }
+    .st-HD .d-number { color: white !important; }
+    .st-A { background: #dc2626 !important; border-color: #b91c1c !important; }
+    .st-A .d-number { color: white !important; }
+
+    .today-circle {
+      outline: 2.5px solid #ea580c !important;
+      outline-offset: -2px;
+      box-shadow: 0 0 6px rgba(234, 88, 12, 0.45) !important;
+    }
+
+    .badges-row { display: flex; gap: 2px; justify-content: flex-end; align-items: center; }
+    .b-ot { font-size: 8px; font-weight: 900; background: #fbbf24; color: #78350f; padding: 0 2px; border-radius: 2px; }
+    .b-upad { font-size: 8px; font-weight: 900; color: #ef4444; background: #fee2e2; border-radius: 50%; width: 12px; height: 12px; text-align: center; line-height: 12px; }
+    .b-nondh { font-size: 8px; font-weight: 900; background: #e0e7ff; color: #4338ca; border-radius: 50%; width: 12px; height: 12px; text-align: center; line-height: 12px; }
+
+    .legend-row-img2 {
+      display: flex; justify-content: space-around; padding-top: 10px; margin-top: 10px;
+      border-top: 1px solid #f1f5f9; font-size: 12px; font-weight: 700; color: #334155;
+    }
+    .leg-dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+
+    .filter-tabs-img2 {
+      display: flex; gap: 6px; background: #e2e8f0; padding: 4px; border-radius: 12px; width: 100%;
+    }
+    .tab-btn-img2 {
+      flex: 1; padding: 9px 4px; border: none; border-radius: 9px; background: transparent;
+      font-size: 13px; font-weight: 800; color: #475569; cursor: pointer; text-align: center;
+      transition: all 0.15s ease;
+    }
+    .tab-btn-img2.active {
+      background: white; color: #ea580c; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .custom-date-box {
+      display: none; background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 10px; gap: 8px; align-items: center; justify-content: space-between;
+      font-size: 12px; font-weight: bold; width: 100%;
+    }
+    .custom-date-box input { border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 8px; font-size: 12px; }
+
+    .summary-box-img2 {
+      background: white; border-radius: 16px; padding: 14px; border: 1px solid #e2e8f0; width: 100%;
+    }
+    .summary-header-img2 {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+    }
+    .sum-title-left { font-weight: 800; font-size: 15px; color: #0f172a; }
+    .sum-period-right { font-size: 14px; font-weight: 800; color: #ea580c; text-align: right; }
+
+    .stat-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0; }
+    .mini-card { padding: 8px; border-radius: 10px; text-align: center; }
+    .mc-p { background: #dcfce7; color: #166534; }
+    .mc-hd { background: #dbeafe; color: #1e40af; }
+    .mc-a { background: #fee2e2; color: #991b1b; }
+    .mc-val { font-size: 20px; font-weight: 900; }
+    .calc-list { display: flex; flex-direction: column; gap: 8px; font-size: 13px; border-top: 1px dashed #cbd5e1; padding-top: 10px; }
+    .calc-item { display: flex; justify-content: space-between; color: #334155; }
+    .calc-grand { margin-top: 6px; padding-top: 8px; border-top: 1.5px solid #0f172a; display: flex; justify-content: space-between; font-size: 16px; font-weight: 900; color: #ea580c; }
+
+    /* TABLES & FORMS */
+    .table-card {
+      background: white; border-radius: 12px; border: 1px solid #e2e8f0;
+      overflow-x: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.03); width: 100%;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border: 1px solid #e2e8f0; padding: 7px 5px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 800; color: #475569; }
+
+    input, select {
+      padding: 6px 8px; border: 1.5px solid #cbd5e1; border-radius: 7px;
+      font-size: 12px; background: #fff; outline: none;
+    }
+    input:focus, select:focus { border-color: #1976b5; }
+
+    .col-q { width: 62px; text-align: center; font-weight: bold; }
+    .col-r { width: 62px; text-align: center; font-weight: bold; }
+    .col-dt { width: 110px; font-size: 11px; }
+    .col-to-simple { width: auto; min-width: 140px; }
+    .col-amt-in { width: 95px; text-align: right; font-weight: bold; }
+    
+    .work-item-wrapper {
+      display: flex; gap: 4px; align-items: center; width: 100%; min-width: 170px;
+    }
+    .col-select-work-input {
+      flex: 1; font-weight: 700; color: #0f172a; border: 1.5px solid #cbd5e1;
+      border-radius: 7px; padding: 6px 8px; font-size: 12px;
+    }
+    .btn-choose-item {
+      background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 7px;
+      padding: 6px 8px; cursor: pointer; font-size: 11px; font-weight: bold; color: #1976b5;
+    }
+
+    .num { width: 28px; text-align: center; font-weight: 800; }
+    .amt { width: 85px; text-align: right; font-weight: 800; color: #15803d; white-space: nowrap; }
+    .del { width: 34px; text-align: center; }
+    .del button { border: 0; background: transparent; font-size: 14px; cursor: pointer; }
+
+    /* LIVE ATTENDANCE KHARCH ROW */
+    .live-att-row { background: #fff7ed !important; }
+    .live-att-row td { border-color: #fed7aa; }
+    .live-att-row.inactive-row { opacity: 0.55; background: #f1f5f9 !important; }
+    .btn-toggle-att-row {
+      border: none; padding: 4px 6px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer;
+    }
+    .btn-tar-act { background: #dcfce7; color: #15803d; }
+    .btn-tar-inact { background: #fee2e2; color: #b91c1c; }
+
+    .btn-add {
+      background: #ea580c; color: #fff; border: 0; border-radius: 10px; padding: 10px 14px;
+      font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 6px; width: 100%;
+    }
+    .summary-card {
+      background: white; border-radius: 12px; padding: 10px 12px; border: 1.5px solid #cbd5e1;
+      display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; width: 100%;
+    }
+
+    /* INNER SUB TABS */
+    .sub-tabs-strip {
+      display: flex; gap: 6px; background: #e2e8f0; padding: 4px; border-radius: 12px; width: 100%;
+    }
+    .sub-tab-btn {
+      flex: 1; padding: 9px; border: none; border-radius: 9px; background: transparent;
+      font-size: 13px; font-weight: 800; color: #475569; cursor: pointer; text-align: center;
+    }
+    .sub-tab-btn.active { background: white; color: #1976b5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+
+    .qrbox { background: white; text-align: center; border: 1.5px dashed #cbd5e1; border-radius: 14px; padding: 12px; margin-top: 4px; position: relative; }
+    .qr-header-row { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; margin-bottom: 4px; }
+    .btn-qr-edit { background: #0284c7; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
+    .qrbox img { width: 180px; height: 180px; object-fit: contain; border-radius: 8px; margin: 6px auto; display: block; }
+    .qrtitle { font-size: 13px; font-weight: 800; color: #0f172a; }
+
+    /* BOTTOM SHEETS */
+    .options-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: flex-end; justify-content: center; }
+    .options-sheet { background: white; width: 100%; max-width: 480px; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); }
+    .opt-btn { width: 100%; padding: 11px; border-radius: 10px; border: none; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    
+    .btn-opt-edit { background: #4f46e5; color: white; }
+    .btn-opt-toggle { background: #d97706; color: white; }
+    .btn-opt-print { background: #0284c7; color: white; }
+    .btn-opt-wa { background: #16a34a; color: white; }
+    .btn-opt-del { background: #dc2626; color: white; }
+    .btn-opt-cancel { background: #e2e8f0; color: #475569; margin-top: 4px; }
+
+    /* REAL-TIME DAY DETAIL CARD */
+    .day-detail-card {
+      background: white; border-radius: 18px; width: 100%; max-width: 350px;
+      padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex;
+      flex-direction: column; gap: 10px; position: relative;
+    }
+    .day-detail-header {
+      font-size: 17px; font-weight: 900; color: #ea580c; text-align: center;
+      border-bottom: 2px solid #ffedd5; padding-bottom: 8px;
+    }
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; padding: 6px 0; border-bottom: 1px dashed #e2e8f0;
+    }
+    .detail-label { color: #64748b; font-weight: 700; }
+    .detail-val { font-weight: 900; color: #0f172a; }
+    .nondh-box {
+      background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 8px;
+      padding: 8px 10px; font-size: 13px; color: #334155; font-weight: 600;
+      min-height: 38px;
+    }
+
+    /* ITEM SELECTOR SCROLLABLE MODAL */
+    .item-picker-modal {
+      background: white; border-radius: 20px; width: 100%; max-width: 380px;
+      max-height: 80vh; padding: 18px; box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+      display: flex; flex-direction: column; gap: 10px; position: relative;
+    }
+    .item-picker-list {
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;
+      padding-right: 4px;
+    }
+    .item-picker-row {
+      padding: 10px 12px; background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 10px; display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; font-size: 13px; font-weight: 700; color: #1e293b;
+    }
+    .item-picker-row:active { background: #fee2e2; border-color: #ea580c; }
+    .ip-rate { font-weight: 800; color: #15803d; }
+
+    /* REPORT DIALOG CARDS */
+    .report-choice-card {
+      background: white; border-radius: 20px; width: 100%; max-width: 360px;
+      padding: 18px; box-shadow: 0 10px 35px rgba(0,0,0,0.3); display: flex;
+      flex-direction: column; gap: 10px; position: relative;
+    }
+    .report-choice-title { font-size: 16px; font-weight: 900; text-align: center; margin-bottom: 2px; }
+    .opt-section-box {
+      background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px;
+      padding: 10px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .opt-label { font-size: 12px; font-weight: 800; color: #475569; }
+
+    /* MODALS */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      z-index: 1100; align-items: center; justify-content: center; padding: 14px;
+    }
+
+    /* IMAGE 1 MARK MODAL */
+    .modal-sheet-img1 {
+      background: #1e1136; border: 2px solid #8b5cf6; border-radius: 20px;
+      width: 100%; max-width: 350px; padding: 18px;
+    }
+    .modal-grid-img1 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+    .m-btn-img1 { border: none; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 800; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; }
+    .m-btn-img1:active { transform: scale(0.97); }
+    .mb-p-1 { background: #16a34a; }
+    .mb-hd-1 { background: #2563eb; }
+    .mb-a-1 { background: #dc2626; }
+    .mb-none-1 { background: #64748b; }
+    .mb-ot-1 { background: #8b5cf6; }
+    .mb-upad-1 { background: #8b5cf6; }
+    .mb-nondh-1 { grid-column: span 2; background: #ea580c; }
+    .mb-close-1 { width: 100%; padding: 11px; background: #475569; border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; font-size: 13px; }
+
+    /* IMAGE 4 INPUT MODAL */
+    .input-editor-card-img4 {
+      background: white; border-radius: 18px; width: 100%; max-width: 350px;
+      padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex;
+      flex-direction: column; gap: 12px;
+    }
+    .img4-title { font-size: 16px; font-weight: 900; color: #0f172a; text-align: center; }
+    .img4-field {
+      width: 100%; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 10px 12px;
+      font-size: 15px; outline: none; background: #ffffff; font-weight: bold;
+    }
+    .img4-field:focus { border-color: #ea580c; }
+    .img4-actions { display: flex; gap: 8px; margin-top: 4px; }
+    .btn-img4-cancel { flex: 1; background: #e2e8f0; color: #475569; border: none; padding: 11px; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 13px; }
+    .btn-img4-save { flex: 1; background: #16a34a; color: white; border: none; padding: 11px; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 13px; }
+
+    /* CUSTOMER MANAGER LIST MODAL */
+    .cust-manage-row {
+      background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px;
+      padding: 12px; margin-bottom: 8px; cursor: pointer;
+    }
+    .cust-manage-row:active { background: #ffedd5; border-color: #ea580c; }
+
+    .site-manage-sub-row {
+      background: white; border: 1px solid #cbd5e1; border-radius: 8px;
+      padding: 8px 10px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .site-manage-sub-row:active { background: #fee2e2; border-color: #ea580c; }
+
+    #saveToast {
+      display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #15803d; color: white; padding: 8px 16px; border-radius: 20px;
+      font-size: 12px; font-weight: 800; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-frame">
+
+    <!-- 1. SPLASH SCREEN -->
+    <div id="screenSplash" class="view-screen active">
+      <div style="text-align:center;">
+        <div class="build-dream-tag">BUILD YOUR DREAM</div>
+        <div class="title-shiv">SHIV</div>
+        <div class="title-construction">CONSTRUCTION</div>
+      </div>
+      <div class="splash-loader"></div>
+    </div>
+
+    <!-- 2. MAIN DASHBOARD (4 OPTIONS INCLUDING BACKUP & RESTORE) -->
+    <div id="screenDashboard" class="view-screen">
+      <header class="top-header-orange">
+        <div style="font-weight:900; font-size:17px;">SHIV CONSTRUCTION</div>
+        <div style="font-size:12px; opacity:0.9;">Master ERP Suite</div>
+      </header>
+
+      <div class="dashboard-grid">
+        <div class="dash-card dc-att" onclick="window.navToScreen('screenAttendanceList')">
+          <div class="dash-icon-box">📅</div>
+          <div>
+            <div class="dash-title">1. Attendance Book (હાજરી બુક)</div>
+            <div class="dash-desc">કારીગરોની દૈનિક હાજરી, OT અને પગાર સારાંશ</div>
+          </div>
+        </div>
+
+        <div class="dash-card dc-bill" onclick="window.openBillUpadDirect()">
+          <div class="dash-icon-box">⚖️</div>
+          <div>
+            <div class="dash-title">2. Bill Book / Upad Section Mix</div>
+            <div class="dash-desc">કામનું બિલ − ઉપાડ = બાકી નીકળતા રૂપિયા</div>
+          </div>
+        </div>
+
+        <div class="dash-card dc-kharch" onclick="window.openKharchDirect()">
+          <div class="dash-icon-box">💰</div>
+          <div>
+            <div class="dash-title">3. Site Kharch Section (સાઇટ ખર્ચ)</div>
+            <div class="dash-desc">સામાન, મશીન અને લાઈવ હાજરી ખર્ચ પત્રક</div>
+          </div>
+        </div>
+
+        <!-- PROFESSIONAL BACKUP & RESTORE CARD -->
+        <div class="dash-card dc-backup" onclick="window.openBackupRestoreModal()">
+          <div class="dash-icon-box">💾</div>
+          <div>
+            <div class="dash-title">4. Backup & Restore (ડેટા બેકઅપ)</div>
+            <div class="dash-desc">આખા ડેટાની JSON ફાઇલ ડાઉનલોડ અથવા અપલોડ કરો</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ATTENDANCE LIST (SCREEN) -->
+    <div id="screenAttendanceList" class="view-screen">
+      <header class="top-header-orange">
+        <button class="nav-btn-round" onclick="window.navToScreen('screenDashboard')">←</button>
+        <div style="text-align:center;">
+          <h2 style="font-size:16px; font-weight:800;">હાજરી બુક (Attendance)</h2>
+          <p style="font-size:11px; opacity:0.9;">કારીગર પસંદ કરો (Long Press: Options)</p>
+        </div>
+        <button class="nav-btn-round" onclick="window.openAddHelperModal()">➕</button>
+      </header>
+
+      <div class="search-box">
+        <input type="text" class="search-input" id="searchHelperInput" placeholder="🔍 નામ કે નંબર થી શોધો..." oninput="window.renderHelperListUI()">
+      </div>
+
+      <div class="content-pad" id="helpersListContainer"></div>
+    </div>
+
+    <!-- 4. HELPER CALENDAR VIEW -->
+    <div id="screenCalendar" class="view-screen">
+      <header class="top-header-orange">
+        <button class="nav-btn-round" onclick="window.navToScreen('screenAttendanceList')">←</button>
+        <div style="text-align:center;">
+          <h2 id="dispCurHelperName" style="font-size:16px; font-weight:800;">કારીગરનું નામ</h2>
+          <p style="font-size:11px; opacity:0.9;">₹<span id="dispCurWage">0</span> / day</p>
+        </div>
+        <button class="nav-btn-round" onclick="window.printSingleMonthDirect()">🖨️</button>
+      </header>
+
+      <div class="content-pad">
+        <div class="calendar-card" id="calMainBox">
+          <div class="cal-top">
+            <button class="btn-arrow" onclick="window.prevMonth()">◀</button>
+            <div class="cal-title" id="calTitle">સપ્ટેમ્બર ૨૦૨૬</div>
+            <button class="btn-arrow" onclick="window.nextMonth()">▶</button>
+          </div>
+          <div class="weekdays-row">
+            <div>રવિ</div><div>સોમ</div><div>મંગળ</div><div>બુધ</div><div>ગુરુ</div><div>શુક્ર</div><div>શનિ</div>
+          </div>
+          <div class="grid-days" id="calendarGrid"></div>
+
+          <div class="legend-row-img2">
+            <div><span class="leg-dot" style="background:#15803d;"></span>હાજર</div>
+            <div><span class="leg-dot" style="background:#2563eb;"></span>અડધો</div>
+            <div><span class="leg-dot" style="background:#dc2626;"></span>ગેરહાજર</div>
+            <div><span class="leg-dot" style="background:#fbbf24;"></span>OT</div>
+            <div><span class="leg-dot" style="background:#ef4444;"></span>ઉપાડ</div>
+          </div>
+        </div>
+
+        <div class="filter-tabs-img2">
+          <button class="tab-btn-img2 active" id="tabCurMonth" onclick="window.setFilter('month')">આ મહિનો</button>
+          <button class="tab-btn-img2" id="tabAllMonths" onclick="window.setFilter('all')">બધા મહિના</button>
+          <button class="tab-btn-img2" id="tabCustom" onclick="window.setFilter('custom')">Custom Date</button>
+        </div>
+
+        <div class="custom-date-box" id="customDateBar">
+          <span>From: <input type="date" id="custFrom" onchange="window.saveAndRefresh()"></span>
+          <span>To: <input type="date" id="custTo" onchange="window.saveAndRefresh()"></span>
+        </div>
+
+        <div class="summary-box-img2">
+          <div class="summary-header-img2">
+            <div class="sum-title-left">પગાર સારાંશ (Salary Summary)</div>
+            <div class="sum-period-right" id="sumPeriodLabel">સપ્ટેમ્બર ૨૦૨૬</div>
+          </div>
+
+          <div class="stat-row-3">
+            <div class="mini-card mc-p"><div>હાજર</div><div class="mc-val" id="cntP">0</div></div>
+            <div class="mini-card mc-hd"><div>અડધો</div><div class="mc-val" id="cntHD">0</div></div>
+            <div class="mini-card mc-a"><div>ગેરહાજર</div><div class="mc-val" id="cntA">0</div></div>
+          </div>
+
+          <div class="calc-list">
+            <div class="calc-item"><span>કુલ હાજરી:</span><b id="totDays">0 દિવસ</b></div>
+            <div class="calc-item"><span>મૂળ મજૂરી:</span><b id="baseWage">₹0</b></div>
+            <div class="calc-item"><span>OT (<span id="totOtHrs">0</span> hrs):</span><b id="totOtPay">₹0</b></div>
+            <div class="calc-item" style="color:#dc2626;"><span>કુલ ઉપાડ (Advance):</span><b id="totUpad">- ₹0</b></div>
+            <div class="calc-grand"><span>બાકી રકમ (ચૂકવવાપાત્ર):</span><span id="grandTotal">₹0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. SCREEN: PAKKU BILL & SIMPLE UPAD -->
+    <div id="screenBillUpadSiteDetail" class="view-screen">
+      <header class="top-header-orange">
+        <button class="nav-btn-round" onclick="window.navToScreen('screenDashboard')">←</button>
+        <div style="text-align:center;">
+          <h2 style="font-size:16px; font-weight:800;">પાકું બિલ & ઉપાડ બુક</h2>
+          <p id="dispBillSubTitle" style="font-size:11px; opacity:0.9;">કામ અને ઉપાડ હિસાબ</p>
+          <img id="dispBillSitePhoto" alt="સાઇટનો ફોટો" style="display:none; width:38px; height:38px; object-fit:cover; border-radius:8px; margin:4px auto 0;">
+        </div>
+        <div style="display:flex; gap:4px;">
+          <button class="nav-btn-round" onclick="window.printSiteDetailBill()" title="Print">🖨️</button>
+          <button class="nav-btn-round" onclick="window.shareSiteDetailBillWA()" title="WhatsApp">📲</button>
+        </div>
+      </header>
+
+      <div class="content-pad">
+        <div class="site-select-strip">
+          <span style="font-size:11px; font-weight:800; color:#0369a1;">સાઇટ:</span>
+          <select id="siteDropdownBill" onchange="window.onGlobalSiteChange(this.value)"></select>
+          <button class="btn-strip-action" onclick="window.openEditSiteDirect()">✏️ સાઇટ</button>
+          <button class="btn-strip-action" onclick="window.openNewSiteModalDirect()">➕ સાઇટ</button>
+          <button class="btn-strip-action" style="background:#16a34a;" onclick="window.openCustomerManagerModal()">👥 ગ્રાહક મેનેજર</button>
+        </div>
+
+        <div class="sub-tabs-strip">
+          <button class="sub-tab-btn active" id="subTabBtnBill" onclick="window.switchBillUpadInnerTab('BILL')">૧. કામનું પાકું બિલ</button>
+          <button class="sub-tab-btn" id="subTabBtnUpad" onclick="window.switchBillUpadInnerTab('UPAD')">૨. ઉપાડ હિસાબ</button>
+        </div>
+
+        <div id="paneBillWorks" style="display:flex; flex-direction:column; gap:10px;">
+          <div class="table-card">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">ક્રમ</th><th>કામનું નામ (પસંદ કરો / લખો)</th><th class="col-q">માપ</th><th class="col-r">રેટ ₹</th><th class="amt">કુલ ₹</th><th class="del">🗑️</th>
+                </tr>
+              </thead>
+              <tbody id="billWorkRows"></tbody>
+            </table>
+          </div>
+          <button class="btn-add" onclick="window.addBillWorkItem()">＋ નવું કામ ઉમેરો</button>
+        </div>
+
+        <div id="paneUpadAdvances" style="display:none; flex-direction:column; gap:10px;">
+          <div class="table-card">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">ક્રમ</th>
+                  <th class="col-dt">તારીખ</th>
+                  <th class="col-to-simple">કોને આપ્યા</th>
+                  <th class="col-amt-in">રકમ ₹</th>
+                  <th class="del">🗑️</th>
+                </tr>
+              </thead>
+              <tbody id="billAdvanceRows"></tbody>
+            </table>
+          </div>
+          <button class="btn-add" style="background:#16a34a;" onclick="window.addBillAdvanceItem()">＋ ઉપાડ ઉમેરો</button>
+
+          <div class="qrbox">
+            <div class="qr-header-row">
+              <span class="qrtitle">UPI / Online Scanner</span>
+              <button type="button" class="btn-qr-edit" onclick="document.getElementById('nativeGalleryInput').click()">📸 QR બદલો</button>
+            </div>
+            <img id="upiQrImg" alt="UPI QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=shivconstruction@upi&pn=Shiv%20Construction">
+            <div style="font-size:11px; color:#64748b; font-weight:600;">💡 QR બદલવા માટે <b>📸 QR બદલો</b> દબાવો</div>
+          </div>
+        </div>
+
+        <div class="summary-box-img2" style="border:2px solid #1976b5; margin-top:4px;">
+          <div class="calc-item"><span>કુલ કામ (બિલ):</span><b id="statBillWorkTotal" style="color:#1976b5;">₹ 0.00</b></div>
+          <div class="calc-item" style="color:#dc2626;"><span>કુલ ઉપાડ (Advance):</span><b id="statBillUpadTotal">- ₹ 0.00</b></div>
+          <div class="calc-grand"><span>ચોખ્ખી બાકી રકમ (ચૂકવવાપાત્ર):</span><span id="statBillBalance">₹ 0.00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. SCREEN: SITE KHARCH DETAIL -->
+    <div id="screenKharchSiteDetail" class="view-screen">
+      <header class="top-header-orange">
+        <button class="nav-btn-round" onclick="window.navToScreen('screenDashboard')">←</button>
+        <div style="text-align:center;">
+          <h2 style="font-size:16px; font-weight:800;">સાઇટ ખર્ચ પત્રક (Expenses)</h2>
+          <p id="dispKharchSubTitle" style="font-size:11px; opacity:0.9;">ખર્ચ અને નફો</p>
+          <img id="dispKharchSitePhoto" alt="સાઇટનો ફોટો" style="display:none; width:38px; height:38px; object-fit:cover; border-radius:8px; margin:4px auto 0;">
+        </div>
+        <div style="display:flex; gap:4px;">
+          <button class="nav-btn-round" onclick="window.printSiteKharchReport()" title="Print Kharch">🖨️</button>
+          <button class="nav-btn-round" onclick="window.shareSiteKharchWhatsApp()" title="WhatsApp Kharch">📲</button>
+        </div>
+      </header>
+
+      <div class="content-pad">
+        <div class="site-select-strip">
+          <span style="font-size:11px; font-weight:800; color:#0369a1;">સાઇટ:</span>
+          <select id="siteDropdownKharch" onchange="window.onGlobalSiteChange(this.value)"></select>
+          <button class="btn-strip-action" onclick="window.openEditSiteDirect()">✏️ સાઇટ</button>
+          <button class="btn-strip-action" onclick="window.openNewSiteModalDirect()">➕ સાઇટ</button>
+          <button class="btn-strip-action" style="background:#16a34a;" onclick="window.openCustomerManagerModal()">👥 ગ્રાહક મેનેજર</button>
+        </div>
+
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th class="num">ક્રમ</th>
+                <th class="col-dt">તારીખ</th>
+                <th>પ્રકાર</th>
+                <th>વિગત</th>
+                <th class="col-to-simple">કોને / ક્યાં</th>
+                <th class="col-amt-in">રકમ ₹</th>
+                <th class="del">સ્થિતિ</th>
+              </tr>
+            </thead>
+            <tbody id="expensesTableBody">
+              <tr id="permanentAttendanceExpenseRow" class="live-att-row">
+                <td class="num">1</td>
+                <td><span id="liveAttDt">લાઈવ</span></td>
+                <td><b>Attendance</b></td>
+                <td><span>કારીગર / મજૂર હાજરી ખર્ચ</span></td>
+                <td>તમામ કારીગરો</td>
+                <td class="amt" style="color:#ea580c;">₹ <span id="liveAttAmtVal">0.00</span></td>
+                <td class="del">
+                  <button type="button" class="btn-toggle-att-row btn-tar-act" id="btnToggleAttExpense" onclick="window.toggleLiveAttendanceExpenseRow()">✅ ચાલુ</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button class="btn-add" style="background:#db2777;" onclick="window.addSiteExpenseItem()">＋ અન્ય ખર્ચ ઉમેરો (સામાન / મશીન)</button>
+
+        <div class="summary-card">
+          <span>કુલ સાઇટ ખર્ચ (હાજરી + અન્ય):</span>
+          <span style="color:#db2777; font-size:16px; font-weight:900;">₹ <span id="statExpTotal">0.00</span></span>
+        </div>
+
+        <div class="summary-card" style="border:1.5px solid #16a34a; background:#f0fdf4;">
+          <span>ચોખ્ખો નફો (પાકું બિલ − ખર્ચ):</span>
+          <span style="color:#16a34a; font-size:16px; font-weight:900;">₹ <span id="statExpProfit">0.00</span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HIDDEN FILE INPUT FOR RESTORE & QR -->
+  <input type="file" id="nativeGalleryInput" accept="image/*" onchange="window.processSelectedQrImage(event)" style="display:none;">
+  <input type="file" id="backupFileInput" accept=".json" onchange="window.importAppDataJSON(event)" style="display:none;">
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- BACKUP & RESTORE MODAL -->
+  <div class="modal-overlay" id="backupRestoreModal" onclick="document.getElementById('backupRestoreModal').style.display='none'">
+    <div class="item-picker-modal" onclick="event.stopPropagation()">
+      <div style="font-weight:900; font-size:16px; color:#059669; text-align:center;">💾 ડેટા બેકઅપ અને રિસ્ટોર</div>
+      <div style="font-size:12px; color:#64748b; text-align:center; font-weight:600; line-height:1.5;">
+        તમારો આખો ડેટા (હાજરી, ગ્રાહક, સાઇટ અને બિલ) સુરક્ષિત રાખવા માટે બેકઅપ ડાઉનલોડ કરો અથવા જૂની બેકઅપ ફાઇલ અપલોડ કરો.
+      </div>
+      
+      <div id="autoBackupStatus" style="font-size:11px; color:#64748b; text-align:center; font-weight:700;">દર 7 દિવસે ઓટો-બેકઅપ આ ડિવાઇસમાં સેવ થશે.</div>
+      <button type="button" class="opt-btn btn-opt-print" style="background:#059669; margin-top:8px;" onclick="window.exportAppDataJSON()">📥 બેકઅપ ફાઇલ ડાઉનલોડ કરો (Export Backup)</button>
+      <button type="button" class="opt-btn btn-opt-edit" style="background:#2563eb;" onclick="window.restoreLastAutoBackup()">♻️ છેલ્લો ઓટો-બેકઅપ Restore કરો</button>
+      <button type="button" class="opt-btn" style="background:#475569; color:white;" onclick="document.getElementById('backupFileInput').click()">📤 JSON ફાઇલમાંથી Restore કરો</button>
+
+      <button type="button" class="opt-btn btn-opt-cancel" style="margin-top:4px;" onclick="document.getElementById('backupRestoreModal').style.display='none'">બંધ કરો</button>
+    </div>
+  </div>
+
+  <!-- CUSTOMER MANAGER MODAL -->
+  <div class="modal-overlay" id="customerManagerModal" onclick="document.getElementById('customerManagerModal').style.display='none'">
+    <div class="item-picker-modal" onclick="event.stopPropagation()">
+      <div style="font-weight:900; font-size:16px; color:#1976b5; text-align:center;">👥 ગ્રાહક મેનેજર (Customer Manager)</div>
+      <div style="font-size:11px; color:#64748b; text-align:center; font-weight:bold;">💡 સુધારવા / ડીલીટ કરવા ગ્રાહક પર કે સાઇટ પર Long Press કરો</div>
+      
+      <div class="item-picker-list" id="custManagerListContainer"></div>
+
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="opt-btn" style="background:#16a34a; color:white; flex:1;" onclick="window.openNewCustomerModalDirect()">➕ નવો ગ્રાહક</button>
+        <button type="button" class="opt-btn btn-opt-cancel" style="flex:1;" onclick="document.getElementById('customerManagerModal').style.display='none'">બંધ કરો</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER LONG PRESS 4 OPTIONS BOTTOM SHEET -->
+  <div class="options-overlay" id="custOptionsModal" onclick="window.closeCustOptions(event)">
+    <div class="options-sheet" onclick="event.stopPropagation()">
+      <div style="font-weight:900; font-size:16px; text-align:center; color:#0f172a;" id="optCustTitle">ગ્રાહક વિકલ્પો</div>
+      <button type="button" class="opt-btn btn-opt-edit" onclick="window.openEditCustomerFromOpt()">✏️ 1. ગ્રાહક વિગત સુધારો (Edit Name, Number, Address)</button>
+      <button type="button" class="opt-btn btn-opt-print" onclick="window.printCustomerSiteBySiteBill()">🖨️ 2. સાઇટ વાઇઝ કુલ બિલ Print કરો</button>
+      <button type="button" class="opt-btn btn-opt-wa" onclick="window.shareCustomerSiteBySiteBillWA()">📲 3. સાઇટ વાઇઝ કુલ બિલ WhatsApp મોકલો</button>
+      <button type="button" class="opt-btn btn-opt-del" onclick="window.deleteCustomerFromOpt()">🗑️ 4. ગ્રાહક ડીલીટ કરો (Delete)</button>
+      <button type="button" class="opt-btn btn-opt-cancel" onclick="document.getElementById('custOptionsModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+
+  <!-- SITE LONG PRESS 4 OPTIONS BOTTOM SHEET -->
+  <div class="options-overlay" id="siteOptionsModal" onclick="window.closeSiteOptions(event)">
+    <div class="options-sheet" onclick="event.stopPropagation()">
+      <div style="font-weight:900; font-size:16px; text-align:center; color:#0f172a;" id="optSiteTitle">સાઇટ વિકલ્પો</div>
+      <button type="button" class="opt-btn btn-opt-edit" onclick="window.openEditSiteFromOpt()">✏️ 1. સાઇટ વિગત સુધારો (Edit Name, Mobile, Address)</button>
+      <button type="button" class="opt-btn btn-opt-print" onclick="window.printSiteDetailBill()">🖨️ 2. સાઇટ વિગતવાર બિલ Print કરો</button>
+      <button type="button" class="opt-btn btn-opt-wa" onclick="window.shareSiteDetailBillWA()">📲 3. સાઇટ વિગતવાર બિલ WhatsApp કરો</button>
+      <button type="button" class="opt-btn btn-opt-del" onclick="window.deleteSiteFromOpt()">🗑️ 4. સાઇટ ડીલીટ કરો (Delete)</button>
+      <button type="button" class="opt-btn btn-opt-cancel" onclick="document.getElementById('siteOptionsModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+
+  <!-- SMOOTH SCROLLABLE ITEM PICKER MODAL -->
+  <div class="modal-overlay" id="itemPickerModal" onclick="document.getElementById('itemPickerModal').style.display='none'">
+    <div class="item-picker-modal" onclick="event.stopPropagation()">
+      <div style="font-weight:900; font-size:16px; color:#ea580c; text-align:center;">📋 કામનું નામ પસંદ કરો</div>
+      <input type="text" class="search-input" id="itemSearchPickerInput" placeholder="🔍 ફિલ્ટર કરો (જેમ કે: ટાઇલ્સ, ફ્રેમ...)" oninput="window.filterItemPickerList()">
+      
+      <div class="item-picker-list" id="itemPickerListContainer"></div>
+
+      <button type="button" class="opt-btn btn-opt-cancel" onclick="document.getElementById('itemPickerModal').style.display='none'">બંધ કરો (Close)</button>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE: MARK MODAL -->
+  <div class="modal-overlay" id="markModal">
+    <div class="modal-sheet-img1">
+      <div style="color:#ffffff; text-align:center; font-weight:900; font-size:16px; letter-spacing:0.5px;" id="modalDateTitle">1 સપ્ટેમ્બર 2026</div>
+      <div class="modal-grid-img1">
+        <button type="button" class="m-btn-img1 mb-p-1" onclick="window.setStatus('P')">✅ હાજર</button>
+        <button type="button" class="m-btn-img1 mb-hd-1" onclick="window.setStatus('HD')">🌓 અડધો</button>
+        <button type="button" class="m-btn-img1 mb-a-1" onclick="window.setStatus('A')">❌ ગેરહાજર</button>
+        <button type="button" class="m-btn-img1 mb-none-1" onclick="window.setStatus('NONE')">⚪ રદ</button>
+        <button type="button" class="m-btn-img1 mb-ot-1" onclick="window.openEditorFor('OT')">⏱️ OT કલાક</button>
+        <button type="button" class="m-btn-img1 mb-upad-1" onclick="window.openEditorFor('UPAD')">💵 ઉપાડ (₹)</button>
+        <button type="button" class="m-btn-img1 mb-nondh-1" onclick="window.openEditorFor('NOTE')">📝 નોંધ (Nondh) લખો</button>
+      </div>
+      <button type="button" class="mb-close-1" onclick="document.getElementById('markModal').style.display='none'">બંધ કરો</button>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE: REAL-TIME DATE STATUS POPUP -->
+  <div class="modal-overlay" id="dateDetailPopupModal" onclick="this.style.display='none'">
+    <div class="day-detail-card" onclick="event.stopPropagation()">
+      <div class="day-detail-header" id="popDtTitle">તારીખ: 1 સપ્ટેમ્બર 2026 (મંગળવાર)</div>
+      <div class="detail-row"><span class="detail-label">હાજરી સ્થિતિ:</span><span class="detail-val" id="popDtStatus">રદ (None)</span></div>
+      <div class="detail-row"><span class="detail-label">ઓવરટાઇમ (OT):</span><span class="detail-val" id="popDtOt">0 કલાક</span></div>
+      <div class="detail-row"><span class="detail-label">ઉપાડ (Advance):</span><span class="detail-val" id="popDtUpad" style="color:#dc2626;">₹ 0</span></div>
+      <div style="margin-top:4px;">
+        <span class="detail-label" style="font-size:12px;">નોંધ (Nondh):</span>
+        <div class="nondh-box" id="popDtNondh">કોઈ નોંધ નથી</div>
+      </div>
+      <button type="button" class="opt-btn" style="background:#ea580c; color:white; margin-top:8px;" onclick="document.getElementById('dateDetailPopupModal').style.display='none'">બરાબર (OK)</button>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE: INPUT MODAL -->
+  <div class="modal-overlay" id="customEditorModal" onclick="window.closeEditorOnBg(event)">
+    <div class="input-editor-card-img4" onclick="event.stopPropagation()">
+      <div class="img4-title" id="img4Title">💵 ઉપાડ રકમ (₹) લખો</div>
+      <input id="img4Field" class="img4-field" autocomplete="off">
+      <div class="img4-actions">
+        <button type="button" class="btn-img4-cancel" onclick="window.closeEditorModal()">રદ કરો</button>
+        <button type="button" class="btn-img4-save" onclick="window.saveEditorModalValue()">સેવ કરો</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE: HELPER 5 OPTIONS BOTTOM SHEET -->
+  <div class="options-overlay" id="optionsModal" onclick="window.closeOptionsMenu(event)">
+    <div class="options-sheet" onclick="event.stopPropagation()">
+      <div style="font-weight:900; font-size:16px; text-align:center; color:#0f172a; margin-bottom:4px;" id="optHelperTitle">કારીગર વિકલ્પો</div>
+      <button type="button" class="opt-btn btn-opt-edit" onclick="window.openEditHelperModal()">✏️ 1. નામ, નંબર, સરનામું, ફોટો અને રોજ સુધારો</button>
+      <button type="button" class="opt-btn btn-opt-toggle" id="btnToggleAct" onclick="window.actionToggleStatus()">🛑 2. સક્રિય / નિષ્ક્રિય કરો</button>
+      <button type="button" class="opt-btn btn-opt-print" onclick="window.openPrintOptionsModal()">🖨️ 3. પ્રિન્ટ રિપોર્ટ (Print Report)</button>
+      <button type="button" class="opt-btn btn-opt-wa" onclick="window.openShareOptionsModal()">📲 4. વોટ્સએપ રિપોર્ટ શેર (Share Report)</button>
+      <button type="button" class="opt-btn btn-opt-del" onclick="window.actionDeleteHelper()">🗑️ 5. કારીગર ડીલીટ કરો</button>
+      <button type="button" class="opt-btn btn-opt-cancel" onclick="document.getElementById('optionsModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE: ADD / EDIT HELPER MODAL -->
+  <div class="modal-overlay" id="helperFormModal">
+    <div class="day-detail-card">
+      <div style="font-size:16px; font-weight:800; color:#ea580c; text-align:center;" id="helperFormTitle">➕ નવો કારીગર ઉમેરો</div>
+      <input type="text" class="img4-field" id="formHelperName" placeholder="કારીગરનું નામ *">
+      <input type="tel" class="img4-field" id="formHelperMobile" inputmode="numeric" placeholder="મોબાઇલ નંબર">
+      <input type="text" class="img4-field" id="formHelperAddress" placeholder="સરનામું (Address)">
+      <input type="number" class="img4-field" id="formHelperWage" inputmode="numeric" placeholder="દૈનિક રોજ ₹" value="600">
+      <input type="file" id="helperPhotoInput" accept="image/*" onchange="window.processHelperPhoto(event)" style="display:none;">
+      <button type="button" class="btn-qr-edit" style="padding:9px;" onclick="document.getElementById('helperPhotoInput').click()">📷 ફોટો પસંદ કરો</button>
+      <img id="helperPhotoPreview" alt="Helper photo preview" style="display:none; width:72px; height:72px; object-fit:cover; border-radius:50%; margin:0 auto;">
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-img4-cancel" onclick="document.getElementById('helperFormModal').style.display='none'">રદ કરો</button>
+        <button type="button" class="btn-img4-save" onclick="window.saveHelperFormData()">સેવ કરો</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE: PRINT CHOICE MODAL -->
+  <div class="modal-overlay" id="printChoiceModal">
+    <div class="report-choice-card">
+      <div class="report-choice-title" style="color:#0284c7;">🖨️ પ્રિન્ટ રિપોર્ટ પસંદ કરો</div>
+      <button type="button" class="opt-btn btn-opt-print" onclick="window.printReportOption(1)">📄 ચાલુ મહિનો પ્રિન્ટ કરો (This Month)</button>
+      <div class="opt-section-box">
+        <span class="opt-label">📅 તારીખથી તારીખ સુધી પ્રિન્ટ કરો</span>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <input type="date" id="prFromDate" style="flex:1; padding:6px; border-radius:8px; font-size:12px; border:1px solid #cbd5e1;">
+          <span style="font-size:11px; font-weight:bold;">થી</span>
+          <input type="date" id="prToDate" style="flex:1; padding:6px; border-radius:8px; font-size:12px; border:1px solid #cbd5e1;">
+        </div>
+        <button type="button" class="opt-btn" style="background:#0284c7; color:white; padding:8px;" onclick="window.printReportOption(3)">🖨️ પસંદ કરેલી તારીખોનું કાર્ડ પ્રિન્ટ કરો</button>
+      </div>
+      <div style="font-size:11px; color:#64748b; text-align:center;">પ્રિન્ટ વિકલ્પમાં Print અથવા Save as PDF પસંદ કરીને રેકોર્ડ સાચવી શકો છો.</div>
+      <button type="button" class="opt-btn btn-opt-cancel" onclick="document.getElementById('printChoiceModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE: SHARE CHOICE MODAL (3 OPTIONS) -->
+  <div class="modal-overlay" id="shareChoiceModal">
+    <div class="report-choice-card">
+      <div class="report-choice-title" style="color:#16a34a;">📲 વોટ્સએપ રિપોર્ટ શેર કરો</div>
+      <button type="button" class="opt-btn btn-opt-wa" onclick="window.shareReportOption(1)">💬 Option 1: ચાલુ મહિનાની પગાર સ્લિપ</button>
+      <div class="opt-section-box">
+        <span class="opt-label">📅 Option 2: તારીખ થી તારીખ (Date to Date)</span>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <input type="date" id="shFromDate" style="flex:1; padding:6px; border-radius:8px; font-size:12px; border:1px solid #cbd5e1;">
+          <span style="font-size:11px; font-weight:bold;">થી</span>
+          <input type="date" id="shToDate" style="flex:1; padding:6px; border-radius:8px; font-size:12px; border:1px solid #cbd5e1;">
+        </div>
+        <button type="button" class="opt-btn btn-opt-wa" style="padding:8px;" onclick="window.shareReportOption(2)">📲 તારીખ મુજબ સ્લિપ મોકલો</button>
+      </div>
+      <div class="opt-section-box">
+        <span class="opt-label">🗓️ Option 3: મહિનો થી મહિનો (Month to Month)</span>
+        <div style="display:flex; gap:6px;">
+          <select id="shStartMonth" style="flex:1; padding:7px; border-radius:8px; font-size:12px; border:1px solid #cbd5e1;"></select>
+          <select id="shEndMonth" style="flex:1; padding:7px; border-radius:8px; font-size:12px; border:1px solid #cbd5e1;"></select>
+        </div>
+        <button type="button" class="opt-btn btn-opt-wa" style="padding:8px;" onclick="window.shareReportOption(3)">📲 મહિના મુજબ સ્લિપ મોકલો</button>
+      </div>
+      <button type="button" class="opt-btn btn-opt-cancel" onclick="document.getElementById('shareChoiceModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT CUSTOMER DIRECT -->
+  <div class="modal-overlay" id="customerFormModal">
+    <div class="input-editor-card-img4">
+      <div class="img4-title" id="custModalTitle">➕ નવો ગ્રાહક ઉમેરો</div>
+      <input type="text" class="img4-field" id="formCustName" placeholder="ગ્રાહકનું નામ *">
+      <input type="tel" class="img4-field" id="formCustMobile" inputmode="numeric" placeholder="મોબાઇલ નંબર">
+      <input type="text" class="img4-field" id="formCustAddress" placeholder="ગ્રાહકનું સરનામું (Address) *">
+      <input type="file" id="customerPhotoInput" accept="image/*" onchange="window.processCustomerPhoto(event)" style="display:none;">
+      <button type="button" class="btn-qr-edit" style="padding:9px;" onclick="document.getElementById('customerPhotoInput').click()">📷 ગ્રાહકનો ફોટો પસંદ કરો</button>
+      <img id="customerPhotoPreview" alt="Customer photo preview" style="display:none; width:72px; height:72px; object-fit:cover; border-radius:50%; margin:0 auto;">
+      <div class="img4-actions">
+        <button type="button" class="btn-img4-cancel" onclick="document.getElementById('customerFormModal').style.display='none'">રદ કરો</button>
+        <button type="button" class="btn-img4-save" onclick="window.saveCustomerFormDirect()">સેવ કરો</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT SITE DIRECT -->
+  <div class="modal-overlay" id="siteFormModal">
+    <div class="input-editor-card-img4">
+      <div class="img4-title" id="siteModalTitle">➕ નવી સાઇટ ઉમેરો</div>
+      <div id="siteOwnerNameLabel" style="font-size:12px; color:#ea580c; font-weight:bold; text-align:center;"></div>
+      <input type="text" class="img4-field" id="formSiteName" placeholder="સાઇટનું નામ (Site Name) *">
+      <input type="text" class="img4-field" id="formSiteAddress" placeholder="સાઇટનું સરનામું (Site Address) *">
+      <input type="file" id="sitePhotoInput" accept="image/*" onchange="window.processSitePhoto(event)" style="display:none;">
+      <button type="button" class="btn-qr-edit" style="padding:9px;" onclick="document.getElementById('sitePhotoInput').click()">📷 સાઇટનો ફોટો પસંદ કરો</button>
+      <img id="sitePhotoPreview" alt="Site photo preview" style="display:none; width:72px; height:72px; object-fit:cover; border-radius:50%; margin:0 auto;">
+      <div class="img4-actions">
+        <button type="button" class="btn-img4-cancel" onclick="document.getElementById('siteFormModal').style.display='none'">રદ કરો</button>
+        <button type="button" class="btn-img4-save" onclick="window.saveSiteFormDirect()">સેવ કરો</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="saveToast">✅ Auto Saved!</div>
+
+  <script>
+    window.money = function(x) {
+      return (Number(x) || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
+    window.num = function(v) {
+      let x = parseFloat(String(v || 0).replace(/,/g, ""));
+      return Number.isFinite(x) ? x : 0;
+    };
+
+    const gujMonths = ["જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન", "જુલાઈ", "ઓગસ્ટ", "સપ્ટેમ્બર", "ઓક્ટોબર", "નવેમ્બર", "ડિસેમ્બર"];
+
+    const rates = [45,45,485,435,65,65,3750,50,18,18,22,28,42,18,18,24,24,28,42,18,18,18,18,18,18,18,18,15,18,26,18,26,7,5,2500,501];
+
+    const itemNames = [
+      "ફ્રેમ (rf)","સીલ (rf)","પ્લેટફોર્મ ગ્લાસ વ્હાઇટ (sq)","પ્લેટફોર્મ ગ્રેનાઈટ (sq)","કબાટ (sq)","સેલ્ફ (sq)","સીડી (etc)","ઉમરા (rf)",
+      "વોલ ટાઇલ્સ (sq)","વોલ ટાઇલ્સ 12*18 (sq)","વોલ ટાઇલ્સ 24*24 (sq)","વોલ ટાઇલ્સ 24*48 (sq)","વોલ ટાઇલ્સ બીગ સાઈઝ (sq)",
+      "ફ્લોર ટાઇલ્સ (sq)","ફ્લોર ટાઇલ્સ 24*24 (sq)","ફ્લોર ટાઇલ્સ 24*48‌ (sq)","ફ્લોર ટાઇલ્સ 32*32 (sq)","ફ્લોર ટાઇલ્સ 32*64 (sq)","ફ્લોર ટાઇલ્સ બીગ સાઈઝ (sq)",
+      "બાથ ટાઇલ્સ (sq)","કિચન ટાઇલ્સ (sq)","નવેરૂ ટાઇલ્સ (sq)","એલીવેશન ટાઇલ્સ (sq)","કબાટ ટાઇલ્સ (sq)","રૂમ ટાઇલ્સ (sq)","રવેશ ફ્લોર (sq)",
+      "ફળીયુ ફ્લોર (sq)","સ્કટિંગ ફ્લોર (rf)","સ્કટિંગ સીડી (rf)","સ્કટિંગ ડીગ્રી (rf)","અગાશી ટાઇલ્સ (sq)","અગાશી ટુકડી (sq)",
+      "એપોક્ષી વાંટા (sq)","સાદા વાટા (sq)","ફરેડી/પગથિયાં (etc)","પોસ્ટર/છબી (etc)"
+    ];
+
+    let helpersList = [];
+
+    let currentSelectedHelper = null;
+    let selectedForOptions = null;
+    let isEditingHelper = false;
+    let helperPhotoData = "";
+
+    const liveDate = new Date();
+    let curYear = liveDate.getFullYear();
+    let curMonth = liveDate.getMonth();
+    let allAttendanceData = {};
+    let selKey = null;
+    let currentEditingType = null;
+    let editingExistingAttendance = false;
+    let currentFilterMode = 'month';
+
+    let customerList = [];
+
+    let allCustomerBills = {};
+    let activeCustomer = null;
+    let activeSiteId = null;
+    let isLiveAttExpenseActive = true;
+
+    // ACTIVE TARGETS
+    let currentItemPickerInput = null;
+    let currentItemPickerRateInput = null;
+    let currentItemPickerType = null;
+
+    let selectedCustForOpt = null;
+    let selectedSiteForOpt = null;
+    let isEditingCust = false;
+    let isEditingSite = false;
+    let customerPhotoData = "";
+    let sitePhotoData = "";
+
+    // STORAGE RESTORE
+    try {
+      const keysH = ["SHIV_HELPERS_PURE_V14", "SHIV_HELPERS_CLEAN_V10", "SHIV_UNIFIED_HELPERS", "SHIV_HELPERS_PURE_V16"];
+      for (let k of keysH) {
+        const v = localStorage.getItem(k);
+        if (v && JSON.parse(v).length > 0) { helpersList = JSON.parse(v); break; }
+      }
+      const keysA = ["SHIV_ATT_PURE_V14", "SHIV_ATT_CLEAN_V10", "SHIV_UNIFIED_ATT", "SHIV_ATT_PURE_V16"];
+      for (let k of keysA) {
+        const v = localStorage.getItem(k);
+        if (v && Object.keys(JSON.parse(v)).length > 0) { allAttendanceData = JSON.parse(v); break; }
+      }
+      const keysC = ["SHIV_CUST_PURE_V14", "SHIV_CUST_CLEAN_V10", "SHIV_UNIFIED_CUST", "SHIV_CUST_PURE_V16"];
+      for (let k of keysC) {
+        const v = localStorage.getItem(k);
+        if (v && JSON.parse(v).length > 0) { customerList = JSON.parse(v); break; }
+      }
+      const keysB = ["SHIV_CBILLS_PURE_V14", "SHIV_CBILLS_CLEAN_V10", "SHIV_UNIFIED_BILLS", "SHIV_CBILLS_PURE_V16"];
+      for (let k of keysB) {
+        const v = localStorage.getItem(k);
+        if (v) { allCustomerBills = JSON.parse(v); break; }
+      }
+    } catch(e) {}
+
+    // Remove the original demo records while preserving any real saved entries.
+    helpersList = helpersList.filter(h => !["h1", "h2", "h3", "h4"].includes(h.id));
+    customerList = customerList.filter(c => !["c1", "c2", "c3"].includes(c.id));
+    ["c1", "c2", "c3"].forEach(id => delete allCustomerBills[id]);
+    activeCustomer = customerList[0] || null;
+    activeSiteId = activeCustomer?.sites?.[0]?.siteId || null;
+
+    function triggerAutoSaveToast(msg) {
+      const toast = document.getElementById("saveToast");
+      if (!toast) return;
+      toast.innerText = msg || "✅ Auto Saved!";
+      toast.style.display = "block";
+      setTimeout(() => { toast.style.display = "none"; }, 1400);
+    }
+
+    const AUTO_BACKUP_KEY = "SHIV_AUTO_BACKUP_V1";
+    const AUTO_BACKUP_INTERVAL = 7 * 24 * 60 * 60 * 1000;
+
+    function createAutoBackupIfDue() {
+      try {
+        const previous = JSON.parse(localStorage.getItem(AUTO_BACKUP_KEY) || "null");
+        const now = Date.now();
+        if (previous && now - previous.savedAt < AUTO_BACKUP_INTERVAL) return;
+
+        const backupObj = {
+          app: "ShivConstructionERP",
+          version: "V1.0",
+          date: new Date(now).toISOString(),
+          savedAt: now,
+          helpersList,
+          allAttendanceData,
+          customerList,
+          allCustomerBills
+        };
+        localStorage.setItem(AUTO_BACKUP_KEY, JSON.stringify(backupObj));
+      } catch(e) {}
+    }
+
+    function saveMasterData() {
+      try {
+        localStorage.setItem("SHIV_HELPERS_PURE_V14", JSON.stringify(helpersList));
+        localStorage.setItem("SHIV_ATT_PURE_V14", JSON.stringify(allAttendanceData));
+        localStorage.setItem("SHIV_CUST_PURE_V14", JSON.stringify(customerList));
+        localStorage.setItem("SHIV_CBILLS_PURE_V14", JSON.stringify(allCustomerBills));
+        createAutoBackupIfDue();
+        triggerAutoSaveToast();
+      } catch(e) {}
+    }
+
+    window.navToScreen = function(screenId) {
+      document.querySelectorAll(".view-screen").forEach(s => s.classList.remove("active"));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add("active");
+        if (screenId === "screenAttendanceList") window.renderHelperListUI();
+      }
+    };
+
+    function setupLongPress(element, callback) {
+      if (!element) return;
+      let timer = null, isPress = false;
+      const start = () => {
+        isPress = false;
+        timer = setTimeout(() => { isPress = true; callback(); }, 800);
+      };
+      const cancel = () => clearTimeout(timer);
+
+      element.addEventListener("touchstart", start);
+      element.addEventListener("touchend", cancel);
+      element.addEventListener("mousedown", start);
+      element.addEventListener("mouseup", cancel);
+      element.addEventListener("mouseleave", cancel);
+    }
+
+    function rowInputSnapshot(row) {
+      return Array.from(row.querySelectorAll("input, select")).map(el => el.value);
+    }
+
+    function bindRowSaveConfirmation(row, save, recalculate) {
+      row.dataset.savedValues = JSON.stringify(rowInputSnapshot(row));
+      row.querySelectorAll("input, select").forEach(el => {
+        el.addEventListener("change", () => {
+          if (row.dataset.isExisting !== "true") {
+            save();
+            return;
+          }
+          const oldValues = JSON.parse(row.dataset.savedValues || "[]");
+          const newValues = rowInputSnapshot(row);
+          if (JSON.stringify(oldValues) === JSON.stringify(newValues)) return;
+          if (!confirm("આ entry પહેલેથી સેવ છે. ફેરફાર સેવ કરવો છે?")) {
+            row.querySelectorAll("input, select").forEach((field, index) => { field.value = oldValues[index] ?? ""; });
+            recalculate();
+            return;
+          }
+          row.dataset.savedValues = JSON.stringify(newValues);
+          save();
+        });
+      });
+    }
+
+    /* ========================================================
+       BACKUP & RESTORE FUNCTIONS (EXPORT / IMPORT JSON)
+       ======================================================== */
+    window.openBackupRestoreModal = function() {
+      let status = "હજુ ઓટો-બેકઅપ બન્યો નથી.";
+      try {
+        const backup = JSON.parse(localStorage.getItem(AUTO_BACKUP_KEY) || "null");
+        if (backup && backup.date) status = `છેલ્લો ઓટો-બેકઅપ: ${new Date(backup.date).toLocaleString()}`;
+      } catch(e) {}
+      document.getElementById("autoBackupStatus").innerText = `${status} · દર 7 દિવસે આ ડિવાઇસમાં સેવ થાય છે.`;
+      document.getElementById("backupRestoreModal").style.display = "flex";
+    };
+
+    window.restoreLastAutoBackup = function() {
+      let backup;
+      try {
+        backup = JSON.parse(localStorage.getItem(AUTO_BACKUP_KEY) || "null");
+      } catch(e) {}
+
+      if (!backup || !Array.isArray(backup.helpersList) || !Array.isArray(backup.customerList)) {
+        alert("હજુ કોઈ માન્ય ઓટો-બેકઅપ ઉપલબ્ધ નથી.");
+        return;
+      }
+      if (!confirm(`છેલ્લો ઓટો-બેકઅપ (${new Date(backup.date).toLocaleString()}) રિસ્ટોર કરવાથી હાલનો ડેટા બદલાશે. આગળ વધવું છે?`)) return;
+
+      helpersList = backup.helpersList;
+      allAttendanceData = backup.allAttendanceData || {};
+      customerList = backup.customerList;
+      allCustomerBills = backup.allCustomerBills || {};
+      activeCustomer = customerList[0] || null;
+      activeSiteId = activeCustomer?.sites?.[0]?.siteId || null;
+      saveMasterData();
+      document.getElementById("backupRestoreModal").style.display = "none";
+      triggerAutoSaveToast("✅ છેલ્લો બેકઅપ Restore થયો!");
+      setTimeout(() => window.location.reload(), 1200);
+    };
+
+    window.exportAppDataJSON = function() {
+      const backupObj = {
+        app: "ShivConstructionERP",
+        version: "V1.0",
+        date: new Date().toISOString(),
+        helpersList: helpersList,
+        allAttendanceData: allAttendanceData,
+        customerList: customerList,
+        allCustomerBills: allCustomerBills
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", `ShivConstruction_Backup_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+      document.getElementById("backupRestoreModal").style.display = "none";
+      alert("✅ બેકઅપ ફાઇલ સફળતાપૂર્વક ડાઉનલોડ થઈ ગઈ!");
+    };
+
+    window.importAppDataJSON = function(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.customerList && parsed.helpersList) {
+            if (confirm("⚠️ ચેતવણી: જૂનો ડેટા નવા બેકઅપ ડેટાથી બદલાઈ જશે. શું તમે રીસ્ટોર કરવા માંગો છો?")) {
+              helpersList = parsed.helpersList;
+              allAttendanceData = parsed.allAttendanceData || {};
+              customerList = parsed.customerList;
+              allCustomerBills = parsed.allCustomerBills || {};
+
+              saveMasterData();
+              populateGlobalSiteDropdowns();
+              document.getElementById("backupRestoreModal").style.display = "none";
+              triggerAutoSaveToast("✅ ડેટા સફળતાપૂર્વક Restore થયો!");
+              setTimeout(() => window.location.reload(), 1200);
+            }
+          } else {
+            alert("❌ આ ફાઇલ વેલિડ બેકઅપ ફાઇલ નથી!");
+          }
+        } catch(err) {
+          alert("❌ ફાઇલ વાંચવામાં ભૂલ થઈ છે!");
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    /* ========================================================
+       POPULATE GLOBAL SITE DROPDOWNS
+       ======================================================== */
+    function populateGlobalSiteDropdowns() {
+      const ids = ["siteDropdownEst", "siteDropdownBill", "siteDropdownKharch"];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = "";
+        customerList.forEach(c => {
+          (c.sites || []).forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = `${c.id}:::${s.siteId}`;
+            opt.innerText = `${c.name} - ${s.siteName}`;
+            if (c.id === activeCustomer.id && s.siteId === activeSiteId) opt.selected = true;
+            el.appendChild(opt);
+          });
+        });
+      });
+    }
+
+    window.onGlobalSiteChange = function(val) {
+      if (!val) return;
+      const parts = val.split(":::");
+      activeCustomer = customerList.find(c => c.id === parts[0]) || null;
+      activeSiteId = parts[1] || null;
+      if (!activeCustomer || !activeSiteId) return;
+      populateGlobalSiteDropdowns();
+      
+      window.loadActiveSiteBillUpadData();
+      window.loadActiveSiteKharchData();
+    };
+
+    /* ========================================================
+       CUSTOMER & SITE MANAGEMENT (EDIT, DELETE & PRINT/SHARE)
+       ======================================================== */
+    window.openCustomerManagerModal = function() {
+      const container = document.getElementById("custManagerListContainer");
+      container.innerHTML = "";
+      if (customerList.length === 0) {
+        container.innerHTML = '<div style="padding:18px; text-align:center; color:#64748b; font-weight:700;">હજુ કોઈ ગ્રાહક ઉમેર્યો નથી. નીચેના ➕ બટનથી ઉમેરો.</div>';
+      }
+
+      customerList.forEach(c => {
+        const row = document.createElement("div");
+        row.className = "cust-manage-row";
+
+        let sitesHtml = "";
+        (c.sites || []).forEach(s => {
+          sitesHtml += `
+            <div class="site-manage-sub-row" id="siteManageSub_${s.siteId}">
+              ${s.sitePhoto ? `<img src="${s.sitePhoto}" alt="${s.siteName}" style="width:42px;height:42px;object-fit:cover;border-radius:8px;flex-shrink:0;">` : '<div style="width:42px;height:42px;border-radius:8px;background:#ffedd5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">🏗️</div>'}
+              <div style="flex:1; min-width:0; margin-left:8px;">
+                <b style="font-size:12px; color:#0f172a;">📍 ${s.siteName}</b>
+                <div style="font-size:10px; color:#64748b;">📞 ${s.siteMobile || c.mobile} · 🏠 ${s.siteAddress || c.address}</div>
+              </div>
+              <span style="font-size:10px; color:#ea580c; font-weight:bold;">પસંદ કરો →</span>
+            </div>
+          `;
+        });
+
+        row.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;" id="custManageHead_${c.id}">
+            <div style="display:flex; align-items:center; min-width:0;">
+              ${c.photo ? `<img src="${c.photo}" alt="${c.name}" style="width:48px;height:48px;object-fit:cover;border-radius:50%;margin-right:9px;flex-shrink:0;">` : '<div style="width:48px;height:48px;border-radius:50%;background:#e0f2fe;display:flex;align-items:center;justify-content:center;margin-right:9px;flex-shrink:0;">👥</div>'}
+              <div>
+              <b style="font-size:14px; color:#0f172a;">${c.name}</b>
+              <div style="font-size:11px; color:#64748b; margin-top:2px;">📞 ${c.mobile} · 🏠 ${c.address}</div>
+              </div>
+            </div>
+            <span style="font-size:10px; font-weight:bold; background:#e0f2fe; color:#0284c7; padding:3px 6px; border-radius:6px;">${(c.sites || []).length} સાઇટ્સ</span>
+          </div>
+          <div style="margin-top:6px;">${sitesHtml}</div>
+        `;
+
+        // CUSTOMER HEADER LONG PRESS
+        const headEl = row.querySelector(`#custManageHead_${c.id}`);
+        setupLongPress(headEl, () => {
+          selectedCustForOpt = c;
+          window.openCustomerOptionsMenu(c);
+        });
+
+        // SITE ROWS LONG PRESS & CLICK
+        (c.sites || []).forEach(s => {
+          const sRow = row.querySelector(`#siteManageSub_${s.siteId}`);
+          if (sRow) {
+            setupLongPress(sRow, () => {
+              selectedCustForOpt = c;
+              selectedSiteForOpt = s;
+              window.openSiteOptionsMenu(c, s);
+            });
+
+            sRow.onclick = () => {
+              activeCustomer = c;
+              activeSiteId = s.siteId;
+              populateGlobalSiteDropdowns();
+              window.onGlobalSiteChange(`${c.id}:::${s.siteId}`);
+              document.getElementById("customerManagerModal").style.display = "none";
+              triggerAutoSaveToast(`${s.siteName} પસંદ થઈ!`);
+            };
+          }
+        });
+
+        container.appendChild(row);
+      });
+
+      document.getElementById("customerManagerModal").style.display = "flex";
+    };
+
+    window.openCustomerOptionsMenu = function(c) {
+      document.getElementById("customerManagerModal").style.display = "none";
+      document.getElementById("optCustTitle").innerText = c.name;
+      document.getElementById("custOptionsModal").style.display = "flex";
+    };
+
+    window.closeCustOptions = function(e) {
+      if (e.target.id === "custOptionsModal") document.getElementById("custOptionsModal").style.display = "none";
+    };
+
+    window.openEditCustomerFromOpt = function() {
+      if (!selectedCustForOpt) return;
+      document.getElementById("custOptionsModal").style.display = "none";
+      isEditingCust = true;
+      document.getElementById("custModalTitle").innerText = "✏️ ગ્રાહક વિગત સુધારો";
+      document.getElementById("formCustName").value = selectedCustForOpt.name;
+      document.getElementById("formCustMobile").value = selectedCustForOpt.mobile;
+      document.getElementById("formCustAddress").value = selectedCustForOpt.address || "";
+      customerPhotoData = selectedCustForOpt.photo || "";
+      const preview = document.getElementById("customerPhotoPreview");
+      preview.src = customerPhotoData;
+      preview.style.display = customerPhotoData ? "block" : "none";
+      document.getElementById("customerPhotoInput").value = "";
+      document.getElementById("customerFormModal").style.display = "flex";
+    };
+
+    window.deleteCustomerFromOpt = function() {
+      if (!selectedCustForOpt) return;
+      if (confirm(`શું તમે ખરેખર ${selectedCustForOpt.name} અને તેમની તમામ સાઇટ્સ ડીલીટ કરવા માંગો છો?`)) {
+        customerList = customerList.filter(c => c.id !== selectedCustForOpt.id);
+        delete allCustomerBills[selectedCustForOpt.id];
+        
+        activeCustomer = customerList[0] || null;
+        activeSiteId = activeCustomer?.sites?.[0]?.siteId || null;
+        
+        saveMasterData();
+        populateGlobalSiteDropdowns();
+        document.getElementById("custOptionsModal").style.display = "none";
+        window.loadActiveSiteBillUpadData();
+        window.loadActiveSiteKharchData();
+        alert("✅ ગ્રાહક ડીલીટ થઈ ગયો!");
+      }
+    };
+
+    window.openNewCustomerModalDirect = function() {
+      isEditingCust = false;
+      document.getElementById("custModalTitle").innerText = "➕ નવો ગ્રાહક ઉમેરો";
+      document.getElementById("formCustName").value = "";
+      document.getElementById("formCustMobile").value = "";
+      document.getElementById("formCustAddress").value = "";
+      customerPhotoData = "";
+      document.getElementById("customerPhotoPreview").removeAttribute("src");
+      document.getElementById("customerPhotoPreview").style.display = "none";
+      document.getElementById("customerPhotoInput").value = "";
+      document.getElementById("customerFormModal").style.display = "flex";
+    };
+
+    window.saveCustomerFormDirect = function() {
+      const name = document.getElementById("formCustName").value.trim();
+      const mobile = document.getElementById("formCustMobile").value.trim() || "N/A";
+      const address = document.getElementById("formCustAddress").value.trim() || "રાજકોટ";
+
+      if (!name) { alert("કૃપા કરીને ગ્રાહકનું નામ લખો."); return; }
+
+      if (isEditingCust && selectedCustForOpt) {
+        selectedCustForOpt.name = name;
+        selectedCustForOpt.mobile = mobile;
+        selectedCustForOpt.address = address;
+        selectedCustForOpt.photo = customerPhotoData;
+        triggerAutoSaveToast("✅ ગ્રાહક વિગત અપડેટ થઈ!");
+      } else {
+        const newCId = "c_" + Date.now();
+        const newCust = {
+          id: newCId, name, mobile, address, photo: customerPhotoData, isActive: true,
+          sites: [{ siteId: "s_1", siteName: "મુખ્ય સાઇટ", siteMalik: name, siteMobile: mobile, siteAddress: address }]
+        };
+        customerList.push(newCust);
+        activeCustomer = newCust;
+        activeSiteId = "s_1";
+        triggerAutoSaveToast("✅ નવો ગ્રાહક ઉમેરાઈ ગયો!");
+      }
+
+      saveMasterData();
+      populateGlobalSiteDropdowns();
+      document.getElementById("customerFormModal").style.display = "none";
+      window.loadActiveSiteBillUpadData();
+      window.loadActiveSiteKharchData();
+    };
+
+    // SITE EDIT & DELETE DIRECT / FROM MODAL
+    window.openEditSiteDirect = function() {
+      if (!activeCustomer) return;
+      const curSite = activeCustomer.sites.find(s => s.siteId === activeSiteId);
+      if (!curSite) return;
+      selectedCustForOpt = activeCustomer;
+      selectedSiteForOpt = curSite;
+      window.openEditSiteFromOpt();
+    };
+
+    window.openSiteOptionsMenu = function(c, s) {
+      document.getElementById("customerManagerModal").style.display = "none";
+      document.getElementById("optSiteTitle").innerText = s.siteName;
+      document.getElementById("siteOptionsModal").style.display = "flex";
+    };
+
+    window.closeSiteOptions = function(e) {
+      if (e.target.id === "siteOptionsModal") document.getElementById("siteOptionsModal").style.display = "none";
+    };
+
+    window.openEditSiteFromOpt = function() {
+      if (!selectedSiteForOpt) return;
+      if (document.getElementById("siteOptionsModal")) document.getElementById("siteOptionsModal").style.display = "none";
+      isEditingSite = true;
+      document.getElementById("siteModalTitle").innerText = "✏️ સાઇટ વિગત સુધારો";
+      document.getElementById("siteOwnerNameLabel").innerText = "ગ્રાહક: " + (selectedCustForOpt?.name || activeCustomer.name);
+      document.getElementById("formSiteName").value = selectedSiteForOpt.siteName;
+      document.getElementById("formSiteAddress").value = selectedSiteForOpt.siteAddress || selectedCustForOpt?.address || activeCustomer.address;
+      sitePhotoData = selectedSiteForOpt.sitePhoto || "";
+      const preview = document.getElementById("sitePhotoPreview");
+      preview.src = sitePhotoData;
+      preview.style.display = sitePhotoData ? "block" : "none";
+      document.getElementById("sitePhotoInput").value = "";
+      document.getElementById("siteFormModal").style.display = "flex";
+    };
+
+    window.deleteSiteFromOpt = function() {
+      const c = selectedCustForOpt || activeCustomer;
+      const s = selectedSiteForOpt || (activeCustomer.sites.find(x => x.siteId === activeSiteId));
+      if (!c || !s) return;
+
+      if (confirm(`શું તમે સાઇટ "${s.siteName}" ને ડીલીટ કરવા માંગો છો?`)) {
+        c.sites = c.sites.filter(x => x.siteId !== s.siteId);
+        if (allCustomerBills[c.id]) delete allCustomerBills[c.id][s.siteId];
+
+        if (c.sites.length > 0) {
+          activeSiteId = c.sites[0].siteId;
+        } else {
+          c.sites.push({ siteId: "s_1", siteName: "મુખ્ય સાઇટ", siteMalik: c.name, siteMobile: c.mobile, siteAddress: c.address });
+          activeSiteId = "s_1";
+        }
+
+        saveMasterData();
+        populateGlobalSiteDropdowns();
+        document.getElementById("siteOptionsModal").style.display = "none";
+        window.onGlobalSiteChange(`${activeCustomer.id}:::${activeSiteId}`);
+        alert("✅ સાઇટ ડીલીટ થઈ ગઈ!");
+      }
+    };
+
+    window.openNewSiteModalDirect = function() {
+      if (!activeCustomer) {
+        window.openCustomerManagerModal();
+        return;
+      }
+      isEditingSite = false;
+      document.getElementById("siteModalTitle").innerText = "➕ નવી સાઇટ ઉમેરો";
+      document.getElementById("siteOwnerNameLabel").innerText = "ગ્રાહક: " + activeCustomer.name;
+      document.getElementById("formSiteName").value = "";
+      document.getElementById("formSiteAddress").value = activeCustomer.address;
+      sitePhotoData = "";
+      document.getElementById("sitePhotoPreview").removeAttribute("src");
+      document.getElementById("sitePhotoPreview").style.display = "none";
+      document.getElementById("sitePhotoInput").value = "";
+      document.getElementById("siteFormModal").style.display = "flex";
+    };
+
+    window.saveSiteFormDirect = function() {
+      const siteName = document.getElementById("formSiteName").value.trim();
+      const siteAddress = document.getElementById("formSiteAddress").value.trim() || activeCustomer.address;
+
+      if (!siteName) { alert("કૃપા કરીને સાઇટનું નામ લખો."); return; }
+
+      if (isEditingSite && selectedSiteForOpt) {
+        selectedSiteForOpt.siteName = siteName;
+        selectedSiteForOpt.siteAddress = siteAddress;
+        selectedSiteForOpt.sitePhoto = sitePhotoData;
+        triggerAutoSaveToast("✅ સાઇટ વિગત અપડેટ થઈ!");
+      } else {
+        const newSId = "s_" + Date.now();
+        activeCustomer.sites.push({ siteId: newSId, siteName, siteMalik: activeCustomer.name, siteMobile: activeCustomer.mobile, siteAddress, sitePhoto: sitePhotoData });
+        activeSiteId = newSId;
+
+        if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
+        allCustomerBills[activeCustomer.id][newSId] = {
+          estimates: [{ name: itemNames[8], qty: "100", rate: rates[8] }],
+          works: [{ name: itemNames[0], qty: "0", rate: rates[0] }],
+          advances: [],
+          expenses: []
+        };
+        triggerAutoSaveToast("✅ નવી સાઇટ ઉમેરાઈ ગઈ!");
+      }
+
+      saveMasterData();
+      populateGlobalSiteDropdowns();
+      document.getElementById("siteFormModal").style.display = "none";
+      
+      window.loadActiveSiteBillUpadData();
+      window.loadActiveSiteKharchData();
+    };
+
+    /* ========================================================
+       1. ATTENDANCE MODULE
+       ======================================================== */
+    window.openAddHelperModal = function() {
+      isEditingHelper = false;
+      helperPhotoData = "";
+      document.getElementById("helperFormTitle").innerText = "➕ નવો કારીગર ઉમેરો";
+      document.getElementById("formHelperName").value = "";
+      document.getElementById("formHelperMobile").value = "";
+      document.getElementById("formHelperAddress").value = "";
+      document.getElementById("formHelperWage").value = "600";
+      document.getElementById("helperPhotoPreview").style.display = "none";
+      document.getElementById("helperPhotoInput").value = "";
+      document.getElementById("helperFormModal").style.display = "flex";
+    };
+
+    window.processHelperPhoto = function(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) { alert("કૃપા કરીને image ફાઇલ પસંદ કરો."); return; }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const image = new Image();
+        image.onload = function() {
+          const canvas = document.createElement("canvas");
+          const scale = Math.min(1, 500 / Math.max(image.width, image.height));
+          canvas.width = Math.round(image.width * scale);
+          canvas.height = Math.round(image.height * scale);
+          canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+          helperPhotoData = canvas.toDataURL("image/jpeg", 0.8);
+          const preview = document.getElementById("helperPhotoPreview");
+          preview.src = helperPhotoData;
+          preview.style.display = "block";
+        };
+        image.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    function compressPhotoFile(file, onComplete) {
+      if (!file) return;
+      if (!file.type.startsWith("image/")) { alert("કૃપા કરીને image ફાઇલ પસંદ કરો."); return; }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const image = new Image();
+        image.onload = function() {
+          const canvas = document.createElement("canvas");
+          const scale = Math.min(1, 600 / Math.max(image.width, image.height));
+          canvas.width = Math.round(image.width * scale);
+          canvas.height = Math.round(image.height * scale);
+          canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+          onComplete(canvas.toDataURL("image/jpeg", 0.78));
+        };
+        image.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    window.processCustomerPhoto = function(event) {
+      const file = event.target.files && event.target.files[0];
+      compressPhotoFile(file, data => {
+        customerPhotoData = data;
+        const preview = document.getElementById("customerPhotoPreview");
+        preview.src = data;
+        preview.style.display = "block";
+      });
+    };
+
+    window.processSitePhoto = function(event) {
+      const file = event.target.files && event.target.files[0];
+      compressPhotoFile(file, data => {
+        sitePhotoData = data;
+        const preview = document.getElementById("sitePhotoPreview");
+        preview.src = data;
+        preview.style.display = "block";
+      });
+    };
+
+    window.saveHelperFormData = function() {
+      const name = document.getElementById("formHelperName").value.trim();
+      const mobile = document.getElementById("formHelperMobile").value.trim() || "N/A";
+      const address = document.getElementById("formHelperAddress").value.trim();
+      const wage = parseFloat(document.getElementById("formHelperWage").value) || 600;
+
+      if (!name) { alert("કૃપા કરીને કારીગરનું નામ લખો."); return; }
+
+      if (isEditingHelper && selectedForOptions) {
+        if (!confirm("કારીગરની હાલની વિગતો બદલવી છે?")) return;
+        selectedForOptions.name = name;
+        selectedForOptions.mobile = mobile;
+        selectedForOptions.address = address;
+        selectedForOptions.wage = wage;
+        selectedForOptions.photo = helperPhotoData;
+      } else {
+        helpersList.push({ id: "h_" + Date.now(), name, mobile, address, wage, photo: helperPhotoData, isActive: true });
+      }
+
+      saveMasterData();
+      document.getElementById("helperFormModal").style.display = "none";
+      window.renderHelperListUI();
+    };
+
+    window.renderHelperListUI = function() {
+      const container = document.getElementById("helpersListContainer");
+      const searchTxt = (document.getElementById("searchHelperInput")?.value || "").toLowerCase();
+      container.innerHTML = "";
+
+      const filtered = helpersList.filter(h => h.name.toLowerCase().includes(searchTxt) || h.mobile.includes(searchTxt));
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="padding:18px; text-align:center; color:#64748b; font-weight:700;">હજુ કોઈ કારીગર ઉમેર્યો નથી. ઉપરના ➕ બટનથી ઉમેરો.</div>';
+        return;
+      }
+
+      filtered.forEach(h => {
+        const card = document.createElement("div");
+        card.className = "h-card" + (h.isActive ? "" : " inactive");
+        card.innerHTML = `
+          <div class="h-card-main">
+            <img class="h-photo" alt="${h.name}" src="${h.photo || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2232%22 fill=%22%23ffedd5%22/%3E%3Ctext x=%2232%22 y=%2242%22 text-anchor=%22middle%22 font-size=%2232%22%3E👷%3C/text%3E%3C/svg%3E'}">
+            <div>
+              <div class="h-title-name">${h.name}</div>
+              <div class="h-phone">📞 ${h.mobile || 'N/A'}</div>
+              <div class="h-address">🏠 ${h.address || 'સરનામું ઉમેર્યું નથી'}</div>
+              <span class="tag-badge ${h.isActive ? 'tag-act' : 'tag-inact'}">
+                ${h.isActive ? 'સક્રિય' : 'નિષ્ક્રિય'}
+              </span>
+            </div>
+          </div>
+          <div>
+            <div class="h-wage-txt">₹${h.wage}</div>
+            <div style="font-size:10px; color:#64748b; text-align:right;">પ્રતિ દિવસ</div>
+          </div>
+        `;
+
+        setupLongPress(card, () => {
+          selectedForOptions = h;
+          window.openHelperOptionsMenu(h);
+        });
+
+        card.addEventListener("click", () => {
+          if (!h.isActive) {
+            alert("⚠️ આ કારીગર નિષ્ક્રિય છે! સક્રિય કરવા માટે તેના પર Long Press કરો.");
+            return;
+          }
+          window.openCalendarForHelper(h);
+        });
+
+        container.appendChild(card);
+      });
+    };
+
+    window.openHelperOptionsMenu = function(helper) {
+      selectedForOptions = helper;
+      document.getElementById("optHelperTitle").innerText = helper.name;
+      document.getElementById("btnToggleAct").innerText = helper.isActive ? "🛑 2. નિષ્ક્રિય કરો (Inactive)" : "✅ 2. સક્રિય કરો (Active)";
+      document.getElementById("optionsModal").style.display = "flex";
+    };
+
+    window.closeOptionsMenu = function(e) {
+      if (e.target.id === "optionsModal") document.getElementById("optionsModal").style.display = "none";
+    };
+
+    window.openEditHelperModal = function() {
+      if (!selectedForOptions) return;
+      document.getElementById("optionsModal").style.display = "none";
+      isEditingHelper = true;
+      document.getElementById("helperFormTitle").innerText = "✏️ કારીગર વિગત સુધારો";
+      document.getElementById("formHelperName").value = selectedForOptions.name;
+      document.getElementById("formHelperMobile").value = selectedForOptions.mobile !== "N/A" ? selectedForOptions.mobile : "";
+      document.getElementById("formHelperAddress").value = selectedForOptions.address || "";
+      document.getElementById("formHelperWage").value = selectedForOptions.wage;
+      helperPhotoData = selectedForOptions.photo || "";
+      document.getElementById("helperPhotoPreview").src = helperPhotoData;
+      document.getElementById("helperPhotoPreview").style.display = helperPhotoData ? "block" : "none";
+      document.getElementById("helperPhotoInput").value = "";
+      document.getElementById("helperFormModal").style.display = "flex";
+    };
+
+    window.actionToggleStatus = function() {
+      if (!selectedForOptions) return;
+      selectedForOptions.isActive = !selectedForOptions.isActive;
+      saveMasterData();
+      document.getElementById("optionsModal").style.display = "none";
+      alert(selectedForOptions.isActive ? `✅ ${selectedForOptions.name} સક્રિય થયો!` : `🛑 ${selectedForOptions.name} નિષ્ક્રિય થયો!`);
+      window.renderHelperListUI();
+    };
+
+    window.actionDeleteHelper = function() {
+      if (!selectedForOptions) return;
+      if (confirm(`શું તમે ખરેખર ${selectedForOptions.name} ને ડીલીટ કરવા માંગો છો?`)) {
+        helpersList = helpersList.filter(h => h.id !== selectedForOptions.id);
+        delete allAttendanceData[selectedForOptions.id];
+        saveMasterData();
+        document.getElementById("optionsModal").style.display = "none";
+        window.renderHelperListUI();
+      }
+    };
+
+    function populateReportDialogs() {
+      const ids = ["shStartMonth", "shEndMonth"];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        el.innerHTML = "";
+        gujMonths.forEach((m, idx) => {
+          const opt = document.createElement("option");
+          opt.value = idx;
+          opt.innerText = `${m} ${curYear}`;
+          if (idx === curMonth) opt.selected = true;
+          el.appendChild(opt);
+        });
+      });
+
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const firstDayStr = `${curYear}-${String(curMonth + 1).padStart(2, '0')}-01`;
+      document.getElementById("prFromDate").value = firstDayStr;
+      document.getElementById("prToDate").value = todayStr;
+      document.getElementById("shFromDate").value = firstDayStr;
+      document.getElementById("shToDate").value = todayStr;
+    }
+
+    window.openPrintOptionsModal = function() {
+      document.getElementById("optionsModal").style.display = "none";
+      populateReportDialogs();
+      document.getElementById("printChoiceModal").style.display = "flex";
+    };
+
+    window.printReportOption = function(opt) {
+      if (!selectedForOptions) return;
+      document.getElementById("printChoiceModal").style.display = "none";
+
+      if (opt === 1) {
+        generatePrintableReport(selectedForOptions, 'month', { m: curMonth, y: curYear });
+      } else if (opt === 2) {
+        generatePrintableReport(selectedForOptions, 'all', {});
+      } else if (opt === 3) {
+        const fromD = document.getElementById("prFromDate").value;
+        const toD = document.getElementById("prToDate").value;
+        if (!fromD || !toD) { alert("કૃપા કરીને બંને તારીખ પસંદ કરો."); return; }
+        if (fromD > toD) { alert("શરૂઆતની તારીખ અંતિમ તારીખથી પહેલાં હોવી જોઈએ."); return; }
+        generatePrintableReport(selectedForOptions, 'dateRange', { from: fromD, to: toD });
+      }
+    };
+
+    function generatePrintableReport(helper, mode, params) {
+      const att = allAttendanceData[helper.id] || {};
+      let p = 0, hd = 0, a = 0, ot = 0, upad = 0;
+      let rowsHtml = "";
+      let title = "";
+
+      if (mode === 'month') {
+        title = `${gujMonths[params.m]} ${params.y}`;
+        for (let d = 1; d <= 31; d++) {
+          const k = `${params.y}-${params.m}-${d}`;
+          if (att[k] && att[k].status !== "NONE") {
+            const r = att[k];
+            if (r.status === "P") p++;
+            if (r.status === "HD") hd++;
+            if (r.status === "A") a++;
+            ot += (r.ot || 0);
+            upad += (r.upad || 0);
+            let stTxt = r.status === "P" ? "હાજર" : (r.status === "HD" ? "અડધો" : "ગેરહાજર");
+            rowsHtml += `<tr><td>${d} ${gujMonths[params.m]} ${params.y}</td><td>${stTxt}</td><td>${r.ot || 0}</td><td>₹ ${r.upad || 0}</td><td>${r.note || '-'}</td></tr>`;
+          }
+        }
+      } else if (mode === 'dateRange') {
+        title = `તારીખ: ${params.from} થી ${params.to}`;
+        for (let k in att) {
+          const parts = k.split("-");
+          if (parts.length !== 3) continue;
+          const recDateKey = `${parts[0]}-${String(parseInt(parts[1], 10) + 1).padStart(2, "0")}-${String(parseInt(parts[2], 10)).padStart(2, "0")}`;
+          if (recDateKey >= params.from && recDateKey <= params.to && att[k].status !== "NONE") {
+            const r = att[k];
+            if (r.status === "P") p++;
+            if (r.status === "HD") hd++;
+            if (r.status === "A") a++;
+            ot += (r.ot || 0);
+            upad += (r.upad || 0);
+            let stTxt = r.status === "P" ? "હાજર" : (r.status === "HD" ? "અડધો" : "ગેરહાજર");
+            rowsHtml += `<tr><td>${parts[2]} ${gujMonths[parseInt(parts[1])]} ${parts[0]}</td><td>${stTxt}</td><td>${r.ot || 0}</td><td>₹ ${r.upad || 0}</td><td>${r.note || '-'}</td></tr>`;
+          }
+        }
+      } else if (mode === 'all') {
+        title = "બધા મહિના (All Month)";
+        const monthTotals = {};
+
+        Object.entries(att).forEach(([key, record]) => {
+          const parts = key.split("-");
+          if (parts.length !== 3) return;
+          const year = parseInt(parts[0], 10);
+          const month = parseInt(parts[1], 10);
+          if (!Number.isFinite(year) || month < 0 || month > 11) return;
+          if (record.status === "NONE" && !record.ot && !record.upad && !record.note) return;
+
+          const monthKey = `${year}-${String(month).padStart(2, "0")}`;
+          if (!monthTotals[monthKey]) {
+            monthTotals[monthKey] = { year, month, p: 0, hd: 0, a: 0, ot: 0, upad: 0 };
+          }
+          const total = monthTotals[monthKey];
+          if (record.status === "P") total.p++;
+          if (record.status === "HD") total.hd++;
+          if (record.status === "A") total.a++;
+          total.ot += window.num(record.ot);
+          total.upad += window.num(record.upad);
+        });
+
+        Object.values(monthTotals).sort((x, y) => x.year - y.year || x.month - y.month).forEach(total => {
+          const monthDays = total.p + (total.hd * 0.5);
+          const monthEarned = (total.p * helper.wage) + (total.hd * (helper.wage / 2)) + (total.ot * (helper.wage / 8));
+          const monthBalance = monthEarned - total.upad;
+          p += total.p; hd += total.hd; a += total.a; ot += total.ot; upad += total.upad;
+          rowsHtml += `<tr><td><b>${gujMonths[total.month]} ${total.year}</b></td><td>${monthDays} દિવસ</td><td>₹ ${window.money(monthEarned)}</td><td>₹ ${window.money(total.upad)}</td><td><b>₹ ${window.money(monthBalance)}</b></td></tr>`;
+        });
+      }
+
+      const days = p + (hd * 0.5);
+      const baseWage = (p * helper.wage) + (hd * (helper.wage / 2));
+      const otPay = ot * (helper.wage / 8);
+      const grandTotal = (baseWage + otPay) - upad;
+
+      const isRangeTable = (mode === 'all');
+      const win = window.open('', '_blank');
+      if (!win) { alert("પ્રિન્ટ વિન્ડો ખોલી શકાઈ નથી. કૃપા કરીને popupની મંજૂરી આપો."); return; }
+
+      const photoHtml = helper.photo
+        ? `<img class="helper-photo" src="${helper.photo}" alt="${helper.name}">`
+        : '<div class="helper-photo photo-placeholder">👷</div>';
+      let detailTable = "";
+
+      if (mode === 'month') {
+        const monthDays = new Date(params.y, params.m + 1, 0).getDate();
+        const makeDayRows = (from, to) => {
+          let html = "";
+          for (let d = from; d <= to; d++) {
+            const rec = att[`${params.y}-${params.m}-${d}`] || {};
+            const statusText = rec.status === "P" ? "હાજર" : rec.status === "HD" ? "અડધો" : rec.status === "A" ? "ગેરહાજર" : "";
+            html += `<tr><td class="day">${d}</td><td>${statusText}</td><td>${window.num(rec.upad) ? "₹ " + window.money(rec.upad) : ""}</td><td>${window.num(rec.ot) ? window.num(rec.ot) : ""}</td><td></td></tr>`;
+          }
+          return html;
+        };
+        const tableHalf = (from, to) => `
+          <table class="days-table"><thead><tr><th>તારીખ</th><th>હાજરી</th><th>ઉપાડ ₹</th><th>OT</th><th>સહી</th></tr></thead>
+          <tbody>${makeDayRows(from, to)}</tbody></table>`;
+        detailTable = `<section class="daily-grid">${tableHalf(1, Math.min(16, monthDays))}${tableHalf(17, monthDays)}</section>`;
+      } else {
+        detailTable = `
+          <table class="days-table range-table">
+            <thead><tr>${isRangeTable ? '<th>મહિનો</th><th>કુલ હાજરી</th><th>કમાયેલ મજૂરી</th><th>કુલ ઉપાડ</th><th>બાકી</th>' : '<th>તારીખ</th><th>સ્થિતિ</th><th>OT કલાક</th><th>ઉપાડ ₹</th><th>નોંધ</th>'}</tr></thead>
+            <tbody>${rowsHtml || `<tr><td colspan="5">આ સમયગાળામાં કોઈ હાજરી એન્ટ્રી નથી</td></tr>`}</tbody>
+          </table>`;
+      }
+
+      const periodLabel = mode === 'month' ? `${gujMonths[params.m]} ${params.y}` : title;
+      const cardHtml = `
+        <main class="pay-card">
+          <h1>SHIV CONSTRUCTION</h1>
+          <div class="card-title">કારીગર પગાર કાર્ડ</div>
+          <section class="identity">
+            ${photoHtml}
+            <div class="identity-details">
+              <div><b>કારીગરનું નામ:</b> ${helper.name}</div>
+              <div><b>સરનામું:</b> ${helper.address || "—"}</div>
+              <div><b>મોબાઇલ:</b> ${helper.mobile || "—"} &nbsp; | &nbsp; <b>દૈનિક રોજ:</b> ₹ ${window.money(helper.wage)}</div>
+              <div><b>સમયગાળો:</b> ${periodLabel} &nbsp; | &nbsp; <b>કુલ હાજરી:</b> ${days} દિવસ</div>
+            </div>
+          </section>
+          <section class="summary">
+            <div class="summary-table">
+              <div><b>કુલ પગાર</b><strong>₹ ${window.money(baseWage + otPay)}</strong></div>
+              <div><b>કુલ ઉપાડ</b><strong>₹ ${window.money(upad)}</strong></div>
+              <div class="balance"><b>બાકી રકમ</b><strong>₹ ${window.money(grandTotal)}</strong></div>
+            </div>
+            <div class="signature">મેળવનારની સહી / અંગૂઠો</div>
+          </section>
+          <div class="counts">હાજર: ${p} દિવસ &nbsp; | &nbsp; અડધો: ${hd} દિવસ &nbsp; | &nbsp; ગેરહાજર: ${a} દિવસ &nbsp; | &nbsp; OT: ${ot} કલાક</div>
+          ${detailTable}
+          <div class="card-footer">કુલ પગાર = હાજરીની મજૂરી + OT &nbsp; · &nbsp; બાકી રકમ = કુલ પગાર − ઉપાડ</div>
+        </main>`;
+
+      win.document.write(`
+        <html><head><meta charset="UTF-8"><title>${helper.name} - ${title} પગાર કાર્ડ</title>
+        <style>
+          @page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;font-size:10px}
+          .pay-card{border:2px solid #1f2937;padding:12px;min-height:270mm;background:#fff}
+          h1{text-align:center;font-size:20px;letter-spacing:1px;margin:0;padding:6px;border-bottom:1px solid #111827}
+          .card-title{text-align:center;font-weight:bold;font-size:13px;letter-spacing:1px;margin:5px auto 10px;border:1px solid #111827;padding:4px;width:46%}
+          .identity{display:flex;align-items:center;gap:12px;font-size:11px;line-height:1.8;border-bottom:1px dotted #64748b;padding:4px 0}
+          .identity-details{flex:1}.identity-photo{flex-shrink:0}.helper-photo{width:76px;height:76px;object-fit:cover;border:1px solid #64748b;border-radius:6px}.photo-placeholder{display:flex;align-items:center;justify-content:center;background:#ffedd5;font-size:38px}
+          .summary{display:grid;grid-template-columns:1.3fr 1fr;gap:8px;margin:10px 0}
+          .summary-table{border:1px solid #1f2937;border-radius:7px;overflow:hidden}.summary-table>div{display:flex;justify-content:space-between;border-bottom:1px solid #64748b;padding:7px 9px;font-size:11px}
+          .summary-table>div:last-child{border-bottom:0}.summary-table .balance{font-size:13px;font-weight:bold;background:#fff7ed;color:#c2410c}
+          .signature{border:1px solid #1f2937;border-radius:7px;min-height:88px;display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:10px;font-weight:bold}
+          .counts{text-align:center;font-weight:bold;background:#f1f5f9;padding:6px;margin:8px 0}
+          .daily-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.days-table{width:100%;border-collapse:collapse;font-size:9px;margin:0;table-layout:fixed}
+          .days-table th,.days-table td{border:1px solid #475569;padding:4px 3px;text-align:center;min-height:18px;overflow-wrap:anywhere}
+          .days-table th{background:#e2e8f0;font-weight:bold}.days-table .day{width:10%;font-weight:bold}.range-table{margin-top:10px}.range-table td{text-align:left}
+          .card-footer{border-top:1px solid #94a3b8;margin-top:8px;padding-top:5px;text-align:center;font-size:9px;color:#475569}
+          @media print{.pay-card{min-height:270mm;break-inside:avoid}}
+        </style></head><body>${cardHtml}</body></html>`);
+      win.document.close();
+      win.focus();
+      win.print();
+    }
+
+    window.openShareOptionsModal = function() {
+      document.getElementById("optionsModal").style.display = "none";
+      populateReportDialogs();
+      document.getElementById("shareChoiceModal").style.display = "flex";
+    };
+
+    window.shareReportOption = function(opt) {
+      if (!selectedForOptions) return;
+      document.getElementById("shareChoiceModal").style.display = "none";
+
+      const h = selectedForOptions;
+      const att = allAttendanceData[h.id] || {};
+      let p = 0, hd = 0, a = 0, ot = 0, upad = 0;
+      let title = "";
+
+      if (opt === 1) {
+        title = `${gujMonths[curMonth]} ${curYear}`;
+        for (let d = 1; d <= 31; d++) {
+          const k = `${curYear}-${curMonth}-${d}`;
+          if (att[k] && att[k].status !== "NONE") {
+            const r = att[k];
+            if (r.status === "P") p++;
+            if (r.status === "HD") hd++;
+            if (r.status === "A") a++;
+            ot += (r.ot || 0);
+            upad += (r.upad || 0);
+          }
+        }
+      } else if (opt === 2) {
+        const fromD = document.getElementById("shFromDate").value;
+        const toD = document.getElementById("shToDate").value;
+        if (!fromD || !toD) { alert("કૃપા કરીને બંને તારીખ પસંદ કરો."); return; }
+        title = `${fromD} થી ${toD}`;
+        const fDate = new Date(fromD);
+        const tDate = new Date(toD);
+
+        for (let k in att) {
+          const parts = k.split("-");
+          const recDate = new Date(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2]));
+          if (recDate >= fDate && recDate <= tDate && att[k].status !== "NONE") {
+            const r = att[k];
+            if (r.status === "P") p++;
+            if (r.status === "HD") hd++;
+            if (r.status === "A") a++;
+            ot += (r.ot || 0);
+            upad += (r.upad || 0);
+          }
+        }
+      } else if (opt === 3) {
+        const sm = parseInt(document.getElementById("shStartMonth").value);
+        const em = parseInt(document.getElementById("shEndMonth").value);
+        const startM = Math.min(sm, em);
+        const endM = Math.max(sm, em);
+        title = (startM === endM) ? `${gujMonths[startM]} ${curYear}` : `${gujMonths[startM]} થી ${gujMonths[endM]} ${curYear}`;
+
+        for (let m = startM; m <= endM; m++) {
+          for (let d = 1; d <= 31; d++) {
+            const k = `${curYear}-${m}-${d}`;
+            if (att[k] && att[k].status !== "NONE") {
+              const r = att[k];
+              if (r.status === "P") p++;
+              if (r.status === "HD") hd++;
+              if (r.status === "A") a++;
+              ot += (r.ot || 0);
+              upad += (r.upad || 0);
+            }
+          }
+        }
+      }
+
+      const days = p + (hd * 0.5);
+      const baseWage = (p * h.wage) + (hd * (h.wage / 2));
+      const otPay = ot * (h.wage / 8);
+      const grandTotal = (baseWage + otPay) - upad;
+
+      let msg = `*🏗️ SHIV CONSTRUCTION - હાજરી પગાર સ્લિપ*%0A*કારીગર:* ${h.name}%0A*સમયગાળો:* ${title}%0A*દૈનિક રોજ:* ₹${h.wage}%0A--------------------------------%0A• હાજર દિવસ: ${p}%0A• અડધો દિવસ: ${hd}%0A• ગેરહાજર દિવસ: ${a}%0A• કુલ હાજરી: ${days} દિવસ%0A• OT કલાક: ${ot} કલાક (₹${Math.round(otPay)})%0A• કમાયેલ મજૂરી: ₹${Math.round(baseWage)}%0A• કુલ ઉપાડ: - ₹${upad}%0A--------------------------------%0A*• ચૂકવવાપાત્ર ચોખ્ખી બાકી રકમ: ₹${Math.round(grandTotal)}*%0A`;
+      window.open(h.mobile && h.mobile !== "N/A" ? `https://wa.me/91${h.mobile}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
+    };
+
+    window.openCalendarForHelper = function(helper) {
+      currentSelectedHelper = helper;
+      document.getElementById("dispCurHelperName").innerText = helper.name;
+      document.getElementById("dispCurWage").innerText = helper.wage;
+      
+      const now = new Date();
+      curYear = now.getFullYear();
+      curMonth = now.getMonth();
+
+      window.navToScreen('screenCalendar');
+      window.setFilter('month');
+    };
+
+    function getHelperAtt() {
+      if (!allAttendanceData[currentSelectedHelper.id]) allAttendanceData[currentSelectedHelper.id] = {};
+      return allAttendanceData[currentSelectedHelper.id];
+    }
+
+    window.renderCal = function() {
+      document.getElementById("calTitle").innerText = gujMonths[curMonth] + " " + curYear;
+      const grid = document.getElementById("calendarGrid");
+      grid.innerHTML = "";
+
+      const helperAtt = getHelperAtt();
+      const fDay = new Date(curYear, curMonth, 1).getDay();
+      const tDays = new Date(curYear, curMonth + 1, 0).getDate();
+
+      const today = new Date();
+      const isCurrentRealMonth = (today.getFullYear() === curYear && today.getMonth() === curMonth);
+      const todayDateNumber = today.getDate();
+
+      for (let i = 0; i < fDay; i++) {
+        const blk = document.createElement("div");
+        blk.className = "date-cell empty";
+        grid.appendChild(blk);
+      }
+
+      for (let d = 1; d <= tDays; d++) {
+        const k = curYear + "-" + curMonth + "-" + d;
+        const r = helperAtt[k] || { status: "NONE", ot: 0, upad: 0, note: "" };
+
+        const c = document.createElement("div");
+        c.className = "date-cell st-" + r.status;
+
+        if (isCurrentRealMonth && d === todayDateNumber) {
+          c.classList.add("today-circle");
+        }
+
+        let b = "";
+        if (r.ot > 0) b += '<span class="b-ot">OT</span>';
+        if (r.upad > 0) b += '<span class="b-upad">₹</span>';
+        if (r.note) b += '<span class="b-nondh">📝</span>';
+
+        c.innerHTML = '<div class="d-number">' + d + '</div><div class="badges-row">' + b + '</div>';
+
+        setupLongPress(c, () => window.showDateRealTimeStatus(d, r));
+
+        c.onclick = function() {
+          selKey = k;
+          document.getElementById("modalDateTitle").innerText = `${d} ${gujMonths[curMonth]} ${curYear}`;
+          document.getElementById("markModal").style.display = "flex";
+        };
+
+        grid.appendChild(c);
+      }
+    };
+
+    window.showDateRealTimeStatus = function(d, record) {
+      const dayNames = ["રવિવાર", "સોમવાર", "મંગળવાર", "બુધવાર", "ગુરુવાર", "શુક્રવાર", "શનિવાર"];
+      const dayOfWeek = new Date(curYear, curMonth, d).getDay();
+
+      document.getElementById("popDtTitle").innerText = `તારીખ: ${d} ${gujMonths[curMonth]} ${curYear} (${dayNames[dayOfWeek]})`;
+
+      let stText = "૨૬ (None)";
+      if (record.status === "P") stText = "હાજર (Full Day)";
+      else if (record.status === "HD") stText = "અડધો દિવસ (Half Day)";
+      else if (record.status === "A") stText = "ગેરહાજર (Absent)";
+
+      document.getElementById("popDtStatus").innerText = stText;
+      document.getElementById("popDtOt").innerText = (record.ot > 0) ? `${record.ot} કલાક` : "0 કલાક";
+      document.getElementById("popDtUpad").innerText = (record.upad > 0) ? `₹ ${record.upad}` : "₹ 0";
+      document.getElementById("popDtNondh").innerText = (record.note && record.note.trim()) ? record.note : "કોઈ નોંધ નથી";
+
+      document.getElementById("dateDetailPopupModal").style.display = "flex";
+    };
+
+    window.setStatus = function(st) {
+      if (!selKey) return;
+      const helperAtt = getHelperAtt();
+      const previous = helperAtt[selKey];
+      if (previous && !confirm("આ તારીખની હાજરી પહેલેથી સેવ છે. તેને બદલવી છે?")) return;
+      if (!helperAtt[selKey]) helperAtt[selKey] = { status: "NONE", ot: 0, upad: 0, note: "" };
+      helperAtt[selKey].status = st;
+      saveMasterData();
+      window.renderCal();
+      window.updateCalc();
+      document.getElementById("markModal").style.display = "none";
+    };
+
+    window.openEditorFor = function(type) {
+      if (!selKey) return;
+      currentEditingType = type;
+      document.getElementById("markModal").style.display = "none";
+
+      const helperAtt = getHelperAtt();
+      editingExistingAttendance = Boolean(helperAtt[selKey]);
+      const rec = helperAtt[selKey] || { ot: 0, upad: 0, note: "" };
+      const field = document.getElementById("img4Field");
+      const title = document.getElementById("img4Title");
+
+      if (type === 'UPAD') {
+        title.innerText = "💵 ઉપાડ રકમ (₹) લખો";
+        field.type = "number";
+        field.setAttribute("inputmode", "decimal");
+        field.placeholder = "રકમ ₹ (e.g. 500)";
+        field.value = rec.upad > 0 ? rec.upad : "";
+      } else if (type === 'OT') {
+        title.innerText = "⏱️ ઓવરટાઇમ (OT) કલાક લખો";
+        field.type = "number";
+        field.setAttribute("inputmode", "decimal");
+        field.placeholder = "કલાક (e.g. 2)";
+        field.value = rec.ot > 0 ? rec.ot : "";
+      } else if (type === 'NOTE') {
+        title.innerText = "📝 નોંધ (Nondh) લખો";
+        field.type = "text";
+        field.setAttribute("inputmode", "text");
+        field.placeholder = "કામની કે સાઇટની નોંધ લખો...";
+        field.value = rec.note || "";
+      }
+
+      document.getElementById("customEditorModal").style.display = "flex";
+      setTimeout(() => { field.focus(); }, 150);
+    };
+
+    window.closeEditorModal = function() {
+      document.getElementById("customEditorModal").style.display = "none";
+      currentEditingType = null;
+      editingExistingAttendance = false;
+    };
+
+    window.closeEditorOnBg = function(e) {
+      if (e.target.id === "customEditorModal") window.closeEditorModal();
+    };
+
+    window.saveEditorModalValue = function() {
+      if (!selKey || !currentEditingType) return;
+      if (editingExistingAttendance && !confirm("આ તારીખની entry પહેલેથી સેવ છે. ફેરફાર સેવ કરવો છે?")) return;
+      const helperAtt = getHelperAtt();
+      if (!helperAtt[selKey]) helperAtt[selKey] = { status: "NONE", ot: 0, upad: 0, note: "" };
+
+      const val = document.getElementById("img4Field").value.trim();
+
+      if (currentEditingType === 'UPAD') {
+        helperAtt[selKey].upad = parseFloat(val) || 0;
+      } else if (currentEditingType === 'OT') {
+        helperAtt[selKey].ot = parseFloat(val) || 0;
+      } else if (currentEditingType === 'NOTE') {
+        helperAtt[selKey].note = val;
+      }
+
+      window.closeEditorModal();
+      saveMasterData();
+      window.renderCal();
+      window.updateCalc();
+    };
+
+    window.setFilter = function(mode) {
+      currentFilterMode = mode;
+      document.querySelectorAll(".tab-btn-img2").forEach(b => b.classList.remove("active"));
+      document.getElementById("customDateBar").style.display = "none";
+
+      if (mode === 'month') {
+        document.getElementById("tabCurMonth").classList.add("active");
+        document.getElementById("sumPeriodLabel").innerText = `${gujMonths[curMonth]} ${curYear}`;
+      } else if (mode === 'all') {
+        document.getElementById("tabAllMonths").classList.add("active");
+        document.getElementById("sumPeriodLabel").innerText = "બધા મહિના";
+      } else if (mode === 'custom') {
+        document.getElementById("tabCustom").classList.add("active");
+        document.getElementById("customDateBar").style.display = "flex";
+        document.getElementById("sumPeriodLabel").innerText = "કસ્ટમ તારીખ";
+      }
+      window.saveAndRefresh();
+    };
+
+    window.saveAndRefresh = function() {
+      saveMasterData();
+      window.renderCal();
+      window.updateCalc();
+    };
+
+    window.updateCalc = function() {
+      const helperAtt = getHelperAtt();
+      const dailyWage = currentSelectedHelper.wage;
+      const otRate = dailyWage / 8;
+      let p = 0, hd = 0, a = 0, ot = 0, upad = 0;
+
+      const fromVal = document.getElementById("custFrom").value;
+      const toVal = document.getElementById("custTo").value;
+      const fDate = fromVal ? new Date(fromVal) : null;
+      const tDate = toVal ? new Date(toVal) : null;
+
+      for (let k in helperAtt) {
+        const parts = k.split("-");
+        const y = parseInt(parts[0]), m = parseInt(parts[1]), d = parseInt(parts[2]);
+        const recordDate = new Date(y, m, d);
+
+        let include = false;
+        if (currentFilterMode === 'month') {
+          if (y === curYear && m === curMonth) include = true;
+        } else if (currentFilterMode === 'all') {
+          include = true;
+        } else if (currentFilterMode === 'custom') {
+          if (fDate && tDate) include = (recordDate >= fDate && recordDate <= tDate);
+          else include = true;
+        }
+
+        if (include) {
+          const it = helperAtt[k];
+          if (it.status === "P") p++;
+          if (it.status === "HD") hd++;
+          if (it.status === "A") a++;
+          ot += (it.ot || 0);
+          upad += (it.upad || 0);
+        }
+      }
+
+      const days = p + (hd * 0.5);
+      const base = (p * dailyWage) + (hd * (dailyWage / 2));
+      const otPay = ot * otRate;
+      const grand = (base + otPay) - upad;
+
+      document.getElementById("cntP").innerText = p;
+      document.getElementById("cntHD").innerText = hd;
+      document.getElementById("cntA").innerText = a;
+      document.getElementById("totDays").innerText = days + " દિવસ";
+      document.getElementById("baseWage").innerText = "₹" + Math.round(base);
+      document.getElementById("totOtHrs").innerText = ot;
+      document.getElementById("totOtPay").innerText = "₹" + Math.round(otPay);
+      document.getElementById("totUpad").innerText = "- ₹" + upad;
+      document.getElementById("grandTotal").innerText = "₹" + Math.round(grand);
+    };
+
+    window.prevMonth = function() {
+      curMonth--;
+      if (curMonth < 0) { curMonth = 11; curYear--; }
+      if (currentFilterMode === 'month') {
+        document.getElementById("sumPeriodLabel").innerText = `${gujMonths[curMonth]} ${curYear}`;
+      }
+      window.saveAndRefresh();
+    };
+
+    window.nextMonth = function() {
+      curMonth++;
+      if (curMonth > 11) { curMonth = 0; curYear++; }
+      if (currentFilterMode === 'month') {
+        document.getElementById("sumPeriodLabel").innerText = `${gujMonths[curMonth]} ${curYear}`;
+      }
+      window.saveAndRefresh();
+    };
+
+    window.printSingleMonthDirect = function() {
+      generatePrintableReport(currentSelectedHelper, 'month', { m: curMonth, y: curYear });
+    };
+
+    /* ========================================================
+       2, 3 & 4: DIRECT SECTIONS & ITEM PICKER MODAL
+       ======================================================== */
+    window.openEstimateDirect = function() {
+      populateGlobalSiteDropdowns();
+      window.navToScreen('screenEstimateSheet');
+      window.loadActiveSiteEstimateData();
+    };
+
+    window.openBillUpadDirect = function() {
+      populateGlobalSiteDropdowns();
+      window.navToScreen('screenBillUpadSiteDetail');
+      window.switchBillUpadInnerTab('BILL');
+      window.loadActiveSiteBillUpadData();
+    };
+
+    window.openKharchDirect = function() {
+      populateGlobalSiteDropdowns();
+      window.navToScreen('screenKharchSiteDetail');
+      window.loadActiveSiteKharchData();
+    };
+
+    function getSiteBillCalculation(cId, sId) {
+      const siteData = (allCustomerBills[cId] && allCustomerBills[cId][sId]) || { works: [], advances: [], estimates: [], expenses: [] };
+      let workTotal = 0;
+      (siteData.works || []).forEach(w => workTotal += (window.num(w.qty) * window.num(w.rate)));
+      if (workTotal === 0 && (siteData.estimates || []).length > 0) {
+        (siteData.estimates || []).forEach(e => workTotal += (window.num(e.qty) * window.num(e.rate)));
+      }
+      let upadTotal = 0;
+      (siteData.advances || []).forEach(a => upadTotal += window.num(a.amt));
+      const balance = workTotal - upadTotal;
+      return { workTotal, upadTotal, balance, siteData };
+    }
+
+    function getItemDefaultRate(name) {
+      const idx = itemNames.findIndex(it => it.toLowerCase() === (name || "").toLowerCase());
+      if (idx !== -1) return rates[idx];
+      return null;
+    }
+
+    window.openItemPickerModal = function(inputEl, rateEl, type) {
+      currentItemPickerInput = inputEl;
+      currentItemPickerRateInput = rateEl;
+      currentItemPickerType = type;
+
+      document.getElementById("itemSearchPickerInput").value = "";
+      window.filterItemPickerList();
+      document.getElementById("itemPickerModal").style.display = "flex";
+      setTimeout(() => document.getElementById("itemSearchPickerInput").focus(), 150);
+    };
+
+    window.filterItemPickerList = function() {
+      const container = document.getElementById("itemPickerListContainer");
+      const searchTxt = (document.getElementById("itemSearchPickerInput").value || "").toLowerCase();
+      container.innerHTML = "";
+
+      itemNames.forEach((name, idx) => {
+        if (name.toLowerCase().includes(searchTxt)) {
+          const row = document.createElement("div");
+          row.className = "item-picker-row";
+          row.innerHTML = `<span>${name}</span><span class="ip-rate">₹ ${rates[idx]}</span>`;
+          row.onclick = () => {
+            if (currentItemPickerInput) currentItemPickerInput.value = name;
+            if (currentItemPickerRateInput) currentItemPickerRateInput.value = rates[idx];
+            document.getElementById("itemPickerModal").style.display = "none";
+
+            if (currentItemPickerType === 'EST') {
+              window.calcEstimateSheet();
+              window.saveEstimateSheetData();
+            } else if (currentItemPickerType === 'BILL') {
+              const billRow = currentItemPickerInput?.closest("tr");
+              window.calcSiteBillUpadTotals();
+              if (billRow?.dataset.isExisting === "true") {
+                currentItemPickerInput.dispatchEvent(new Event("change", { bubbles: true }));
+              } else {
+                window.saveActiveSiteBillUpadData();
+              }
+            }
+          };
+          container.appendChild(row);
+        }
+      });
+    };
+
+    // ESTIMATE SHEET
+    window.loadActiveSiteEstimateData = function() {
+      if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
+      if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
+        allCustomerBills[activeCustomer.id][activeSiteId] = {
+          estimates: [{ name: itemNames[8], qty: "200", rate: rates[8] }],
+          works: [{ name: itemNames[0], qty: "200", rate: rates[0] }],
+          advances: [],
+          expenses: []
+        };
+      }
+      const sObj = activeCustomer.sites.find(s => s.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: activeCustomer.address };
+      document.getElementById("dispEstSubTitle").innerText = `${activeCustomer.name} (${sObj.siteName})`;
+
+      const sData = allCustomerBills[activeCustomer.id][activeSiteId];
+      const tb = document.getElementById("estimateTableRows");
+      tb.innerHTML = "";
+      (sData.estimates || []).forEach(e => {
+        const iName = e.name || itemNames[e.id] || "વોલ ટાઇલ્સ (sq)";
+        window.addEstimateItemRow(iName, e.qty, e.rate);
+      });
+      window.calcEstimateSheet();
+    };
+
+    window.addEstimateItemRow = function(name = "વોલ ટાઇલ્સ (sq)", qty = "", customRate = null) {
+      let tb = document.getElementById("estimateTableRows");
+      let tr = document.createElement("tr");
+      let n = tb.children.length + 1;
+      let rVal = customRate !== null ? customRate : (getItemDefaultRate(name) || 18);
+
+      tr.innerHTML = `
+        <td class="num">${n}</td>
+        <td>
+          <div class="work-item-wrapper">
+            <input class="est-ws-input col-select-work-input" placeholder="કામનું નામ લખો" value="${name}">
+            <button type="button" class="btn-choose-item">લિસ્ટ ▾</button>
+          </div>
+        </td>
+        <td><input class="est-q col-q" inputmode="decimal" placeholder="માપ" value="${qty}"></td>
+        <td><input class="est-r col-r" inputmode="decimal" value="${rVal}"></td>
+        <td class="amt est-amt">₹ 0.00</td>
+        <td class="del"><button onclick="this.closest('tr').remove();window.renumEstRows();window.calcEstimateSheet();window.saveEstimateSheetData()">🗑️</button></td>
+      `;
+
+      tb.appendChild(tr);
+      let s = tr.querySelector(".est-ws-input");
+      let btnPick = tr.querySelector(".btn-choose-item");
+      let r = tr.querySelector(".est-r");
+
+      btnPick.onclick = () => window.openItemPickerModal(s, r, 'EST');
+
+      s.onchange = () => { 
+        const matchedRate = getItemDefaultRate(s.value);
+        if (matchedRate !== null) r.value = matchedRate;
+        window.calcEstimateSheet(); 
+        window.saveEstimateSheetData(); 
+      };
+      s.oninput = () => { window.saveEstimateSheetData(); };
+      tr.querySelector(".est-q").oninput = () => { window.calcEstimateSheet(); window.saveEstimateSheetData(); };
+      r.oninput = () => { window.calcEstimateSheet(); window.saveEstimateSheetData(); };
+      window.calcEstimateSheet();
+    };
+
+    window.renumEstRows = function() {
+      document.querySelectorAll("#estimateTableRows tr").forEach((r, i) => r.querySelector(".num").innerText = i + 1);
+    };
+
+    window.calcEstimateSheet = function() {
+      let t = 0;
+      document.querySelectorAll("#estimateTableRows tr").forEach(r => {
+        let a = window.num(r.querySelector(".est-q").value) * window.num(r.querySelector(".est-r").value);
+        r.querySelector(".est-amt").innerText = "₹ " + window.money(a);
+        t += a;
+      });
+      document.getElementById("estSheetGrandTotal").innerText = window.money(t);
+    };
+
+    window.saveEstimateSheetData = function() {
+      if (!activeCustomer || !activeSiteId) return;
+      const estimates = [];
+      document.querySelectorAll("#estimateTableRows tr").forEach(r => {
+        estimates.push({ 
+          name: r.querySelector(".est-ws-input").value.trim(), 
+          qty: r.querySelector(".est-q").value, 
+          rate: r.querySelector(".est-r").value 
+        });
+      });
+      if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
+      if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
+        allCustomerBills[activeCustomer.id][activeSiteId] = { works: [], advances: [], expenses: [] };
+      }
+      allCustomerBills[activeCustomer.id][activeSiteId].estimates = estimates;
+      saveMasterData();
+    };
+
+    // PAKKU BILL & UPAD
+    window.switchBillUpadInnerTab = function(tab) {
+      if (tab === 'BILL') {
+        document.getElementById("paneBillWorks").style.display = "flex";
+        document.getElementById("paneUpadAdvances").style.display = "none";
+        document.getElementById("subTabBtnBill").classList.add("active");
+        document.getElementById("subTabBtnUpad").classList.remove("active");
+      } else {
+        document.getElementById("paneBillWorks").style.display = "none";
+        document.getElementById("paneUpadAdvances").style.display = "flex";
+        document.getElementById("subTabBtnBill").classList.remove("active");
+        document.getElementById("subTabBtnUpad").classList.add("active");
+      }
+    };
+
+    window.loadActiveSiteBillUpadData = function() {
+      if (!activeCustomer || !activeSiteId) {
+        document.getElementById("dispBillSubTitle").innerText = "ગ્રાહક ઉમેરો અથવા સાઇટ પસંદ કરો";
+        document.getElementById("dispBillSitePhoto").style.display = "none";
+        document.getElementById("billWorkRows").innerHTML = "";
+        document.getElementById("billAdvanceRows").innerHTML = "";
+        window.calcSiteBillUpadTotals();
+        return;
+      }
+      if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
+      if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
+        allCustomerBills[activeCustomer.id][activeSiteId] = {
+          works: [{ name: itemNames[0], qty: "200", rate: rates[0] }],
+          advances: [],
+          estimates: [{ name: itemNames[8], qty: "200", rate: rates[8] }],
+          expenses: []
+        };
+      }
+      const sObj = activeCustomer.sites.find(s => s.siteId === activeSiteId) || { siteName: "સાઇટ" };
+      document.getElementById("dispBillSubTitle").innerText = `${activeCustomer.name} (${sObj.siteName})`;
+      const billSitePhoto = document.getElementById("dispBillSitePhoto");
+      billSitePhoto.src = sObj.sitePhoto || "";
+      billSitePhoto.style.display = sObj.sitePhoto ? "block" : "none";
+
+      const sData = allCustomerBills[activeCustomer.id][activeSiteId];
+      const wTb = document.getElementById("billWorkRows");
+      wTb.innerHTML = "";
+      (sData.works || []).forEach(w => {
+        const wName = w.name || itemNames[w.id] || "ફ્રેમ (rf)";
+        window.addBillWorkItem(wName, w.qty, w.rate, true);
+      });
+
+      const aTb = document.getElementById("billAdvanceRows");
+      aTb.innerHTML = "";
+      (sData.advances || []).forEach(a => window.addBillAdvanceItem(a.date, a.to, a.amt, true));
+      window.calcSiteBillUpadTotals();
+    };
+
+    window.addBillWorkItem = function(name = "ફ્રેમ (rf)", qty = "", customRate = null, isExisting = false) {
+      let tb = document.getElementById("billWorkRows");
+      let tr = document.createElement("tr");
+      tr.dataset.isExisting = isExisting ? "true" : "false";
+      let n = tb.children.length + 1;
+      let rVal = customRate !== null ? customRate : (getItemDefaultRate(name) || 45);
+
+      tr.innerHTML = `
+        <td class="num">${n}</td>
+        <td>
+          <div class="work-item-wrapper">
+            <input class="b-ws-input col-select-work-input" placeholder="કામનું નામ લખો" value="${name}">
+            <button type="button" class="btn-choose-item">લિસ્ટ ▾</button>
+          </div>
+        </td>
+        <td><input class="b-q col-q" inputmode="decimal" placeholder="માપ" value="${qty}"></td>
+        <td><input class="b-r col-r" inputmode="decimal" value="${rVal}"></td>
+        <td class="amt b-amt">₹ 0.00</td>
+        <td class="del"><button onclick="const row=this.closest('tr');if(row.dataset.isExisting==='true'&&!confirm('આ કામની entry ડીલીટ કરવી છે?'))return;row.remove();window.renumBillWorks();window.calcSiteBillUpadTotals();window.saveActiveSiteBillUpadData()">🗑️</button></td>
+      `;
+
+      tb.appendChild(tr);
+      let s = tr.querySelector(".b-ws-input");
+      let btnPick = tr.querySelector(".btn-choose-item");
+      let r = tr.querySelector(".b-r");
+
+      btnPick.onclick = () => window.openItemPickerModal(s, r, 'BILL');
+
+      s.onchange = () => { 
+        const matchedRate = getItemDefaultRate(s.value);
+        if (matchedRate !== null) r.value = matchedRate;
+        window.calcSiteBillUpadTotals();
+      };
+      s.oninput = () => { if (tr.dataset.isExisting !== "true") window.saveActiveSiteBillUpadData(); };
+      tr.querySelector(".b-q").oninput = () => { window.calcSiteBillUpadTotals(); if (tr.dataset.isExisting !== "true") window.saveActiveSiteBillUpadData(); };
+      r.oninput = () => { window.calcSiteBillUpadTotals(); if (tr.dataset.isExisting !== "true") window.saveActiveSiteBillUpadData(); };
+      bindRowSaveConfirmation(tr, window.saveActiveSiteBillUpadData, window.calcSiteBillUpadTotals);
+      window.calcSiteBillUpadTotals();
+      if (!isExisting) window.saveActiveSiteBillUpadData();
+    };
+
+    window.renumBillWorks = function() {
+      document.querySelectorAll("#billWorkRows tr").forEach((r, i) => r.querySelector(".num").innerText = i + 1);
+    };
+
+    window.addBillAdvanceItem = function(dt = "", to = "", amt = "", isExisting = false) {
+      let tb = document.getElementById("billAdvanceRows");
+      let tr = document.createElement("tr");
+      tr.dataset.isExisting = isExisting ? "true" : "false";
+      let n = tb.children.length + 1;
+      let dateVal = dt || new Date().toISOString().slice(0, 10);
+
+      tr.innerHTML = `
+        <td class="num">${n}</td>
+        <td><input type="date" class="b-adv-dt col-dt" value="${dateVal}"></td>
+        <td><input class="b-adv-to col-to-simple" placeholder="કોને આપ્યા" value="${to}"></td>
+        <td><input class="b-av col-amt-in" inputmode="decimal" placeholder="રકમ ₹" value="${amt}"></td>
+        <td class="del"><button onclick="const row=this.closest('tr');if(row.dataset.isExisting==='true'&&!confirm('આ ઉપાડની entry ડીલીટ કરવી છે?'))return;row.remove();window.renumBillAdvances();window.calcSiteBillUpadTotals();window.saveActiveSiteBillUpadData()">🗑️</button></td>
+      `;
+
+      tb.appendChild(tr);
+      tr.querySelector(".b-av").oninput = () => { window.calcSiteBillUpadTotals(); if (tr.dataset.isExisting !== "true") window.saveActiveSiteBillUpadData(); };
+      bindRowSaveConfirmation(tr, window.saveActiveSiteBillUpadData, window.calcSiteBillUpadTotals);
+      window.calcSiteBillUpadTotals();
+      if (!isExisting) window.saveActiveSiteBillUpadData();
+    };
+
+    window.renumBillAdvances = function() {
+      document.querySelectorAll("#billAdvanceRows tr").forEach((r, i) => r.querySelector(".num").innerText = i + 1);
+    };
+
+    window.calcSiteBillUpadTotals = function() {
+      let workTotal = 0;
+      document.querySelectorAll("#billWorkRows tr").forEach(r => {
+        let a = window.num(r.querySelector(".b-q").value) * window.num(r.querySelector(".b-r").value);
+        r.querySelector(".b-amt").innerText = "₹ " + window.money(a);
+        workTotal += a;
+      });
+
+      let upadTotal = 0;
+      document.querySelectorAll("#billAdvanceRows tr").forEach(r => {
+        upadTotal += window.num(r.querySelector(".b-av").value);
+      });
+
+      const balance = workTotal - upadTotal;
+      document.getElementById("statBillWorkTotal").innerText = "₹ " + window.money(workTotal);
+      document.getElementById("statBillUpadTotal").innerText = "- ₹ " + window.money(upadTotal);
+      document.getElementById("statBillBalance").innerText = "₹ " + window.money(balance);
+    };
+
+    window.saveActiveSiteBillUpadData = function() {
+      if (!activeCustomer || !activeSiteId) return;
+      const works = [];
+      document.querySelectorAll("#billWorkRows tr").forEach(r => {
+        works.push({ 
+          name: r.querySelector(".b-ws-input").value.trim(), 
+          qty: r.querySelector(".b-q").value, 
+          rate: r.querySelector(".b-r").value 
+        });
+      });
+
+      const advances = [];
+      document.querySelectorAll("#billAdvanceRows tr").forEach(r => {
+        advances.push({
+          date: r.querySelector(".b-adv-dt").value,
+          to: r.querySelector(".b-adv-to").value,
+          amt: r.querySelector(".b-av").value
+        });
+      });
+
+      if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
+      if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
+        allCustomerBills[activeCustomer.id][activeSiteId] = { estimates: [], expenses: [] };
+      }
+      allCustomerBills[activeCustomer.id][activeSiteId].works = works;
+      allCustomerBills[activeCustomer.id][activeSiteId].advances = advances;
+      saveMasterData();
+    };
+
+    // SITE KHARCH
+    window.loadActiveSiteKharchData = function() {
+      if (!activeCustomer || !activeSiteId) {
+        document.getElementById("dispKharchSubTitle").innerText = "ગ્રાહક ઉમેરો અથવા સાઇટ પસંદ કરો";
+        document.getElementById("dispKharchSitePhoto").style.display = "none";
+        document.querySelectorAll("#expensesTableBody tr:not(#permanentAttendanceExpenseRow)").forEach(r => r.remove());
+        document.getElementById("liveAttAmtVal").innerText = "0.00";
+        window.calcSiteKharchTotals();
+        return;
+      }
+      if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
+      if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
+        allCustomerBills[activeCustomer.id][activeSiteId] = { works: [], advances: [], estimates: [], expenses: [] };
+      }
+      const sObj = activeCustomer.sites.find(s => s.siteId === activeSiteId) || { siteName: "સાઇટ" };
+      document.getElementById("dispKharchSubTitle").innerText = `${activeCustomer.name} (${sObj.siteName})`;
+      const kharchSitePhoto = document.getElementById("dispKharchSitePhoto");
+      kharchSitePhoto.src = sObj.sitePhoto || "";
+      kharchSitePhoto.style.display = sObj.sitePhoto ? "block" : "none";
+
+      const sData = allCustomerBills[activeCustomer.id][activeSiteId];
+      const tb = document.getElementById("expensesTableBody");
+      const otherRows = tb.querySelectorAll("tr:not(#permanentAttendanceExpenseRow)");
+      otherRows.forEach(r => r.remove());
+
+      (sData.expenses || []).forEach(x => window.addSiteExpenseItem(x.date, x.type, x.note, x.to, x.amt, true));
+      window.updateLiveAttendanceKharchForSite();
+      window.calcSiteKharchTotals();
+    };
+
+    window.updateLiveAttendanceKharchForSite = function() {
+      const siteObj = activeCustomer.sites.find(s => s.siteId === activeSiteId) || { siteName: "સાઇટ" };
+      const sName = siteObj.siteName.toLowerCase();
+      let liveAttCost = 0;
+
+      for (let hId in allAttendanceData) {
+        const helper = helpersList.find(x => x.id === hId);
+        const wage = helper ? helper.wage : 600;
+        const otRate = wage / 8;
+        for (let dKey in allAttendanceData[hId]) {
+          const rec = allAttendanceData[hId][dKey];
+          let isSiteMatched = false;
+          if (rec.note && rec.note.toLowerCase().includes(sName)) {
+            isSiteMatched = true;
+          } else if (helpersList.length > 0 && !rec.note) {
+            isSiteMatched = true;
+          }
+
+          if (isSiteMatched) {
+            let dayPay = 0;
+            if (rec.status === "P") dayPay = wage;
+            else if (rec.status === "HD") dayPay = wage / 2;
+            dayPay += (rec.ot || 0) * otRate;
+            liveAttCost += dayPay;
+          }
+        }
+      }
+
+      document.getElementById("liveAttAmtVal").innerText = window.money(liveAttCost);
+      document.getElementById("liveAttDt").innerText = new Date().toISOString().slice(5, 10);
+    };
+
+    window.toggleLiveAttendanceExpenseRow = function() {
+      isLiveAttExpenseActive = !isLiveAttExpenseActive;
+      const row = document.getElementById("permanentAttendanceExpenseRow");
+      const btn = document.getElementById("btnToggleAttExpense");
+
+      if (isLiveAttExpenseActive) {
+        row.classList.remove("inactive-row");
+        btn.className = "btn-toggle-att-row btn-tar-act";
+        btn.innerText = "✅ ચાલુ";
+      } else {
+        row.classList.add("inactive-row");
+        btn.className = "btn-toggle-att-row btn-tar-inact";
+        btn.innerText = "🛑 બંધ";
+      }
+      window.calcSiteKharchTotals();
+    };
+
+    window.addSiteExpenseItem = function(dt = "", type = "સામાન ખર્ચ", note = "", to = "", amt = "", isExisting = false) {
+      let tb = document.getElementById("expensesTableBody");
+      let tr = document.createElement("tr");
+      tr.dataset.isExisting = isExisting ? "true" : "false";
+      let dateVal = dt || new Date().toISOString().slice(0, 10);
+      let n = tb.querySelectorAll("tr").length + 1;
+
+      tr.innerHTML = `
+        <td class="num">${n}</td>
+        <td><input type="date" class="exp-dt col-dt" value="${dateVal}"></td>
+        <td><select class="exp-type" style="width:110px;">
+          <option ${type==='સામાન ખર્ચ'?'selected':''}>સામાન ખર્ચ</option>
+          <option ${type==='મશીન / Repair'?'selected':''}>મશીન / Repair</option>
+          <option ${type==='Labour Cost'?'selected':''}>Labour Cost</option>
+          <option ${type==='અન્ય ખર્ચ'?'selected':''}>અન્ય ખર્ચ</option>
+        </select></td>
+        <td><input class="exp-note col-note" placeholder="વિગત" value="${note}"></td>
+        <td><input class="exp-to col-to-simple" placeholder="કોને / ક્યાં" value="${to}"></td>
+        <td><input class="ex col-amt-in" inputmode="decimal" placeholder="રકમ" value="${amt}"></td>
+        <td class="del"><button onclick="const row=this.closest('tr');if(row.dataset.isExisting==='true'&&!confirm('આ ખર્ચની entry ડીલીટ કરવી છે?'))return;row.remove();window.renumSiteExpenses();window.calcSiteKharchTotals();window.saveActiveSiteKharchData()">🗑️</button></td>
+      `;
+
+      tb.appendChild(tr);
+      tr.querySelector(".ex").oninput = () => { window.calcSiteKharchTotals(); if (tr.dataset.isExisting !== "true") window.saveActiveSiteKharchData(); };
+      bindRowSaveConfirmation(tr, window.saveActiveSiteKharchData, window.calcSiteKharchTotals);
+      window.calcSiteKharchTotals();
+      if (!isExisting) window.saveActiveSiteKharchData();
+    };
+
+    window.renumSiteExpenses = function() {
+      document.querySelectorAll("#expensesTableBody tr").forEach((r, i) => {
+        r.querySelector(".num").innerText = i + 1;
+      });
+    };
+
+    window.calcSiteKharchTotals = function() {
+      let otherTotal = 0;
+      document.querySelectorAll(".ex").forEach(x => otherTotal += window.num(x.value));
+
+      let liveAttAmt = 0;
+      if (isLiveAttExpenseActive) {
+        liveAttAmt = window.num(document.getElementById("liveAttAmtVal")?.innerText || 0);
+      }
+
+      const grandTotalExp = otherTotal + liveAttAmt;
+      document.getElementById("statExpTotal").innerText = window.money(grandTotalExp);
+
+      const res = activeCustomer && activeSiteId
+        ? getSiteBillCalculation(activeCustomer.id, activeSiteId)
+        : { workTotal: 0 };
+      const profit = res.workTotal - grandTotalExp;
+      document.getElementById("statExpProfit").innerText = window.money(profit);
+    };
+
+    window.saveActiveSiteKharchData = function() {
+      if (!activeCustomer || !activeSiteId) return;
+
+      const expenses = [];
+      document.querySelectorAll("#expensesTableBody tr:not(#permanentAttendanceExpenseRow)").forEach(r => {
+        expenses.push({
+          date: r.querySelector(".exp-dt").value,
+          type: r.querySelector(".exp-type").value,
+          note: r.querySelector(".exp-note").value,
+          to: r.querySelector(".exp-to").value,
+          amt: r.querySelector(".ex").value
+        });
+      });
+
+      if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
+      if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
+        allCustomerBills[activeCustomer.id][activeSiteId] = { works: [], advances: [], estimates: [] };
+      }
+      allCustomerBills[activeCustomer.id][activeSiteId].expenses = expenses;
+      saveMasterData();
+    };
+
+    /* PRINT & SHARE */
+    window.printCustomerSiteBySiteBill = function() {
+      if (!selectedCustForOpt) return;
+      document.getElementById("custOptionsModal").style.display = "none";
+      const c = selectedCustForOpt;
+      
+      let grandWork = 0, grandUpad = 0, grandBal = 0;
+      let siteRows = "";
+
+      (c.sites || []).forEach((s, idx) => {
+        const res = getSiteBillCalculation(c.id, s.siteId);
+        grandWork += res.workTotal;
+        grandUpad += res.upadTotal;
+        grandBal += res.balance;
+
+        siteRows += `
+          <tr>
+            <td>${idx+1}</td>
+            <td><b>${s.siteName}</b><br><small style="color:#64748b;">${s.siteAddress || c.address}</small></td>
+            <td style="text-align:right; font-weight:bold; color:#1976b5;">₹ ${window.money(res.workTotal)}</td>
+            <td style="text-align:right; font-weight:bold; color:#dc2626;">₹ ${window.money(res.upadTotal)}</td>
+            <td style="text-align:right; font-weight:bold; color:#ea580c;">₹ ${window.money(res.balance)}</td>
+          </tr>
+        `;
+      });
+
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <html><head><title>${c.name} - સાઇટ વાઇઝ બિલ</title>
+        <style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;}th{background:#f1f5f9;}</style></head><body>
+          <h2 style="margin:0;color:#ea580c;">SHIV CONSTRUCTION</h2>
+          <p style="margin:4px 0 14px 0;font-weight:bold;color:#475569;">ગ્રાહક સાઇટ વાઇઝ કુલ બિલ અને હિસાબ પત્રક</p>
+          <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #cbd5e1;">
+            <b>ગ્રાહક:</b> ${c.name} | <b>મોબાઇલ:</b> ${c.mobile} | <b>સરનામું:</b> ${c.address}
+          </div>
+          <table>
+            <thead>
+              <tr><th>ક્રમ</th><th>સાઇટનું નામ</th><th style="text-align:right;">કુલ કામ (બિલ)</th><th style="text-align:right;">કુલ ઉપાડ</th><th style="text-align:right;">બાકી નીકળતી રકમ</th></tr>
+            </thead>
+            <tbody>${siteRows}</tbody>
+          </table>
+          <div style="margin-top:16px;font-size:14px;background:#fff7ed;padding:12px;border-radius:8px;border:1.5px solid #fed7aa;line-height:1.7;">
+            <div>તમામ સાઇટ્સનું કુલ કામ (બિલ): <b>₹ ${window.money(grandWork)}</b></div>
+            <div>તમામ સાઇટ્સનો કુલ ઉપાડ: <b style="color:#dc2626;">- ₹ ${window.money(grandUpad)}</b></div>
+            <div style="font-size:16px;color:#ea580c;border-top:1.5px solid #ea580c;padding-top:6px;margin-top:4px;">
+              <b>કુલ બાકી નીકળતી ચોખ્ખી રકમ: ₹ ${window.money(grandBal)}</b>
+            </div>
+          </div>
+        </body></html>
+      `);
+      win.document.close();
+      win.focus();
+      win.print();
+    };
+
+    window.shareCustomerSiteBySiteBillWA = function() {
+      if (!selectedCustForOpt) return;
+      document.getElementById("custOptionsModal").style.display = "none";
+      const c = selectedCustForOpt;
+      
+      let grandWork = 0, grandUpad = 0, grandBal = 0;
+      let msg = `*🏗️ SHIV CONSTRUCTION - સાઇટ વાઇઝ કુલ બિલ*%0A*ગ્રાહક:* ${c.name}%0A*સરનામું:* ${c.address}%0A--------------------------------%0A`;
+
+      (c.sites || []).forEach((s, idx) => {
+        const res = getSiteBillCalculation(c.id, s.siteId);
+        grandWork += res.workTotal;
+        grandUpad += res.upadTotal;
+        grandBal += res.balance;
+        msg += `${idx+1}. *${s.siteName}*%0A   • કામ: ₹ ${window.money(res.workTotal)} | ઉપાડ: ₹ ${window.money(res.upadTotal)}%0A   • *બાકી: ₹ ${window.money(res.balance)}*%0A%0A`;
+      });
+
+      msg += `--------------------------------%0A• કુલ કામ (બિલ): ₹ ${window.money(grandWork)}%0A• કુલ ઉપાડ: ₹ ${window.money(grandUpad)}%0A*• કુલ બાકી નીકળતી રકમ: ₹ ${window.money(grandBal)}*%0A`;
+      window.open(c.mobile && c.mobile !== "N/A" ? `https://wa.me/91${c.mobile}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
+    };
+
+    window.printSiteDetailBill = function() {
+      const c = activeCustomer;
+      const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
+      const res = getSiteBillCalculation(c.id, s.siteId);
+      const itemsList = (res.siteData.works && res.siteData.works.length > 0) ? res.siteData.works : (res.siteData.estimates || []);
+
+      let itemRows = "";
+      itemsList.forEach((it, idx) => {
+        const itAmt = window.num(it.qty) * window.num(it.rate);
+        const itDisplayName = it.name || itemNames[it.id] || "કામ";
+        itemRows += `<tr><td>${idx+1}</td><td><b>${itDisplayName}</b></td><td style="text-align:center;">${it.qty}</td><td style="text-align:right;">₹ ${it.rate}</td><td style="text-align:right; font-weight:bold; color:#15803d;">₹ ${window.money(itAmt)}</td></tr>`;
+      });
+
+      let upadRows = "";
+      (res.siteData.advances || []).forEach((adv, idx) => {
+        upadRows += `<tr><td>${idx+1}</td><td>${adv.date || '-'}</td><td>${adv.to || '-'}</td><td style="text-align:right;color:#dc2626;font-weight:bold;">₹ ${window.money(adv.amt)}</td></tr>`;
+      });
+
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <html><head><title>બિલ - ${s.siteName}</title>
+        <style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}th,td{border:1px solid #cbd5e1;padding:7px;text-align:left;}th{background:#f1f5f9;}</style></head><body>
+          <h2 style="margin:0;color:#ea580c;">SHIV CONSTRUCTION</h2>
+          <p style="margin:3px 0 12px 0;font-weight:bold;color:#475569;">સાઇટ વિગતવાર બિલ & હિસાબ</p>
+          <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #cbd5e1;display:flex;align-items:center;gap:10px;">
+            ${c.photo ? `<img src="${c.photo}" alt="ગ્રાહક" style="width:54px;height:54px;object-fit:cover;border-radius:50%;">` : ''}
+            ${s.sitePhoto ? `<img src="${s.sitePhoto}" alt="સાઇટ" style="width:64px;height:54px;object-fit:cover;border-radius:7px;">` : ''}
+            <div><b>ગ્રાહક:</b> ${c.name} | <b>સાઇટ:</b> ${s.siteName}<br>
+            <b>સરનામું:</b> ${s.siteAddress || c.address} | <b>મોબાઇલ:</b> ${c.mobile}</div>
+          </div>
+          <h4 style="margin:14px 0 4px 0;color:#1976b5;">કામની આઇટમ્સ</h4>
+          <table><thead><tr><th>ક્રમ</th><th>કામનું નામ</th><th style="text-align:center;">માપ</th><th style="text-align:right;">રેટ ₹</th><th style="text-align:right;">રકમ ₹</th></tr></thead><tbody>${itemRows}</tbody></table>
+          ${upadRows ? `<h4 style="margin:14px 0 4px 0;color:#dc2626;">ઉપાડ વિગત</h4><table><thead><tr><th>ક્રમ</th><th>તારીખ</th><th>કોને આપ્યા</th><th style="text-align:right;">રકમ ₹</th></tr></thead><tbody>${upadRows}</tbody></table>` : ''}
+          <div style="margin-top:14px;font-size:14px;background:#f0fdf4;padding:12px;border-radius:8px;border:1.5px solid #bbf7d0;line-height:1.7;">
+            <div>કુલ કામ (બિલ): <b>₹ ${window.money(res.workTotal)}</b></div>
+            <div>કુલ ઉપાડ: <b style="color:#dc2626;">- ₹ ${window.money(res.upadTotal)}</b></div>
+            <div style="font-size:16px;color:#ea580c;border-top:1.5px solid #ea580c;padding-top:6px;margin-top:4px;">
+              <b>બાકી નીકળતી રકમ: ₹ ${window.money(res.balance)}</b>
+            </div>
+          </div>
+        </body></html>
+      `);
+      win.document.close();
+      win.focus();
+      win.print();
+    };
+
+    window.shareSiteDetailBillWA = function() {
+      const c = activeCustomer;
+      const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
+      const res = getSiteBillCalculation(c.id, s.siteId);
+      const itemsList = (res.siteData.works && res.siteData.works.length > 0) ? res.siteData.works : (res.siteData.estimates || []);
+
+      let msg = `*🏗️ SHIV CONSTRUCTION - સાઇટ વિગતવાર બિલ*%0A*ગ્રાહક:* ${c.name}%0A*સાઇટ:* ${s.siteName}%0A*સરનામું:* ${s.siteAddress || c.address}%0A--------------------------------%0A*કામની વિગતો:*%0A`;
+      itemsList.forEach((it, idx) => {
+        const itAmt = window.num(it.qty) * window.num(it.rate);
+        const itDisplayName = it.name || itemNames[it.id] || "કામ";
+        msg += `${idx+1}. ${itDisplayName} (${it.qty} × ₹${it.rate}) = *₹ ${window.money(itAmt)}*%0A`;
+      });
+      msg += `--------------------------------%0A• કુલ કામ: ₹ ${window.money(res.workTotal)}%0A• કુલ ઉપાડ: ₹ ${window.money(res.upadTotal)}%0A*• બાકી નીકળતી રકમ: ₹ ${window.money(res.balance)}*%0A`;
+
+      const targetMob = s.siteMobile && s.siteMobile !== "N/A" ? s.siteMobile : c.mobile;
+      window.open(targetMob && targetMob !== "N/A" ? `https://wa.me/91${targetMob}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
+    };
+
+    window.printSiteKharchReport = function() {
+      const c = activeCustomer;
+      const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
+      const res = getSiteBillCalculation(c.id, s.siteId);
+
+      const totExp = document.getElementById("statExpTotal").innerText;
+      const profit = document.getElementById("statExpProfit").innerText;
+
+      let rowsHtml = "";
+      if (isLiveAttExpenseActive) {
+        const lAmt = document.getElementById("liveAttAmtVal").innerText;
+        rowsHtml += `<tr style="background:#fff7ed;"><td>1</td><td>લાઈવ</td><td>Attendance</td><td>કારીગર / મજૂર હાજરી ખર્ચ</td><td>તમામ કારીગરો</td><td style="text-align:right;font-weight:bold;color:#ea580c;">₹ ${lAmt}</td></tr>`;
+      }
+
+      document.querySelectorAll("#expensesTableBody tr:not(#permanentAttendanceExpenseRow)").forEach((r, i) => {
+        const idx = isLiveAttExpenseActive ? i + 2 : i + 1;
+        rowsHtml += `<tr><td>${idx}</td><td>${r.querySelector(".exp-dt").value}</td><td>${r.querySelector(".exp-type").value}</td><td>${r.querySelector(".exp-note").value}</td><td>${r.querySelector(".exp-to-simple").value}</td><td style="text-align:right;font-weight:bold;color:#db2777;">₹ ${window.money(r.querySelector(".ex").value)}</td></tr>`;
+      });
+
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <html><head><title>સાઇટ ખર્ચ - ${s.siteName}</title>
+        <style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}th,td{border:1px solid #cbd5e1;padding:7px;text-align:left;}th{background:#f1f5f9;}</style></head><body>
+          <h2 style="margin:0;color:#ea580c;">SHIV CONSTRUCTION</h2>
+          <p style="margin:3px 0 12px 0;font-weight:bold;color:#475569;">સાઇટ ખર્ચ અને ચોખ્ખો નફો પત્રક</p>
+          <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #cbd5e1;">
+            <b>ગ્રાહક:</b> ${c.name} | <b>સાઇટ:</b> ${s.siteName}<br>
+            <b>સરનામું:</b> ${s.siteAddress || c.address}
+          </div>
+          <table>
+            <thead><tr><th>ક્રમ</th><th>તારીખ</th><th>પ્રકાર</th><th>વિગત</th><th>કોને/ક્યાં</th><th style="text-align:right;">રકમ ₹</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+          <div style="margin-top:14px;font-size:14px;background:#fdf2f8;padding:12px;border-radius:8px;border:1.5px solid #fbcfe8;line-height:1.7;">
+            <div>કુલ કામ (પાકું બિલ): <b>₹ ${window.money(res.workTotal)}</b></div>
+            <div>કુલ સાઇટ ખર્ચ (હાજરી + અન્ય): <b style="color:#db2777;">- ₹ ${totExp}</b></div>
+            <div style="font-size:16px;color:#16a34a;border-top:1.5px solid #16a34a;padding-top:6px;margin-top:4px;">
+              <b>ચોખ્ખો સાઇટ નફો (Profit): ₹ ${profit}</b>
+            </div>
+          </div>
+        </body></html>
+      `);
+      win.document.close();
+      win.focus();
+      win.print();
+    };
+
+    window.shareSiteKharchWhatsApp = function() {
+      const c = activeCustomer;
+      const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
+      const res = getSiteBillCalculation(c.id, s.siteId);
+
+      const totExp = document.getElementById("statExpTotal").innerText;
+      const profit = document.getElementById("statExpProfit").innerText;
+
+      let msg = `*🏗️ SHIV CONSTRUCTION - સાઇટ ખર્ચ અને નફો*%0A*ગ્રાહક:* ${c.name}%0A*સાઇટ:* ${s.siteName}%0A*સરનામું:* ${s.siteAddress || c.address}%0A--------------------------------%0A*ખર્ચ વિગત:*%0A`;
+      if (isLiveAttExpenseActive) {
+        msg += `1. Attendance (લાઈવ કારીગર હાજરી) = *₹ ${document.getElementById("liveAttAmtVal").innerText}*%0A`;
+      }
+      document.querySelectorAll("#expensesTableBody tr:not(#permanentAttendanceExpenseRow)").forEach((r, i) => {
+        const idx = isLiveAttExpenseActive ? i + 2 : i + 1;
+        msg += `${idx}. ${r.querySelector(".exp-type").value} (${r.querySelector(".exp-note").value}) = *₹ ${window.money(r.querySelector(".ex").value)}*%0A`;
+      });
+      msg += `--------------------------------%0A• કુલ પાકું બિલ: ₹ ${window.money(res.workTotal)}%0A• કુલ ખર્ચ (હાજરી+સામાન): ₹ ${totExp}%0A*• ચોખ્ખો સાઇટ નફો: ₹ ${profit}*%0A`;
+
+      const targetMob = s.siteMobile && s.siteMobile !== "N/A" ? s.siteMobile : c.mobile;
+      window.open(targetMob && targetMob !== "N/A" ? `https://wa.me/91${targetMob}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
+    };
+
+    window.processSelectedQrImage = function(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById("upiQrImg").src = e.target.result;
+        try { localStorage.setItem("SHIV_QR_PURE_V14", e.target.result); } catch(err) {}
+        alert("✅ નવો UPI QR કોડ અપડેટ થઈ ગયો!");
+      };
+      reader.readAsDataURL(file);
+    };
+
+    // Use one consistent photo salary-card layout for every attendance print option.
+    function generatePrintableReport(helper, mode, params) {
+      if (!helper) return;
+
+      const att = allAttendanceData[helper.id] || {};
+      const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+      const parseKey = key => {
+        const parts = key.split("-").map(Number);
+        if (parts.length !== 3 || !parts.every(Number.isFinite) || parts[1] < 0 || parts[1] > 11) return null;
+        const [year, month, day] = parts;
+        const date = new Date(year, month, day);
+        if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return null;
+        return { year, month, day, date };
+      };
+      const hasData = record => record && (
+        (record.status && record.status !== "NONE") || window.num(record.ot) || window.num(record.upad) || record.note
+      );
+      const summaries = [];
+
+      if (mode === "month") {
+        summaries.push({ year: params.y, month: params.m, start: 1, end: new Date(params.y, params.m + 1, 0).getDate() });
+      } else if (mode === "dateRange") {
+        const from = new Date(`${params.from}T00:00:00`);
+        const to = new Date(`${params.to}T00:00:00`);
+        if (!Number.isFinite(from.getTime()) || !Number.isFinite(to.getTime()) || from > to) {
+          alert("કૃપા કરીને માન્ય શરૂઆત અને અંતિમ તારીખ પસંદ કરો.");
+          return;
+        }
+        summaries.push({ startDate: from, endDate: to, title: `${params.from} થી ${params.to}` });
+      } else {
+        const monthKeys = new Map();
+        Object.keys(att).forEach(key => {
+          const parsed = parseKey(key);
+          if (parsed && hasData(att[key])) monthKeys.set(`${parsed.year}-${parsed.month}`, { year: parsed.year, month: parsed.month });
+        });
+        Array.from(monthKeys.values()).sort((a, b) => a.year - b.year || a.month - b.month).forEach(({ year, month }) => {
+          summaries.push({ year, month, start: 1, end: new Date(year, month + 1, 0).getDate() });
+        });
+      }
+
+      if (!summaries.length) {
+        alert("પ્રિન્ટ માટે હાજરીની કોઈ એન્ટ્રી મળી નથી.");
+        return;
+      }
+
+      const photo = helper.photo
+        ? `<img class="helper-photo" src="${helper.photo}" alt="કારીગરનો ફોટો">`
+        : '<div class="helper-photo photo-placeholder">👷</div>';
+      const cards = summaries.map(period => {
+        const startDate = period.startDate || new Date(period.year, period.month, period.start);
+        const endDate = period.endDate || new Date(period.year, period.month, period.end);
+        const daysInPeriod = [];
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+          daysInPeriod.push(new Date(d));
+        }
+
+        let p = 0, hd = 0, a = 0, ot = 0, upad = 0;
+        daysInPeriod.forEach(date => {
+          const record = att[`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`] || {};
+          if (record.status === "P") p++;
+          if (record.status === "HD") hd++;
+          if (record.status === "A") a++;
+          ot += window.num(record.ot);
+          upad += window.num(record.upad);
+        });
+        const days = p + hd * 0.5;
+        const wage = window.num(helper.wage);
+        const baseWage = p * wage + hd * (wage / 2);
+        const otPay = ot * (wage / 8);
+        const balance = baseWage + otPay - upad;
+        const periodTitle = period.title || `${gujMonths[period.month]} ${period.year}`;
+        const dateRows = daysInPeriod.map(date => {
+          const record = att[`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`] || {};
+          const status = record.status === "P" ? "હાજર" : record.status === "HD" ? "અડધો" : record.status === "A" ? "ગેરહાજર" : "";
+          return `<tr><td>${date.getDate()}/${date.getMonth() + 1}/${String(date.getFullYear()).slice(-2)}</td><td>${status}</td><td>${window.num(record.upad) ? `₹ ${window.money(record.upad)}` : ""}</td><td>${window.num(record.ot) || ""}</td><td>${escapeHtml(record.note || "")}</td></tr>`;
+        }).join("");
+        return `
+          <main class="pay-card">
+            <h1>SHIV CONSTRUCTION</h1>
+            <div class="card-title">કારીગર પગાર કાર્ડ</div>
+            <section class="identity">${photo}<div class="identity-details">
+              <div><b>કારીગરનું નામ:</b> ${escapeHtml(helper.name)}</div>
+              <div><b>સરનામું:</b> ${escapeHtml(helper.address || "—")}</div>
+              <div><b>મોબાઇલ:</b> ${escapeHtml(helper.mobile || "—")} &nbsp; | &nbsp; <b>દૈનિક રોજ:</b> ₹ ${window.money(wage)}</div>
+              <div><b>સમયગાળો:</b> ${escapeHtml(periodTitle)} &nbsp; | &nbsp; <b>કુલ હાજરી:</b> ${days} દિવસ</div>
+            </div></section>
+            <section class="summary">
+              <div class="summary-table">
+                <div><b>કુલ પગાર</b><strong>₹ ${window.money(baseWage + otPay)}</strong></div>
+                <div><b>કુલ ઉપાડ</b><strong>₹ ${window.money(upad)}</strong></div>
+                <div class="balance"><b>બાકી રકમ</b><strong>₹ ${window.money(balance)}</strong></div>
+              </div>
+              <div class="signature">મેળવનારની સહી / અંગૂઠો</div>
+            </section>
+            <div class="counts">હાજર: ${p} દિવસ &nbsp; | &nbsp; અડધો: ${hd} દિવસ &nbsp; | &nbsp; ગેરહાજર: ${a} દિવસ &nbsp; | &nbsp; OT: ${ot} કલાક</div>
+            <table class="days-table"><thead><tr><th>તારીખ</th><th>હાજરી</th><th>ઉપાડ ₹</th><th>OT કલાક</th><th>નોંધ</th></tr></thead><tbody>${dateRows}</tbody></table>
+            <div class="card-footer">કુલ પગાર = હાજરીની મજૂરી + OT &nbsp; · &nbsp; બાકી રકમ = કુલ પગાર − ઉપાડ</div>
+          </main>`;
+      }).join("");
+
+      const win = window.open("", "_blank");
+      if (!win) {
+        alert("પ્રિન્ટ વિન્ડો ખોલી શકાઈ નથી. કૃપા કરીને popupની મંજૂરી આપો.");
+        return;
+      }
+      win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHtml(helper.name)} - Attendance Salary Card</title>
+        <style>
+          @page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;font-size:10px}
+          .pay-card{border:2px solid #1f2937;padding:12px;min-height:270mm;background:#fff;break-after:page;page-break-after:always}
+          .pay-card:last-child{break-after:auto;page-break-after:auto}h1{text-align:center;font-size:20px;letter-spacing:1px;margin:0;padding:6px;border-bottom:1px solid #111827}
+          .card-title{text-align:center;font-weight:bold;font-size:13px;letter-spacing:1px;margin:5px auto 10px;border:1px solid #111827;padding:4px;width:46%}
+          .identity{display:flex;align-items:center;gap:12px;font-size:11px;line-height:1.8;border-bottom:1px dotted #64748b;padding:4px 0}
+          .identity-details{flex:1}.helper-photo{width:76px;height:76px;object-fit:cover;border:1px solid #64748b;border-radius:6px;flex-shrink:0}.photo-placeholder{display:flex;align-items:center;justify-content:center;background:#ffedd5;font-size:38px}
+          .summary{display:grid;grid-template-columns:1.3fr 1fr;gap:8px;margin:10px 0}.summary-table{border:1px solid #1f2937;border-radius:7px;overflow:hidden}
+          .summary-table>div{display:flex;justify-content:space-between;border-bottom:1px solid #64748b;padding:7px 9px;font-size:11px}.summary-table>div:last-child{border-bottom:0}
+          .summary-table .balance{font-size:13px;font-weight:bold;background:#fff7ed;color:#c2410c}.signature{border:1px solid #1f2937;border-radius:7px;min-height:88px;display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:10px;font-weight:bold}
+          .counts{text-align:center;font-weight:bold;background:#f1f5f9;padding:6px;margin:8px 0}.days-table{width:100%;border-collapse:collapse;font-size:9px;table-layout:fixed}
+          .days-table th,.days-table td{border:1px solid #475569;padding:4px 3px;text-align:center;overflow-wrap:anywhere}.days-table th{background:#e2e8f0;font-weight:bold}
+          .days-table td:last-child{text-align:left}.card-footer{border-top:1px solid #94a3b8;margin-top:8px;padding-top:5px;text-align:center;font-size:9px;color:#475569}
+          @media print{.pay-card{min-height:270mm}}
+        </style></head><body>${cards}</body></html>`);
+      win.document.close();
+      win.focus();
+      win.print();
+    }
+
+    /* INITIALIZATION */
+    window.onload = function() {
+      const savedQr = localStorage.getItem("SHIV_QR_PURE_V14");
+      if (savedQr) {
+        const qrEl = document.getElementById("upiQrImg");
+        if (qrEl) qrEl.src = savedQr;
+      }
+
+      populateGlobalSiteDropdowns();
+      createAutoBackupIfDue();
+      window.setInterval(createAutoBackupIfDue, 24 * 60 * 60 * 1000);
+
+      setTimeout(() => {
+        document.getElementById("screenSplash").classList.remove("active");
+        window.navToScreen('screenDashboard');
+      }, 1500);
+    };
+  </script>
+</body>
+</html>
