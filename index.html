@@ -11,7 +11,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Shiv Construction">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=512&q=80">
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap');
@@ -52,45 +51,156 @@
       margin: 0 auto;
     }
 
+    /* DARK MODE SUPPORT */
+    body.dark-mode .app-frame { background: #0f172a; color: #f1f5f9; }
+    body.dark-mode .dash-card,
+    body.dark-mode .h-card,
+    body.dark-mode .calendar-card,
+    body.dark-mode .summary-box-img2,
+    body.dark-mode .table-card,
+    body.dark-mode .summary-card,
+    body.dark-mode .qrbox,
+    body.dark-mode .input-editor-card-img4,
+    body.dark-mode .item-picker-modal,
+    body.dark-mode .day-detail-card,
+    body.dark-mode .report-choice-card,
+    body.dark-mode .options-sheet,
+    body.dark-mode .custom-date-box {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+    body.dark-mode .dash-title,
+    body.dark-mode .h-title-name,
+    body.dark-mode .sum-title-left,
+    body.dark-mode .calc-item,
+    body.dark-mode .img4-title,
+    body.dark-mode .qrtitle { color: #f8fafc; }
+    body.dark-mode .dash-desc,
+    body.dark-mode .h-address,
+    body.dark-mode .h-phone { color: #94a3b8; }
+    body.dark-mode th { background: #334155; color: #e2e8f0; }
+    body.dark-mode th, body.dark-mode td { border-color: #334155; }
+    body.dark-mode input, body.dark-mode select { background: #0f172a; color: #f8fafc; border-color: #475569; }
+    body.dark-mode .bottom-nav-bar { background: #1e293b; border-top-color: #334155; }
+    body.dark-mode .bnav-item { color: #94a3b8; }
+    body.dark-mode .bnav-item.active { background: rgba(234, 88, 12, 0.2); color: #fb923c; }
+
     .view-screen {
       display: none;
       width: 100%;
       min-height: 100vh;
       flex-direction: column;
+      padding-bottom: 78px;
     }
 
     .view-screen.active {
       display: flex;
     }
 
-    /* SPLASH */
+    /* SCREEN 1A: LOADING CARD (IMAGE 1) */
+    #screenBootCard {
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      background: #f8fafc;
+      padding-bottom: 24px;
+    }
+    .boot-white-card {
+      width: 100%;
+      max-width: 340px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 38px 24px;
+      text-align: center;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+      border: 1px solid #f1f5f9;
+    }
+    .boot-logo-box {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 18px auto;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 2px solid #fde68a;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .boot-logo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* SCREEN 1B: BRAND SPLASH (IMAGE 2) */
     #screenSplash {
       justify-content: center;
       align-items: center;
       padding: 20px;
       text-align: center;
-      background: 
-        radial-gradient(circle at 50% 30%, rgba(245, 158, 11, 0.45) 0%, transparent 65%),
-        linear-gradient(to bottom, rgba(10, 17, 30, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%),
-        url('https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
+      padding-bottom: 20px;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(245, 158, 11, 0.42) 0%, transparent 65%),
+        linear-gradient(180deg, #5c5346 0%, #3d3935 55%, #1e242b 100%);
     }
-    .build-dream-tag { font-size: 11px; font-weight: 900; color: #ffd27d; text-transform: uppercase; letter-spacing: 2px; }
+    .splash-brand-logo {
+      width: 112px;
+      height: 112px;
+      border-radius: 26px;
+      background: #ffffff;
+      padding: 6px;
+      margin: 0 auto 22px auto;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+    .splash-brand-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
+    .build-dream-tag { font-size: 12px; font-weight: 900; color: #fde68a; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 6px; }
     .title-shiv {
       font-family: 'Montserrat', sans-serif; font-size: 54px; font-weight: 900;
       line-height: 0.95; text-transform: uppercase;
       background: linear-gradient(180deg, #fff7cc 0%, #ffc000 35%, #ff7300 70%, #cc3700 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
     }
     .title-construction {
-      font-family: 'Montserrat', sans-serif; font-size: 30px; font-weight: 900;
+      font-family: 'Montserrat', sans-serif; font-size: 29px; font-weight: 900;
       background: linear-gradient(180deg, #fff2b2 0%, #ffa500 40%, #ff5e00 75%, #b32d00 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
     }
     .splash-loader {
-      margin-top: 35px; width: 42px; height: 42px; border: 4px solid rgba(255, 183, 3, 0.2);
+      margin-top: 34px; width: 44px; height: 44px; border: 4px solid rgba(255, 183, 3, 0.25);
       border-top: 4px solid #ffb703; border-radius: 50%; animation: spin 0.8s linear infinite;
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* PIN LOCK SCREEN */
+    #screenPinLock {
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      padding-bottom: 24px;
+      background: linear-gradient(180deg, #ea580c 0%, #9a3412 100%);
+    }
+    .pin-card {
+      background: white;
+      width: 100%;
+      max-width: 340px;
+      border-radius: 24px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+    .pin-input-box {
+      width: 100%;
+      font-size: 24px;
+      letter-spacing: 8px;
+      text-align: center;
+      padding: 12px;
+      border-radius: 14px;
+      border: 2px solid #cbd5e1;
+      font-weight: 900;
+      margin: 16px 0;
+    }
 
     /* HEADER */
     .top-header-orange {
@@ -100,17 +210,41 @@
       width: 100%;
     }
     .nav-btn-round {
-      background: rgba(255,255,255,0.2); border: none; color: white; width: 34px; height: 34px;
-      border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center;
-      justify-content: center; font-size: 16px;
+      background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px;
+      border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; font-size: 17px; flex-shrink: 0;
+    }
+    .header-logo-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: white;
+      padding: 2px;
+      object-fit: cover;
+      flex-shrink: 0;
     }
 
-    /* DASHBOARD HUB */
+    /* DASHBOARD HUB (IMAGE 5) */
+    .workspace-banner {
+      padding: 16px 16px 4px 16px;
+    }
+    .workspace-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+    body.dark-mode .workspace-title { color: #f8fafc; }
+    .workspace-date {
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 600;
+      margin-top: 2px;
+    }
     .dashboard-grid {
-      padding: 18px 14px; display: flex; flex-direction: column; gap: 14px; flex: 1; overflow-y: auto; width: 100%;
+      padding: 12px 14px 20px 14px; display: flex; flex-direction: column; gap: 14px; flex: 1; overflow-y: auto; width: 100%;
     }
     .dash-card {
-      background: white; border-radius: 16px; padding: 16px; border: 1.5px solid #e2e8f0;
+      background: white; border-radius: 18px; padding: 16px; border: 1.5px solid #e2e8f0;
       display: flex; align-items: center; gap: 14px; cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: transform 0.1s; width: 100%;
     }
@@ -119,19 +253,63 @@
       width: 52px; height: 52px; border-radius: 14px; display: flex;
       align-items: center; justify-content: center; font-size: 24px; font-weight: bold; flex-shrink: 0;
     }
-    .dash-title { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
-    .dash-desc { font-size: 12px; color: #64748b; font-weight: 600; }
+    .dash-title { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 3px; }
+    .dash-desc { font-size: 12px; color: #64748b; font-weight: 600; line-height: 1.35; }
 
-    .dc-att { border-left: 6px solid #dc2626; }
+    .dc-att { border-left: 5px solid #dc2626; }
     .dc-att .dash-icon-box { background: #fee2e2; color: #dc2626; }
-    .dc-est { border-left: 6px solid #ea580c; }
-    .dc-est .dash-icon-box { background: #fff1e6; color: #ea580c; }
-    .dc-bill { border-left: 6px solid #1976b5; }
+    .dc-bill { border-left: 5px solid #1976b5; }
     .dc-bill .dash-icon-box { background: #e8f1ff; color: #1976b5; }
-    .dc-kharch { border-left: 6px solid #db2777; }
+    .dc-kharch { border-left: 5px solid #db2777; }
     .dc-kharch .dash-icon-box { background: #fdf2f8; color: #db2777; }
-    .dc-backup { border-left: 6px solid #059669; }
+    .dc-backup { border-left: 5px solid #059669; }
     .dc-backup .dash-icon-box { background: #ecfdf5; color: #059669; }
+
+    /* FIXED BOTTOM NAVIGATION BAR (IMAGE 5) */
+    .bottom-nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      display: none;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 6px 8px 6px;
+      z-index: 900;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+    }
+    .bottom-nav-bar.visible {
+      display: flex;
+    }
+    .bnav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 6px 4px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .bnav-item .bnav-ico {
+      font-size: 19px;
+      line-height: 1;
+    }
+    .bnav-item.active {
+      background: #fff1e6;
+      color: #ea580c;
+    }
 
     .content-pad { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; width: 100%; }
 
@@ -141,8 +319,8 @@
       border-radius: 10px; border: 1.5px solid #bae6fd; width: 100%; overflow-x: auto;
     }
     .site-select-strip select {
-      flex: 1; min-width: 130px; background: white; font-weight: bold; border: 1.5px solid #38bdf8;
-      border-radius: 8px; padding: 7px; font-size: 12px; outline: none;
+      flex: 1; min-width: 120px; background: white; font-weight: bold; border: 1.5px solid #38bdf8;
+      border-radius: 8px; padding: 7px; font-size: 12px; outline: none; color: #0f172a;
     }
     .btn-strip-action {
       background: #0284c7; color: white; border: none; padding: 7px 9px;
@@ -230,6 +408,7 @@
 
     .summary-box-img2 {
       background: white; border-radius: 16px; padding: 14px; border: 1px solid #e2e8f0; width: 100%;
+      touch-action: pan-y;
     }
     .summary-header-img2 {
       display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
@@ -305,13 +484,13 @@
       display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; width: 100%;
     }
 
-    /* INNER SUB TABS */
+    /* INNER SUB TABS (3 TABS IN BILL SECTION - IMAGE 6) */
     .sub-tabs-strip {
-      display: flex; gap: 6px; background: #e2e8f0; padding: 4px; border-radius: 12px; width: 100%;
+      display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 12px; width: 100%;
     }
     .sub-tab-btn {
-      flex: 1; padding: 9px; border: none; border-radius: 9px; background: transparent;
-      font-size: 13px; font-weight: 800; color: #475569; cursor: pointer; text-align: center;
+      flex: 1; padding: 9px 4px; border: none; border-radius: 9px; background: transparent;
+      font-size: 12px; font-weight: 800; color: #475569; cursor: pointer; text-align: center;
     }
     .sub-tab-btn.active { background: white; color: #1976b5; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
 
@@ -320,6 +499,67 @@
     .btn-qr-edit { background: #0284c7; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
     .qrbox img { width: 180px; height: 180px; object-fit: contain; border-radius: 8px; margin: 6px auto; display: block; }
     .qrtitle { font-size: 13px; font-weight: 800; color: #0f172a; }
+
+    /* SETTINGS MODAL (IMAGE 3 & 4) */
+    .settings-modal-sheet {
+      background: white;
+      border-radius: 22px;
+      width: 100%;
+      max-width: 400px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 18px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .set-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 4px;
+      display: block;
+    }
+    body.dark-mode .set-label { color: #cbd5e1; }
+    .set-row-flex {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .set-preview-box {
+      width: 62px;
+      height: 62px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .set-preview-box img { width: 100%; height: 100%; object-fit: contain; }
+    .set-btn-pick {
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      color: #0f172a;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .set-btn-clear {
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      color: #475569;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
     /* BOTTOM SHEETS */
     .options-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: flex-end; justify-content: center; }
@@ -439,7 +679,7 @@
     .site-manage-sub-row:active { background: #fee2e2; border-color: #ea580c; }
 
     #saveToast {
-      display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: none; position: fixed; bottom: 78px; left: 50%; transform: translateX(-50%);
       background: #15803d; color: white; padding: 8px 16px; border-radius: 20px;
       font-size: 12px; font-weight: 800; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
@@ -449,22 +689,59 @@
 
   <div class="app-frame">
 
-    <!-- 1. SPLASH SCREEN -->
-    <div id="screenSplash" class="view-screen active">
+    <!-- 1A. BOOT LOADING CARD (IMAGE 1) -->
+    <div id="screenBootCard" class="view-screen active">
+      <div class="boot-white-card">
+        <div class="boot-logo-box">
+          <img id="bootCardLogoImg" alt="Shiv Construction Logo">
+        </div>
+        <div style="font-size:21px; font-weight:900; color:#0f172a;" id="bootCardCompName">Shiv Construction</div>
+        <div style="font-size:14px; font-weight:700; color:#64748b; margin-top:4px;">Site Book</div>
+        <div style="font-size:14px; font-weight:700; color:#64748b; margin-top:24px;">ફોટા લોડ થાય છે...</div>
+      </div>
+    </div>
+
+    <!-- 1B. BRAND SPLASH SCREEN (IMAGE 2) -->
+    <div id="screenSplash" class="view-screen">
       <div style="text-align:center;">
+        <div class="splash-brand-logo">
+          <img id="splashBrandLogoImg" alt="Shiv Construction Logo">
+        </div>
         <div class="build-dream-tag">BUILD YOUR DREAM</div>
         <div class="title-shiv">SHIV</div>
         <div class="title-construction">CONSTRUCTION</div>
       </div>
-      <div class="splash-loader"></div>
+      <div class="splash-loader" style="margin:34px auto 0 auto;"></div>
     </div>
 
-    <!-- 2. MAIN DASHBOARD (4 OPTIONS INCLUDING BACKUP & RESTORE) -->
+    <!-- 1C. PIN LOCK SCREEN (IF PIN IS SET) -->
+    <div id="screenPinLock" class="view-screen">
+      <div class="pin-card">
+        <div style="font-size:36px; margin-bottom:8px;">🔒</div>
+        <div style="font-size:18px; font-weight:900; color:#0f172a;" id="pinScreenTitle">SHIV CONSTRUCTION</div>
+        <div style="font-size:12px; color:#64748b; font-weight:700; margin-top:4px;">એપ ખોલવા માટે 4-6 અંકનો PIN નાખો</div>
+        <input type="password" id="pinUnlockInput" class="pin-input-box" inputmode="numeric" maxlength="6" placeholder="••••">
+        <button type="button" class="btn-add" onclick="window.verifyAppPin()">🔓 અનલોક કરો (Unlock)</button>
+      </div>
+    </div>
+
+    <!-- 2. MAIN DASHBOARD (IMAGE 5) -->
     <div id="screenDashboard" class="view-screen">
       <header class="top-header-orange">
-        <div style="font-weight:900; font-size:17px;">SHIV CONSTRUCTION</div>
-        <div style="font-size:12px; opacity:0.9;">Master ERP Suite</div>
+        <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+          <img id="homeHeaderLogoImg" class="header-logo-thumb" alt="Logo">
+          <div style="min-width:0;">
+            <div style="font-weight:900; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="homeHeaderCompName">SHIV CONSTRUCTION</div>
+            <div style="font-size:11px; opacity:0.92; font-weight:700;">હાજરી · બિલ · સાઇટ હિસાબ</div>
+          </div>
+        </div>
+        <button class="nav-btn-round" onclick="window.openAppSettingsModal()" title="લોગો અને પ્રિન્ટ સેટિંગ્સ">⚙️</button>
       </header>
+
+      <div class="workspace-banner">
+        <div class="workspace-title">મારું કાર્યસ્થળ</div>
+        <div class="workspace-date" id="liveGujDateBanner">શુક્રવાર, 27 નવેમ્બર, 2026</div>
+      </div>
 
       <div class="dashboard-grid">
         <div class="dash-card dc-att" onclick="window.navToScreen('screenAttendanceList')">
@@ -478,8 +755,8 @@
         <div class="dash-card dc-bill" onclick="window.openBillUpadDirect()">
           <div class="dash-icon-box">⚖️</div>
           <div>
-            <div class="dash-title">2. Bill Book / Upad Section Mix</div>
-            <div class="dash-desc">કામનું બિલ − ઉપાડ = બાકી નીકળતા રૂપિયા</div>
+            <div class="dash-title">2. Estimate / Bill Book / Upad</div>
+            <div class="dash-desc">અંદાજિત બિલ, કામનું બિલ − ઉપાડ = બાકી રૂપિયા</div>
           </div>
         </div>
 
@@ -491,7 +768,6 @@
           </div>
         </div>
 
-        <!-- PROFESSIONAL BACKUP & RESTORE CARD -->
         <div class="dash-card dc-backup" onclick="window.openBackupRestoreModal()">
           <div class="dash-icon-box">💾</div>
           <div>
@@ -563,7 +839,7 @@
           <span>To: <input type="date" id="custTo" onchange="window.saveAndRefresh()"></span>
         </div>
 
-        <div class="summary-box-img2">
+        <div class="summary-box-img2" id="salarySummaryCard">
           <div class="summary-header-img2">
             <div class="sum-title-left">પગાર સારાંશ (Salary Summary)</div>
             <div class="sum-period-right" id="sumPeriodLabel">સપ્ટેમ્બર ૨૦૨૬</div>
@@ -586,7 +862,7 @@
       </div>
     </div>
 
-    <!-- 6. SCREEN: PAKKU BILL & SIMPLE UPAD -->
+    <!-- 6. SCREEN: ESTIMATE / PAKKU BILL & SIMPLE UPAD (IMAGE 6) -->
     <div id="screenBillUpadSiteDetail" class="view-screen">
       <header class="top-header-orange">
         <button class="nav-btn-round" onclick="window.navToScreen('screenDashboard')">←</button>
@@ -610,11 +886,38 @@
           <button class="btn-strip-action" style="background:#16a34a;" onclick="window.openCustomerManagerModal()">👥 ગ્રાહક મેનેજર</button>
         </div>
 
+        <!-- 3 TABS: 1. Estimate Bill | 2. Bill Book | 3. ઉપાડ (IMAGE 6) -->
         <div class="sub-tabs-strip">
-          <button class="sub-tab-btn active" id="subTabBtnBill" onclick="window.switchBillUpadInnerTab('BILL')">૧. કામનું પાકું બિલ</button>
-          <button class="sub-tab-btn" id="subTabBtnUpad" onclick="window.switchBillUpadInnerTab('UPAD')">૨. ઉપાડ હિસાબ</button>
+          <button class="sub-tab-btn" id="subTabBtnEst" onclick="window.switchBillUpadInnerTab('EST')">૧. Estimate Bill</button>
+          <button class="sub-tab-btn active" id="subTabBtnBill" onclick="window.switchBillUpadInnerTab('BILL')">૨. Bill Book</button>
+          <button class="sub-tab-btn" id="subTabBtnUpad" onclick="window.switchBillUpadInnerTab('UPAD')">૩. ઉપાડ</button>
         </div>
 
+        <!-- PANE 1: ESTIMATE BILL (IMAGE 6) -->
+        <div id="paneEstimateWorks" style="display:none; flex-direction:column; gap:10px;">
+          <div style="font-size:16px; font-weight:900; color:#0f172a; padding:2px 2px;">Estimate Bill</div>
+          <div class="table-card">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">ક્રમ</th>
+                  <th>કામ (એકમ)</th>
+                  <th class="col-q">માપ</th>
+                  <th class="col-r">રેટ ₹</th>
+                  <th class="amt">કુલ ₹</th>
+                </tr>
+              </thead>
+              <tbody id="estimateTableRows"></tbody>
+            </table>
+          </div>
+          <button class="btn-add" onclick="window.addEstimateItemRow()">＋ Estimate આઇટમ ઉમેરો</button>
+          <div class="summary-card" style="border-color:#ea580c;">
+            <span>કુલ અંદાજિત રકમ (Estimate Total):</span>
+            <span style="color:#ea580c; font-size:16px; font-weight:900;">₹ <span id="estSheetGrandTotal">0.00</span></span>
+          </div>
+        </div>
+
+        <!-- PANE 2: BILL BOOK -->
         <div id="paneBillWorks" style="display:flex; flex-direction:column; gap:10px;">
           <div class="table-card">
             <table>
@@ -629,6 +932,7 @@
           <button class="btn-add" onclick="window.addBillWorkItem()">＋ નવું કામ ઉમેરો</button>
         </div>
 
+        <!-- PANE 3: UPAD -->
         <div id="paneUpadAdvances" style="display:none; flex-direction:column; gap:10px;">
           <div class="table-card">
             <table>
@@ -731,13 +1035,109 @@
       </div>
     </div>
 
+    <!-- FIXED BOTTOM NAVIGATION BAR (IMAGE 5) -->
+    <nav class="bottom-nav-bar" id="mainBottomNav">
+      <button type="button" class="bnav-item active" id="bnavHome" onclick="window.navToScreen('screenDashboard')">
+        <span class="bnav-ico">🏠</span>
+        <span>હોમ</span>
+      </button>
+      <button type="button" class="bnav-item" id="bnavAtt" onclick="window.navToScreen('screenAttendanceList')">
+        <span class="bnav-ico">📅</span>
+        <span>હાજરી</span>
+      </button>
+      <button type="button" class="bnav-item" id="bnavBill" onclick="window.openBillUpadDirect()">
+        <span class="bnav-ico">🧾</span>
+        <span>બિલ</span>
+      </button>
+      <button type="button" class="bnav-item" id="bnavKharch" onclick="window.openKharchDirect()">
+        <span class="bnav-ico">👛</span>
+        <span>ખર્ચ</span>
+      </button>
+      <button type="button" class="bnav-item" id="bnavBackup" onclick="window.openBackupRestoreModal()">
+        <span class="bnav-ico">💾</span>
+        <span>બેકઅપ</span>
+      </button>
+    </nav>
+
   </div>
 
-  <!-- HIDDEN FILE INPUT FOR RESTORE & QR -->
+  <!-- HIDDEN FILE INPUTS -->
   <input type="file" id="nativeGalleryInput" accept="image/*" onchange="window.processSelectedQrImage(event)" style="display:none;">
   <input type="file" id="backupFileInput" accept=".json" onchange="window.importAppDataJSON(event)" style="display:none;">
+  <input type="file" id="companyLogoInput" accept="image/*" onchange="window.processCompanyLogo(event)" style="display:none;">
+  <input type="file" id="companySignInput" accept="image/*" onchange="window.processCompanySignature(event)" style="display:none;">
 
   <!-- ==================== MODALS ==================== -->
+
+  <!-- APP SETTINGS MODAL: LOGO & PRINT (IMAGE 3 & 4) -->
+  <div class="modal-overlay" id="appSettingsModal" onclick="document.getElementById('appSettingsModal').style.display='none'">
+    <div class="settings-modal-sheet" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:18px; font-weight:900;">લોગો અને પ્રિન્ટ</div>
+        <button type="button" class="set-btn-clear" onclick="document.getElementById('appSettingsModal').style.display='none'">✕</button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #e2e8f0;">
+        <span style="font-size:14px; font-weight:700;">ડાર્ક મોડ</span>
+        <input type="checkbox" id="setDarkModeChk" style="width:20px; height:20px; cursor:pointer;" onchange="window.toggleDarkModePreview(this.checked)">
+      </div>
+
+      <div>
+        <span class="set-label">કંપની લોગો</span>
+        <div class="set-row-flex">
+          <div class="set-preview-box"><img id="setLogoPreview" alt="Logo"></div>
+          <button type="button" class="set-btn-pick" onclick="document.getElementById('companyLogoInput').click()">📷 લોગો પસંદ કરો</button>
+          <button type="button" class="set-btn-clear" onclick="window.resetCompanyLogo()" title="Reset Logo">↺</button>
+        </div>
+      </div>
+
+      <div>
+        <span class="set-label">GST નંબર (વૈકલ્પિક)</span>
+        <input type="text" class="img4-field" id="setGstInput" placeholder="GSTIN">
+      </div>
+
+      <div>
+        <span class="set-label">PAN નંબર (વૈકલ્પિક)</span>
+        <input type="text" class="img4-field" id="setPanInput" placeholder="ABCDE1234F" style="text-transform:uppercase;">
+      </div>
+
+      <div>
+        <span class="set-label">કોન્ટ્રાક્ટરનું નામ</span>
+        <input type="text" class="img4-field" id="setCompNameInput" placeholder="SHIV CONSTRUCTION">
+      </div>
+
+      <div>
+        <span class="set-label">મોબાઇલ નંબર</span>
+        <input type="tel" class="img4-field" id="setCompMobileInput" placeholder="88669 72211">
+      </div>
+
+      <div>
+        <span class="set-label">સરનામું</span>
+        <input type="text" class="img4-field" id="setCompAddressInput" placeholder="સરનામું લખો">
+      </div>
+
+      <div>
+        <span class="set-label">અધિકૃત સહી (વૈકલ્પિક)</span>
+        <div class="set-row-flex">
+          <div class="set-preview-box" style="width:82px; height:52px;"><img id="setSignPreview" alt="Signature" style="display:none;"><span id="setSignPlaceholder" style="font-size:10px; color:#94a3b8;">No Sign</span></div>
+          <button type="button" class="set-btn-pick" onclick="document.getElementById('companySignInput').click()">✍️ સહી પસંદ કરો</button>
+          <button type="button" class="set-btn-clear" onclick="window.clearCompanySignature()" title="Clear Sign">✕</button>
+        </div>
+      </div>
+
+      <div>
+        <span class="set-label">PIN લોક (વૈકલ્પિક)</span>
+        <div class="set-row-flex">
+          <input type="password" class="img4-field" id="setPinInput" inputmode="numeric" maxlength="6" placeholder="4–6 અંકનો PIN" style="flex:1;">
+          <button type="button" class="set-btn-pick" onclick="window.setAppPinFromInput()">🔒 PIN સેટ કરો</button>
+          <button type="button" class="set-btn-clear" onclick="window.clearAppPin()" title="Remove PIN">✕</button>
+        </div>
+        <div id="pinStatusHint" style="font-size:11px; color:#16a34a; font-weight:700; margin-top:4px;"></div>
+      </div>
+
+      <button type="button" class="btn-add" style="padding:13px; font-size:15px; margin-top:4px;" onclick="window.saveAppProfileSettings()">સાચવો</button>
+    </div>
+  </div>
 
   <!-- BACKUP & RESTORE MODAL -->
   <div class="modal-overlay" id="backupRestoreModal" onclick="document.getElementById('backupRestoreModal').style.display='none'">
@@ -973,13 +1373,163 @@
       return Number.isFinite(x) ? x : 0;
     };
 
-    const gujMonths = ["જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન", "જુલાઈ", "ઓગસ્ટ", "સપ્ટેમ્બર", "ઓક્ટોબર", "નવેમ્બર", "ડિસેમ્બર"];
+    const DEFAULT_SHIV_LOGO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23f59e0b'/%3E%3Cstop offset='100%25' stop-color='%23b45309'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='200' rx='36' fill='%23ffffff'/%3E%3Ccircle cx='100' cy='100' r='86' fill='none' stroke='url(%23g)' stroke-width='5'/%3E%3Cpath d='M48 92 L100 50 L152 92' fill='none' stroke='%23d97706' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='93' y='67' width='14' height='14' rx='2' fill='%23b45309'/%3E%3Cpath d='M36 52 L36 112 M26 60 Q26 76 36 76 Q46 76 46 60' fill='none' stroke='%23dc2626' stroke-width='4.5' stroke-linecap='round'/%3E%3Ctext x='104' y='116' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='44' fill='%231e293b'%3ESHIV%3C/text%3E%3Ctext x='100' y='138' text-anchor='middle' font-family='Arial,sans-serif' font-weight='900' font-size='15' fill='%23b45309' letter-spacing='1'%3ECONSTRUCTION%3C/text%3E%3Crect x='54' y='145' width='92' height='18' rx='4' fill='%23dc2626'/%3E%3Ctext x='100' y='158' text-anchor='middle' font-family='Arial,sans-serif' font-weight='900' font-size='12' fill='%23ffffff' letter-spacing='1.5'%3ERAJKOT%3C/text%3E%3C/svg%3E";
 
-    const rates = [45,45,485,435,65,65,3750,50,18,18,22,28,42,18,18,24,24,28,42,18,18,18,18,18,18,18,18,15,18,26,18,26,7,5,2500,501];
+    const SETTINGS_KEY = "SHIV_APP_SETTINGS_V1";
+    let appSettings = {
+      darkMode: false,
+      logo: DEFAULT_SHIV_LOGO,
+      gst: "",
+      pan: "",
+      companyName: "SHIV CONSTRUCTION",
+      mobile: "88669 72211",
+      address: "ચામુંડા કૃપા, પ્રજાપતિ ચોક પાસે, યાગરાજ, મનોહરપુર-1, 3",
+      signature: "",
+      pin: ""
+    };
+
+    try {
+      const savedSet = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
+      if (savedSet) appSettings = Object.assign(appSettings, savedSet);
+    } catch(e) {}
+
+    function applyAppSettingsToUI() {
+      document.body.classList.toggle("dark-mode", Boolean(appSettings.darkMode));
+      const logoSrc = appSettings.logo || DEFAULT_SHIV_LOGO;
+      ["bootCardLogoImg", "splashBrandLogoImg", "homeHeaderLogoImg", "setLogoPreview"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.src = logoSrc;
+      });
+      const cName = appSettings.companyName || "SHIV CONSTRUCTION";
+      const hTitle = document.getElementById("homeHeaderCompName");
+      if (hTitle) hTitle.innerText = cName;
+      const bTitle = document.getElementById("bootCardCompName");
+      if (bTitle) bTitle.innerText = cName;
+      const pTitle = document.getElementById("pinScreenTitle");
+      if (pTitle) pTitle.innerText = cName;
+    }
+
+    window.openAppSettingsModal = function() {
+      document.getElementById("setDarkModeChk").checked = Boolean(appSettings.darkMode);
+      document.getElementById("setLogoPreview").src = appSettings.logo || DEFAULT_SHIV_LOGO;
+      document.getElementById("setGstInput").value = appSettings.gst || "";
+      document.getElementById("setPanInput").value = appSettings.pan || "";
+      document.getElementById("setCompNameInput").value = appSettings.companyName || "SHIV CONSTRUCTION";
+      document.getElementById("setCompMobileInput").value = appSettings.mobile || "";
+      document.getElementById("setCompAddressInput").value = appSettings.address || "";
+      
+      const signImg = document.getElementById("setSignPreview");
+      const signPh = document.getElementById("setSignPlaceholder");
+      if (appSettings.signature) {
+        signImg.src = appSettings.signature;
+        signImg.style.display = "block";
+        signPh.style.display = "none";
+      } else {
+        signImg.style.display = "none";
+        signPh.style.display = "inline";
+      }
+
+      document.getElementById("setPinInput").value = appSettings.pin || "";
+      document.getElementById("pinStatusHint").innerText = appSettings.pin ? "🔒 PIN લોક સક્રિય છે" : "PIN લોક સેટ નથી";
+      document.getElementById("appSettingsModal").style.display = "flex";
+    };
+
+    window.toggleDarkModePreview = function(isDark) {
+      appSettings.darkMode = isDark;
+      document.body.classList.toggle("dark-mode", Boolean(isDark));
+    };
+
+    window.processCompanyLogo = function(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      compressPhotoFile(file, data => {
+        appSettings.logo = data;
+        document.getElementById("setLogoPreview").src = data;
+      });
+    };
+
+    window.resetCompanyLogo = function() {
+      appSettings.logo = DEFAULT_SHIV_LOGO;
+      document.getElementById("setLogoPreview").src = DEFAULT_SHIV_LOGO;
+    };
+
+    window.processCompanySignature = function(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      compressPhotoFile(file, data => {
+        appSettings.signature = data;
+        const signImg = document.getElementById("setSignPreview");
+        signImg.src = data;
+        signImg.style.display = "block";
+        document.getElementById("setSignPlaceholder").style.display = "none";
+      });
+    };
+
+    window.clearCompanySignature = function() {
+      appSettings.signature = "";
+      document.getElementById("setSignPreview").style.display = "none";
+      document.getElementById("setSignPlaceholder").style.display = "inline";
+    };
+
+    window.setAppPinFromInput = function() {
+      const val = document.getElementById("setPinInput").value.trim();
+      if (!/^\d{4,6}$/.test(val)) {
+        alert("કૃપા કરીને 4 થી 6 અંકનો નંબર PIN લખો.");
+        return;
+      }
+      appSettings.pin = val;
+      document.getElementById("pinStatusHint").innerText = "🔒 PIN સેટ થઈ ગયો છે (સાચવો દબાવો)";
+      triggerAutoSaveToast("🔒 PIN સેટ થયો!");
+    };
+
+    window.clearAppPin = function() {
+      appSettings.pin = "";
+      document.getElementById("setPinInput").value = "";
+      document.getElementById("pinStatusHint").innerText = "PIN લોક હટાવી દેવામાં આવ્યો છે";
+    };
+
+    window.saveAppProfileSettings = function() {
+      const pinVal = document.getElementById("setPinInput").value.trim();
+      if (pinVal && !/^\d{4,6}$/.test(pinVal)) {
+        alert("PIN 4 થી 6 અંકનો હોવો જોઈએ.");
+        return;
+      }
+      appSettings.darkMode = document.getElementById("setDarkModeChk").checked;
+      appSettings.gst = document.getElementById("setGstInput").value.trim().toUpperCase();
+      appSettings.pan = document.getElementById("setPanInput").value.trim().toUpperCase();
+      appSettings.companyName = document.getElementById("setCompNameInput").value.trim() || "SHIV CONSTRUCTION";
+      appSettings.mobile = document.getElementById("setCompMobileInput").value.trim();
+      appSettings.address = document.getElementById("setCompAddressInput").value.trim();
+      appSettings.pin = pinVal;
+
+      try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
+      } catch(e) {}
+
+      applyAppSettingsToUI();
+      document.getElementById("appSettingsModal").style.display = "none";
+      triggerAutoSaveToast("✅ પ્રોફાઇલ અને સેટિંગ્સ સેવ થયા!");
+    };
+
+    window.verifyAppPin = function() {
+      const entered = document.getElementById("pinUnlockInput").value.trim();
+      if (entered === appSettings.pin) {
+        document.getElementById("pinUnlockInput").value = "";
+        window.navToScreen("screenDashboard");
+      } else {
+        alert("❌ ખોટો PIN! ફરી પ્રયાસ કરો.");
+        document.getElementById("pinUnlockInput").value = "";
+      }
+    };
+
+    const gujMonths = ["જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન", "જુલાઈ", "ઓગસ્ટ", "સપ્ટેમ્બર", "ઓક્ટોબર", "નવેમ્બર", "ડિસેમ્બર"];
+    const gujDaysFull = ["રવિવાર", "સોમવાર", "મંગળવાર", "બુધવાર", "ગુરુવાર", "શુક્રવાર", "શનિવાર"];
+
+    const rates = [45,65,485,435,65,65,3750,50,18,18,18,22,28,42,18,18,24,24,28,42,18,18,18,18,18,18,18,18,15,18,26,18,26,7,5,2500,501];
 
     const itemNames = [
-      "ફ્રેમ (rf)","સીલ (rf)","પ્લેટફોર્મ ગ્લાસ વ્હાઇટ (sq)","પ્લેટફોર્મ ગ્રેનાઈટ (sq)","કબાટ (sq)","સેલ્ફ (sq)","સીડી (etc)","ઉમરા (rf)",
-      "વોલ ટાઇલ્સ (sq)","વોલ ટાઇલ્સ 12*18 (sq)","વોલ ટાઇલ્સ 24*24 (sq)","વોલ ટાઇલ્સ 24*48 (sq)","વોલ ટાઇલ્સ બીગ સાઈઝ (sq)",
+      "ફ્રેમ સીંગલ પટ્ટો (rf)","સીલ (rf)","પ્લેટફોર્મ ગ્લાસ વ્હાઇટ (sq)","પ્લેટફોર્મ ગ્રેનાઈટ (sq)","કબાટ (sq)","સેલ્ફ (sq)","સીડી (etc)","ઉમરા (rf)",
+      "વોલ ટાઇલ્સ (sq)","વોલ ટાઇલ્સ 12*18 (sq)","વોલ ટાઇલ્સ 12*24 (sq)","વોલ ટાઇલ્સ 24*24 (sq)","વોલ ટાઇલ્સ 24*48 (sq)","વોલ ટાઇલ્સ બીગ સાઈઝ (sq)",
       "ફ્લોર ટાઇલ્સ (sq)","ફ્લોર ટાઇલ્સ 24*24 (sq)","ફ્લોર ટાઇલ્સ 24*48‌ (sq)","ફ્લોર ટાઇલ્સ 32*32 (sq)","ફ્લોર ટાઇલ્સ 32*64 (sq)","ફ્લોર ટાઇલ્સ બીગ સાઈઝ (sq)",
       "બાથ ટાઇલ્સ (sq)","કિચન ટાઇલ્સ (sq)","નવેરૂ ટાઇલ્સ (sq)","એલીવેશન ટાઇલ્સ (sq)","કબાટ ટાઇલ્સ (sq)","રૂમ ટાઇલ્સ (sq)","રવેશ ફ્લોર (sq)",
       "ફળીયુ ફ્લોર (sq)","સ્કટિંગ ફ્લોર (rf)","સ્કટિંગ સીડી (rf)","સ્કટિંગ ડીગ્રી (rf)","અગાશી ટાઇલ્સ (sq)","અગાશી ટુકડી (sq)",
@@ -1045,7 +1595,6 @@
       }
     } catch(e) {}
 
-    // Remove the original demo records while preserving any real saved entries.
     helpersList = helpersList.filter(h => !["h1", "h2", "h3", "h4"].includes(h.id));
     customerList = customerList.filter(c => !["c1", "c2", "c3"].includes(c.id));
     ["c1", "c2", "c3"].forEach(id => delete allCustomerBills[id]);
@@ -1094,6 +1643,22 @@
       } catch(e) {}
     }
 
+    function updateBottomNavHighlight(screenId) {
+      const nav = document.getElementById("mainBottomNav");
+      if (!nav) return;
+      const hideOn = ["screenBootCard", "screenSplash", "screenPinLock"];
+      if (hideOn.includes(screenId)) {
+        nav.classList.remove("visible");
+        return;
+      }
+      nav.classList.add("visible");
+      document.querySelectorAll(".bnav-item").forEach(btn => btn.classList.remove("active"));
+      if (screenId === "screenDashboard") document.getElementById("bnavHome")?.classList.add("active");
+      else if (screenId === "screenAttendanceList" || screenId === "screenCalendar") document.getElementById("bnavAtt")?.classList.add("active");
+      else if (screenId === "screenBillUpadSiteDetail") document.getElementById("bnavBill")?.classList.add("active");
+      else if (screenId === "screenKharchSiteDetail") document.getElementById("bnavKharch")?.classList.add("active");
+    }
+
     window.navToScreen = function(screenId) {
       document.querySelectorAll(".view-screen").forEach(s => s.classList.remove("active"));
       const target = document.getElementById(screenId);
@@ -1101,14 +1666,14 @@
         target.classList.add("active");
         if (screenId === "screenAttendanceList") window.renderHelperListUI();
       }
+      updateBottomNavHighlight(screenId);
     };
 
     function setupLongPress(element, callback) {
       if (!element) return;
-      let timer = null, isPress = false;
+      let timer = null;
       const start = () => {
-        isPress = false;
-        timer = setTimeout(() => { isPress = true; callback(); }, 800);
+        timer = setTimeout(() => { callback(); }, 800);
       };
       const cancel = () => clearTimeout(timer);
 
@@ -1190,7 +1755,8 @@
         helpersList: helpersList,
         allAttendanceData: allAttendanceData,
         customerList: customerList,
-        allCustomerBills: allCustomerBills
+        allCustomerBills: allCustomerBills,
+        appSettings: appSettings
       };
 
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj, null, 2));
@@ -1218,6 +1784,10 @@
               allAttendanceData = parsed.allAttendanceData || {};
               customerList = parsed.customerList;
               allCustomerBills = parsed.allCustomerBills || {};
+              if (parsed.appSettings) {
+                appSettings = Object.assign(appSettings, parsed.appSettings);
+                localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
+              }
 
               saveMasterData();
               populateGlobalSiteDropdowns();
@@ -1239,7 +1809,7 @@
        POPULATE GLOBAL SITE DROPDOWNS
        ======================================================== */
     function populateGlobalSiteDropdowns() {
-      const ids = ["siteDropdownEst", "siteDropdownBill", "siteDropdownKharch"];
+      const ids = ["siteDropdownBill", "siteDropdownKharch"];
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
@@ -1249,7 +1819,7 @@
             const opt = document.createElement("option");
             opt.value = `${c.id}:::${s.siteId}`;
             opt.innerText = `${c.name} - ${s.siteName}`;
-            if (c.id === activeCustomer.id && s.siteId === activeSiteId) opt.selected = true;
+            if (activeCustomer && c.id === activeCustomer.id && s.siteId === activeSiteId) opt.selected = true;
             el.appendChild(opt);
           });
         });
@@ -1264,12 +1834,13 @@
       if (!activeCustomer || !activeSiteId) return;
       populateGlobalSiteDropdowns();
       
+      window.loadActiveSiteEstimateData();
       window.loadActiveSiteBillUpadData();
       window.loadActiveSiteKharchData();
     };
 
     /* ========================================================
-       CUSTOMER & SITE MANAGEMENT (EDIT, DELETE & PRINT/SHARE)
+       CUSTOMER & SITE MANAGEMENT
        ======================================================== */
     window.openCustomerManagerModal = function() {
       const container = document.getElementById("custManagerListContainer");
@@ -1310,14 +1881,12 @@
           <div style="margin-top:6px;">${sitesHtml}</div>
         `;
 
-        // CUSTOMER HEADER LONG PRESS
         const headEl = row.querySelector(`#custManageHead_${c.id}`);
         setupLongPress(headEl, () => {
           selectedCustForOpt = c;
           window.openCustomerOptionsMenu(c);
         });
 
-        // SITE ROWS LONG PRESS & CLICK
         (c.sites || []).forEach(s => {
           const sRow = row.querySelector(`#siteManageSub_${s.siteId}`);
           if (sRow) {
@@ -1382,6 +1951,7 @@
         saveMasterData();
         populateGlobalSiteDropdowns();
         document.getElementById("custOptionsModal").style.display = "none";
+        window.loadActiveSiteEstimateData();
         window.loadActiveSiteBillUpadData();
         window.loadActiveSiteKharchData();
         alert("✅ ગ્રાહક ડીલીટ થઈ ગયો!");
@@ -1429,11 +1999,11 @@
       saveMasterData();
       populateGlobalSiteDropdowns();
       document.getElementById("customerFormModal").style.display = "none";
+      window.loadActiveSiteEstimateData();
       window.loadActiveSiteBillUpadData();
       window.loadActiveSiteKharchData();
     };
 
-    // SITE EDIT & DELETE DIRECT / FROM MODAL
     window.openEditSiteDirect = function() {
       if (!activeCustomer) return;
       const curSite = activeCustomer.sites.find(s => s.siteId === activeSiteId);
@@ -1528,7 +2098,7 @@
 
         if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
         allCustomerBills[activeCustomer.id][newSId] = {
-          estimates: [{ name: itemNames[8], qty: "100", rate: rates[8] }],
+          estimates: itemNames.map((nm, i) => ({ name: nm, qty: "", rate: rates[i] })),
           works: [{ name: itemNames[0], qty: "0", rate: rates[0] }],
           advances: [],
           expenses: []
@@ -1540,6 +2110,7 @@
       populateGlobalSiteDropdowns();
       document.getElementById("siteFormModal").style.display = "none";
       
+      window.loadActiveSiteEstimateData();
       window.loadActiveSiteBillUpadData();
       window.loadActiveSiteKharchData();
     };
@@ -1787,166 +2358,6 @@
       }
     };
 
-    function generatePrintableReport(helper, mode, params) {
-      const att = allAttendanceData[helper.id] || {};
-      let p = 0, hd = 0, a = 0, ot = 0, upad = 0;
-      let rowsHtml = "";
-      let title = "";
-
-      if (mode === 'month') {
-        title = `${gujMonths[params.m]} ${params.y}`;
-        for (let d = 1; d <= 31; d++) {
-          const k = `${params.y}-${params.m}-${d}`;
-          if (att[k] && att[k].status !== "NONE") {
-            const r = att[k];
-            if (r.status === "P") p++;
-            if (r.status === "HD") hd++;
-            if (r.status === "A") a++;
-            ot += (r.ot || 0);
-            upad += (r.upad || 0);
-            let stTxt = r.status === "P" ? "હાજર" : (r.status === "HD" ? "અડધો" : "ગેરહાજર");
-            rowsHtml += `<tr><td>${d} ${gujMonths[params.m]} ${params.y}</td><td>${stTxt}</td><td>${r.ot || 0}</td><td>₹ ${r.upad || 0}</td><td>${r.note || '-'}</td></tr>`;
-          }
-        }
-      } else if (mode === 'dateRange') {
-        title = `તારીખ: ${params.from} થી ${params.to}`;
-        for (let k in att) {
-          const parts = k.split("-");
-          if (parts.length !== 3) continue;
-          const recDateKey = `${parts[0]}-${String(parseInt(parts[1], 10) + 1).padStart(2, "0")}-${String(parseInt(parts[2], 10)).padStart(2, "0")}`;
-          if (recDateKey >= params.from && recDateKey <= params.to && att[k].status !== "NONE") {
-            const r = att[k];
-            if (r.status === "P") p++;
-            if (r.status === "HD") hd++;
-            if (r.status === "A") a++;
-            ot += (r.ot || 0);
-            upad += (r.upad || 0);
-            let stTxt = r.status === "P" ? "હાજર" : (r.status === "HD" ? "અડધો" : "ગેરહાજર");
-            rowsHtml += `<tr><td>${parts[2]} ${gujMonths[parseInt(parts[1])]} ${parts[0]}</td><td>${stTxt}</td><td>${r.ot || 0}</td><td>₹ ${r.upad || 0}</td><td>${r.note || '-'}</td></tr>`;
-          }
-        }
-      } else if (mode === 'all') {
-        title = "બધા મહિના (All Month)";
-        const monthTotals = {};
-
-        Object.entries(att).forEach(([key, record]) => {
-          const parts = key.split("-");
-          if (parts.length !== 3) return;
-          const year = parseInt(parts[0], 10);
-          const month = parseInt(parts[1], 10);
-          if (!Number.isFinite(year) || month < 0 || month > 11) return;
-          if (record.status === "NONE" && !record.ot && !record.upad && !record.note) return;
-
-          const monthKey = `${year}-${String(month).padStart(2, "0")}`;
-          if (!monthTotals[monthKey]) {
-            monthTotals[monthKey] = { year, month, p: 0, hd: 0, a: 0, ot: 0, upad: 0 };
-          }
-          const total = monthTotals[monthKey];
-          if (record.status === "P") total.p++;
-          if (record.status === "HD") total.hd++;
-          if (record.status === "A") total.a++;
-          total.ot += window.num(record.ot);
-          total.upad += window.num(record.upad);
-        });
-
-        Object.values(monthTotals).sort((x, y) => x.year - y.year || x.month - y.month).forEach(total => {
-          const monthDays = total.p + (total.hd * 0.5);
-          const monthEarned = (total.p * helper.wage) + (total.hd * (helper.wage / 2)) + (total.ot * (helper.wage / 8));
-          const monthBalance = monthEarned - total.upad;
-          p += total.p; hd += total.hd; a += total.a; ot += total.ot; upad += total.upad;
-          rowsHtml += `<tr><td><b>${gujMonths[total.month]} ${total.year}</b></td><td>${monthDays} દિવસ</td><td>₹ ${window.money(monthEarned)}</td><td>₹ ${window.money(total.upad)}</td><td><b>₹ ${window.money(monthBalance)}</b></td></tr>`;
-        });
-      }
-
-      const days = p + (hd * 0.5);
-      const baseWage = (p * helper.wage) + (hd * (helper.wage / 2));
-      const otPay = ot * (helper.wage / 8);
-      const grandTotal = (baseWage + otPay) - upad;
-
-      const isRangeTable = (mode === 'all');
-      const win = window.open('', '_blank');
-      if (!win) { alert("પ્રિન્ટ વિન્ડો ખોલી શકાઈ નથી. કૃપા કરીને popupની મંજૂરી આપો."); return; }
-
-      const photoHtml = helper.photo
-        ? `<img class="helper-photo" src="${helper.photo}" alt="${helper.name}">`
-        : '<div class="helper-photo photo-placeholder">👷</div>';
-      let detailTable = "";
-
-      if (mode === 'month') {
-        const monthDays = new Date(params.y, params.m + 1, 0).getDate();
-        const makeDayRows = (from, to) => {
-          let html = "";
-          for (let d = from; d <= to; d++) {
-            const rec = att[`${params.y}-${params.m}-${d}`] || {};
-            const statusText = rec.status === "P" ? "હાજર" : rec.status === "HD" ? "અડધો" : rec.status === "A" ? "ગેરહાજર" : "";
-            html += `<tr><td class="day">${d}</td><td>${statusText}</td><td>${window.num(rec.upad) ? "₹ " + window.money(rec.upad) : ""}</td><td>${window.num(rec.ot) ? window.num(rec.ot) : ""}</td><td></td></tr>`;
-          }
-          return html;
-        };
-        const tableHalf = (from, to) => `
-          <table class="days-table"><thead><tr><th>તારીખ</th><th>હાજરી</th><th>ઉપાડ ₹</th><th>OT</th><th>સહી</th></tr></thead>
-          <tbody>${makeDayRows(from, to)}</tbody></table>`;
-        detailTable = `<section class="daily-grid">${tableHalf(1, Math.min(16, monthDays))}${tableHalf(17, monthDays)}</section>`;
-      } else {
-        detailTable = `
-          <table class="days-table range-table">
-            <thead><tr>${isRangeTable ? '<th>મહિનો</th><th>કુલ હાજરી</th><th>કમાયેલ મજૂરી</th><th>કુલ ઉપાડ</th><th>બાકી</th>' : '<th>તારીખ</th><th>સ્થિતિ</th><th>OT કલાક</th><th>ઉપાડ ₹</th><th>નોંધ</th>'}</tr></thead>
-            <tbody>${rowsHtml || `<tr><td colspan="5">આ સમયગાળામાં કોઈ હાજરી એન્ટ્રી નથી</td></tr>`}</tbody>
-          </table>`;
-      }
-
-      const periodLabel = mode === 'month' ? `${gujMonths[params.m]} ${params.y}` : title;
-      const cardHtml = `
-        <main class="pay-card">
-          <h1>SHIV CONSTRUCTION</h1>
-          <div class="card-title">કારીગર પગાર કાર્ડ</div>
-          <section class="identity">
-            ${photoHtml}
-            <div class="identity-details">
-              <div><b>કારીગરનું નામ:</b> ${helper.name}</div>
-              <div><b>સરનામું:</b> ${helper.address || "—"}</div>
-              <div><b>મોબાઇલ:</b> ${helper.mobile || "—"} &nbsp; | &nbsp; <b>દૈનિક રોજ:</b> ₹ ${window.money(helper.wage)}</div>
-              <div><b>સમયગાળો:</b> ${periodLabel} &nbsp; | &nbsp; <b>કુલ હાજરી:</b> ${days} દિવસ</div>
-            </div>
-          </section>
-          <section class="summary">
-            <div class="summary-table">
-              <div><b>કુલ પગાર</b><strong>₹ ${window.money(baseWage + otPay)}</strong></div>
-              <div><b>કુલ ઉપાડ</b><strong>₹ ${window.money(upad)}</strong></div>
-              <div class="balance"><b>બાકી રકમ</b><strong>₹ ${window.money(grandTotal)}</strong></div>
-            </div>
-            <div class="signature">મેળવનારની સહી / અંગૂઠો</div>
-          </section>
-          <div class="counts">હાજર: ${p} દિવસ &nbsp; | &nbsp; અડધો: ${hd} દિવસ &nbsp; | &nbsp; ગેરહાજર: ${a} દિવસ &nbsp; | &nbsp; OT: ${ot} કલાક</div>
-          ${detailTable}
-          <div class="card-footer">કુલ પગાર = હાજરીની મજૂરી + OT &nbsp; · &nbsp; બાકી રકમ = કુલ પગાર − ઉપાડ</div>
-        </main>`;
-
-      win.document.write(`
-        <html><head><meta charset="UTF-8"><title>${helper.name} - ${title} પગાર કાર્ડ</title>
-        <style>
-          @page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;margin:0;font-size:10px}
-          .pay-card{border:2px solid #1f2937;padding:12px;min-height:270mm;background:#fff}
-          h1{text-align:center;font-size:20px;letter-spacing:1px;margin:0;padding:6px;border-bottom:1px solid #111827}
-          .card-title{text-align:center;font-weight:bold;font-size:13px;letter-spacing:1px;margin:5px auto 10px;border:1px solid #111827;padding:4px;width:46%}
-          .identity{display:flex;align-items:center;gap:12px;font-size:11px;line-height:1.8;border-bottom:1px dotted #64748b;padding:4px 0}
-          .identity-details{flex:1}.identity-photo{flex-shrink:0}.helper-photo{width:76px;height:76px;object-fit:cover;border:1px solid #64748b;border-radius:6px}.photo-placeholder{display:flex;align-items:center;justify-content:center;background:#ffedd5;font-size:38px}
-          .summary{display:grid;grid-template-columns:1.3fr 1fr;gap:8px;margin:10px 0}
-          .summary-table{border:1px solid #1f2937;border-radius:7px;overflow:hidden}.summary-table>div{display:flex;justify-content:space-between;border-bottom:1px solid #64748b;padding:7px 9px;font-size:11px}
-          .summary-table>div:last-child{border-bottom:0}.summary-table .balance{font-size:13px;font-weight:bold;background:#fff7ed;color:#c2410c}
-          .signature{border:1px solid #1f2937;border-radius:7px;min-height:88px;display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:10px;font-weight:bold}
-          .counts{text-align:center;font-weight:bold;background:#f1f5f9;padding:6px;margin:8px 0}
-          .daily-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.days-table{width:100%;border-collapse:collapse;font-size:9px;margin:0;table-layout:fixed}
-          .days-table th,.days-table td{border:1px solid #475569;padding:4px 3px;text-align:center;min-height:18px;overflow-wrap:anywhere}
-          .days-table th{background:#e2e8f0;font-weight:bold}.days-table .day{width:10%;font-weight:bold}.range-table{margin-top:10px}.range-table td{text-align:left}
-          .card-footer{border-top:1px solid #94a3b8;margin-top:8px;padding-top:5px;text-align:center;font-size:9px;color:#475569}
-          @media print{.pay-card{min-height:270mm;break-inside:avoid}}
-        </style></head><body>${cardHtml}</body></html>`);
-      win.document.close();
-      win.focus();
-      win.print();
-    }
-
     window.openShareOptionsModal = function() {
       document.getElementById("optionsModal").style.display = "none";
       populateReportDialogs();
@@ -2022,7 +2433,7 @@
       const otPay = ot * (h.wage / 8);
       const grandTotal = (baseWage + otPay) - upad;
 
-      let msg = `*🏗️ SHIV CONSTRUCTION - હાજરી પગાર સ્લિપ*%0A*કારીગર:* ${h.name}%0A*સમયગાળો:* ${title}%0A*દૈનિક રોજ:* ₹${h.wage}%0A--------------------------------%0A• હાજર દિવસ: ${p}%0A• અડધો દિવસ: ${hd}%0A• ગેરહાજર દિવસ: ${a}%0A• કુલ હાજરી: ${days} દિવસ%0A• OT કલાક: ${ot} કલાક (₹${Math.round(otPay)})%0A• કમાયેલ મજૂરી: ₹${Math.round(baseWage)}%0A• કુલ ઉપાડ: - ₹${upad}%0A--------------------------------%0A*• ચૂકવવાપાત્ર ચોખ્ખી બાકી રકમ: ₹${Math.round(grandTotal)}*%0A`;
+      let msg = `*🏗️ ${appSettings.companyName || 'SHIV CONSTRUCTION'} - હાજરી પગાર સ્લિપ*%0A*કારીગર:* ${h.name}%0A*સમયગાળો:* ${title}%0A*દૈનિક રોજ:* ₹${h.wage}%0A--------------------------------%0A• હાજર દિવસ: ${p}%0A• અડધો દિવસ: ${hd}%0A• ગેરહાજર દિવસ: ${a}%0A• કુલ હાજરી: ${days} દિવસ%0A• OT કલાક: ${ot} કલાક (₹${Math.round(otPay)})%0A• કમાયેલ મજૂરી: ₹${Math.round(baseWage)}%0A• કુલ ઉપાડ: - ₹${upad}%0A--------------------------------%0A*• ચૂકવવાપાત્ર ચોખ્ખી બાકી રકમ: ₹${Math.round(grandTotal)}*%0A`;
       window.open(h.mobile && h.mobile !== "N/A" ? `https://wa.me/91${h.mobile}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
     };
 
@@ -2099,7 +2510,7 @@
 
       document.getElementById("popDtTitle").innerText = `તારીખ: ${d} ${gujMonths[curMonth]} ${curYear} (${dayNames[dayOfWeek]})`;
 
-      let stText = "૨૬ (None)";
+      let stText = "રદ (None)";
       if (record.status === "P") stText = "હાજર (Full Day)";
       else if (record.status === "HD") stText = "અડધો દિવસ (Half Day)";
       else if (record.status === "A") stText = "ગેરહાજર (Absent)";
@@ -2291,19 +2702,46 @@
       generatePrintableReport(currentSelectedHelper, 'month', { m: curMonth, y: curYear });
     };
 
-    /* ========================================================
-       2, 3 & 4: DIRECT SECTIONS & ITEM PICKER MODAL
-       ======================================================== */
-    window.openEstimateDirect = function() {
-      populateGlobalSiteDropdowns();
-      window.navToScreen('screenEstimateSheet');
-      window.loadActiveSiteEstimateData();
-    };
+    /* SALARY SUMMARY LEFT-RIGHT SWIPE FOR MONTH NAVIGATION */
+    function initSalarySummarySwipe() {
+      const summaryCard = document.getElementById("salarySummaryCard");
+      if (!summaryCard) return;
 
+      let startX = 0;
+      let startY = 0;
+
+      summaryCard.addEventListener("touchstart", function(e) {
+        if (!e.changedTouches || !e.changedTouches.length) return;
+        startX = e.changedTouches[0].clientX;
+        startY = e.changedTouches[0].clientY;
+      }, { passive: true });
+
+      summaryCard.addEventListener("touchend", function(e) {
+        if (!e.changedTouches || !e.changedTouches.length) return;
+        const diffX = startX - e.changedTouches[0].clientX;
+        const diffY = startY - e.changedTouches[0].clientY;
+
+        if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (currentFilterMode !== 'month') {
+            window.setFilter('month');
+          }
+          if (diffX > 0) {
+            window.nextMonth();
+          } else {
+            window.prevMonth();
+          }
+        }
+      }, { passive: true });
+    }
+
+    /* ========================================================
+       2, 3 & 4: DIRECT SECTIONS & 3-TAB BILL SECTION (IMAGE 6)
+       ======================================================== */
     window.openBillUpadDirect = function() {
       populateGlobalSiteDropdowns();
       window.navToScreen('screenBillUpadSiteDetail');
       window.switchBillUpadInnerTab('BILL');
+      window.loadActiveSiteEstimateData();
       window.loadActiveSiteBillUpadData();
     };
 
@@ -2376,24 +2814,57 @@
       });
     };
 
-    // ESTIMATE SHEET
+    // 3 TABS SWITCHER (1. ESTIMATE | 2. BILL BOOK | 3. UPAD)
+    window.switchBillUpadInnerTab = function(tab) {
+      document.getElementById("paneEstimateWorks").style.display = "none";
+      document.getElementById("paneBillWorks").style.display = "none";
+      document.getElementById("paneUpadAdvances").style.display = "none";
+
+      document.getElementById("subTabBtnEst").classList.remove("active");
+      document.getElementById("subTabBtnBill").classList.remove("active");
+      document.getElementById("subTabBtnUpad").classList.remove("active");
+
+      if (tab === 'EST') {
+        document.getElementById("paneEstimateWorks").style.display = "flex";
+        document.getElementById("subTabBtnEst").classList.add("active");
+        window.loadActiveSiteEstimateData();
+      } else if (tab === 'BILL') {
+        document.getElementById("paneBillWorks").style.display = "flex";
+        document.getElementById("subTabBtnBill").classList.add("active");
+      } else {
+        document.getElementById("paneUpadAdvances").style.display = "flex";
+        document.getElementById("subTabBtnUpad").classList.add("active");
+      }
+    };
+
+    // ESTIMATE SHEET (TAB 1 IN BILL SECTION)
     window.loadActiveSiteEstimateData = function() {
+      const tb = document.getElementById("estimateTableRows");
+      if (!tb) return;
+      tb.innerHTML = "";
+
+      if (!activeCustomer || !activeSiteId) {
+        itemNames.slice(0, 9).forEach((nm, i) => window.addEstimateItemRow(nm, "", rates[i]));
+        window.calcEstimateSheet();
+        return;
+      }
+
       if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
       if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
         allCustomerBills[activeCustomer.id][activeSiteId] = {
-          estimates: [{ name: itemNames[8], qty: "200", rate: rates[8] }],
-          works: [{ name: itemNames[0], qty: "200", rate: rates[0] }],
+          estimates: itemNames.slice(0, 9).map((nm, i) => ({ name: nm, qty: "", rate: rates[i] })),
+          works: [{ name: itemNames[0], qty: "", rate: rates[0] }],
           advances: [],
           expenses: []
         };
       }
-      const sObj = activeCustomer.sites.find(s => s.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: activeCustomer.address };
-      document.getElementById("dispEstSubTitle").innerText = `${activeCustomer.name} (${sObj.siteName})`;
 
       const sData = allCustomerBills[activeCustomer.id][activeSiteId];
-      const tb = document.getElementById("estimateTableRows");
-      tb.innerHTML = "";
-      (sData.estimates || []).forEach(e => {
+      const list = (sData.estimates && sData.estimates.length > 0)
+        ? sData.estimates
+        : itemNames.slice(0, 9).map((nm, i) => ({ name: nm, qty: "", rate: rates[i] }));
+
+      list.forEach(e => {
         const iName = e.name || itemNames[e.id] || "વોલ ટાઇલ્સ (sq)";
         window.addEstimateItemRow(iName, e.qty, e.rate);
       });
@@ -2407,17 +2878,19 @@
       let rVal = customRate !== null ? customRate : (getItemDefaultRate(name) || 18);
 
       tr.innerHTML = `
-        <td class="num">${n}</td>
+        <td class="num">
+          <div>${n}</div>
+          <button type="button" onclick="this.closest('tr').remove();window.renumEstRows();window.calcEstimateSheet();window.saveEstimateSheetData()" style="border:0;background:#f1f5f9;border-radius:50%;width:20px;height:20px;font-size:10px;color:#64748b;cursor:pointer;margin-top:3px;">✕</button>
+        </td>
         <td>
           <div class="work-item-wrapper">
             <input class="est-ws-input col-select-work-input" placeholder="કામનું નામ લખો" value="${name}">
-            <button type="button" class="btn-choose-item">લિસ્ટ ▾</button>
+            <button type="button" class="btn-choose-item">▾</button>
           </div>
         </td>
         <td><input class="est-q col-q" inputmode="decimal" placeholder="માપ" value="${qty}"></td>
         <td><input class="est-r col-r" inputmode="decimal" value="${rVal}"></td>
         <td class="amt est-amt">₹ 0.00</td>
-        <td class="del"><button onclick="this.closest('tr').remove();window.renumEstRows();window.calcEstimateSheet();window.saveEstimateSheetData()">🗑️</button></td>
       `;
 
       tb.appendChild(tr);
@@ -2440,7 +2913,10 @@
     };
 
     window.renumEstRows = function() {
-      document.querySelectorAll("#estimateTableRows tr").forEach((r, i) => r.querySelector(".num").innerText = i + 1);
+      document.querySelectorAll("#estimateTableRows tr").forEach((r, i) => {
+        const divNum = r.querySelector(".num div");
+        if (divNum) divNum.innerText = i + 1;
+      });
     };
 
     window.calcEstimateSheet = function() {
@@ -2450,7 +2926,8 @@
         r.querySelector(".est-amt").innerText = "₹ " + window.money(a);
         t += a;
       });
-      document.getElementById("estSheetGrandTotal").innerText = window.money(t);
+      const el = document.getElementById("estSheetGrandTotal");
+      if (el) el.innerText = window.money(t);
     };
 
     window.saveEstimateSheetData = function() {
@@ -2472,20 +2949,6 @@
     };
 
     // PAKKU BILL & UPAD
-    window.switchBillUpadInnerTab = function(tab) {
-      if (tab === 'BILL') {
-        document.getElementById("paneBillWorks").style.display = "flex";
-        document.getElementById("paneUpadAdvances").style.display = "none";
-        document.getElementById("subTabBtnBill").classList.add("active");
-        document.getElementById("subTabBtnUpad").classList.remove("active");
-      } else {
-        document.getElementById("paneBillWorks").style.display = "none";
-        document.getElementById("paneUpadAdvances").style.display = "flex";
-        document.getElementById("subTabBtnBill").classList.remove("active");
-        document.getElementById("subTabBtnUpad").classList.add("active");
-      }
-    };
-
     window.loadActiveSiteBillUpadData = function() {
       if (!activeCustomer || !activeSiteId) {
         document.getElementById("dispBillSubTitle").innerText = "ગ્રાહક ઉમેરો અથવા સાઇટ પસંદ કરો";
@@ -2498,9 +2961,9 @@
       if (!allCustomerBills[activeCustomer.id]) allCustomerBills[activeCustomer.id] = {};
       if (!allCustomerBills[activeCustomer.id][activeSiteId]) {
         allCustomerBills[activeCustomer.id][activeSiteId] = {
-          works: [{ name: itemNames[0], qty: "200", rate: rates[0] }],
+          works: [{ name: itemNames[0], qty: "", rate: rates[0] }],
           advances: [],
-          estimates: [{ name: itemNames[8], qty: "200", rate: rates[8] }],
+          estimates: itemNames.slice(0, 9).map((nm, i) => ({ name: nm, qty: "", rate: rates[i] })),
           expenses: []
         };
       }
@@ -2514,7 +2977,7 @@
       const wTb = document.getElementById("billWorkRows");
       wTb.innerHTML = "";
       (sData.works || []).forEach(w => {
-        const wName = w.name || itemNames[w.id] || "ફ્રેમ (rf)";
+        const wName = w.name || itemNames[w.id] || "ફ્રેમ સીંગલ પટ્ટો (rf)";
         window.addBillWorkItem(wName, w.qty, w.rate, true);
       });
 
@@ -2524,7 +2987,7 @@
       window.calcSiteBillUpadTotals();
     };
 
-    window.addBillWorkItem = function(name = "ફ્રેમ (rf)", qty = "", customRate = null, isExisting = false) {
+    window.addBillWorkItem = function(name = "ફ્રેમ સીંગલ પટ્ટો (rf)", qty = "", customRate = null, isExisting = false) {
       let tb = document.getElementById("billWorkRows");
       let tr = document.createElement("tr");
       tr.dataset.isExisting = isExisting ? "true" : "false";
@@ -2674,6 +3137,7 @@
     };
 
     window.updateLiveAttendanceKharchForSite = function() {
+      if (!activeCustomer) return;
       const siteObj = activeCustomer.sites.find(s => s.siteId === activeSiteId) || { siteName: "સાઇટ" };
       const sName = siteObj.siteName.toLowerCase();
       let liveAttCost = 0;
@@ -2798,7 +3262,39 @@
       saveMasterData();
     };
 
-    /* PRINT & SHARE */
+    /* PRINT & SHARE WITH COMPANY LOGO, GST, PAN & SIGNATURE */
+    function buildCompanyPrintHeaderHTML(subtitleText) {
+      const logoImg = appSettings.logo ? `<img src="${appSettings.logo}" alt="Logo" style="width:58px;height:58px;object-fit:contain;border-radius:10px;border:1px solid #cbd5e1;">` : "";
+      const taxBits = [];
+      if (appSettings.gst) taxBits.push(`<b>GSTIN:</b> ${appSettings.gst}`);
+      if (appSettings.pan) taxBits.push(`<b>PAN:</b> ${appSettings.pan}`);
+      return `
+        <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #ea580c;padding-bottom:10px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            ${logoImg}
+            <div>
+              <h2 style="margin:0;color:#ea580c;font-size:20px;">${appSettings.companyName || 'SHIV CONSTRUCTION'}</h2>
+              <div style="font-size:12px;color:#475569;margin-top:2px;">${appSettings.address || ''}</div>
+              <div style="font-size:12px;color:#0f172a;margin-top:2px;"><b>Mo:</b> ${appSettings.mobile || ''} ${taxBits.length ? ' | ' + taxBits.join(' | ') : ''}</div>
+            </div>
+          </div>
+          <div style="text-align:right;font-weight:bold;color:#475569;font-size:13px;">${subtitleText}</div>
+        </div>
+      `;
+    }
+
+    function buildCompanySignatureFooterHTML() {
+      const signImg = appSettings.signature ? `<img src="${appSettings.signature}" alt="Signature" style="max-height:54px;max-width:150px;object-fit:contain;display:block;margin-left:auto;">` : `<div style="height:40px;"></div>`;
+      return `
+        <div style="margin-top:24px;display:flex;justify-content:flex-end;">
+          <div style="text-align:center;min-width:160px;">
+            ${signImg}
+            <div style="border-top:1px solid #475569;padding-top:4px;font-size:12px;font-weight:bold;">અધિકૃત સહી (${appSettings.companyName || 'SHIV CONSTRUCTION'})</div>
+          </div>
+        </div>
+      `;
+    }
+
     window.printCustomerSiteBySiteBill = function() {
       if (!selectedCustForOpt) return;
       document.getElementById("custOptionsModal").style.display = "none";
@@ -2828,8 +3324,7 @@
       win.document.write(`
         <html><head><title>${c.name} - સાઇટ વાઇઝ બિલ</title>
         <style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;}th{background:#f1f5f9;}</style></head><body>
-          <h2 style="margin:0;color:#ea580c;">SHIV CONSTRUCTION</h2>
-          <p style="margin:4px 0 14px 0;font-weight:bold;color:#475569;">ગ્રાહક સાઇટ વાઇઝ કુલ બિલ અને હિસાબ પત્રક</p>
+          ${buildCompanyPrintHeaderHTML('સાઇટ વાઇઝ કુલ બિલ')}
           <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #cbd5e1;">
             <b>ગ્રાહક:</b> ${c.name} | <b>મોબાઇલ:</b> ${c.mobile} | <b>સરનામું:</b> ${c.address}
           </div>
@@ -2846,6 +3341,7 @@
               <b>કુલ બાકી નીકળતી ચોખ્ખી રકમ: ₹ ${window.money(grandBal)}</b>
             </div>
           </div>
+          ${buildCompanySignatureFooterHTML()}
         </body></html>
       `);
       win.document.close();
@@ -2859,7 +3355,7 @@
       const c = selectedCustForOpt;
       
       let grandWork = 0, grandUpad = 0, grandBal = 0;
-      let msg = `*🏗️ SHIV CONSTRUCTION - સાઇટ વાઇઝ કુલ બિલ*%0A*ગ્રાહક:* ${c.name}%0A*સરનામું:* ${c.address}%0A--------------------------------%0A`;
+      let msg = `*🏗️ ${appSettings.companyName || 'SHIV CONSTRUCTION'} - સાઇટ વાઇઝ કુલ બિલ*%0A*ગ્રાહક:* ${c.name}%0A*સરનામું:* ${c.address}%0A--------------------------------%0A`;
 
       (c.sites || []).forEach((s, idx) => {
         const res = getSiteBillCalculation(c.id, s.siteId);
@@ -2874,6 +3370,7 @@
     };
 
     window.printSiteDetailBill = function() {
+      if (!activeCustomer) return;
       const c = activeCustomer;
       const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
       const res = getSiteBillCalculation(c.id, s.siteId);
@@ -2895,8 +3392,7 @@
       win.document.write(`
         <html><head><title>બિલ - ${s.siteName}</title>
         <style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}th,td{border:1px solid #cbd5e1;padding:7px;text-align:left;}th{background:#f1f5f9;}</style></head><body>
-          <h2 style="margin:0;color:#ea580c;">SHIV CONSTRUCTION</h2>
-          <p style="margin:3px 0 12px 0;font-weight:bold;color:#475569;">સાઇટ વિગતવાર બિલ & હિસાબ</p>
+          ${buildCompanyPrintHeaderHTML('સાઇટ વિગતવાર બિલ & હિસાબ')}
           <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #cbd5e1;display:flex;align-items:center;gap:10px;">
             ${c.photo ? `<img src="${c.photo}" alt="ગ્રાહક" style="width:54px;height:54px;object-fit:cover;border-radius:50%;">` : ''}
             ${s.sitePhoto ? `<img src="${s.sitePhoto}" alt="સાઇટ" style="width:64px;height:54px;object-fit:cover;border-radius:7px;">` : ''}
@@ -2913,6 +3409,7 @@
               <b>બાકી નીકળતી રકમ: ₹ ${window.money(res.balance)}</b>
             </div>
           </div>
+          ${buildCompanySignatureFooterHTML()}
         </body></html>
       `);
       win.document.close();
@@ -2921,12 +3418,13 @@
     };
 
     window.shareSiteDetailBillWA = function() {
+      if (!activeCustomer) return;
       const c = activeCustomer;
       const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
       const res = getSiteBillCalculation(c.id, s.siteId);
       const itemsList = (res.siteData.works && res.siteData.works.length > 0) ? res.siteData.works : (res.siteData.estimates || []);
 
-      let msg = `*🏗️ SHIV CONSTRUCTION - સાઇટ વિગતવાર બિલ*%0A*ગ્રાહક:* ${c.name}%0A*સાઇટ:* ${s.siteName}%0A*સરનામું:* ${s.siteAddress || c.address}%0A--------------------------------%0A*કામની વિગતો:*%0A`;
+      let msg = `*🏗️ ${appSettings.companyName || 'SHIV CONSTRUCTION'} - સાઇટ વિગતવાર બિલ*%0A*ગ્રાહક:* ${c.name}%0A*સાઇટ:* ${s.siteName}%0A*સરનામું:* ${s.siteAddress || c.address}%0A--------------------------------%0A*કામની વિગતો:*%0A`;
       itemsList.forEach((it, idx) => {
         const itAmt = window.num(it.qty) * window.num(it.rate);
         const itDisplayName = it.name || itemNames[it.id] || "કામ";
@@ -2939,6 +3437,7 @@
     };
 
     window.printSiteKharchReport = function() {
+      if (!activeCustomer) return;
       const c = activeCustomer;
       const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
       const res = getSiteBillCalculation(c.id, s.siteId);
@@ -2961,8 +3460,7 @@
       win.document.write(`
         <html><head><title>સાઇટ ખર્ચ - ${s.siteName}</title>
         <style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}th,td{border:1px solid #cbd5e1;padding:7px;text-align:left;}th{background:#f1f5f9;}</style></head><body>
-          <h2 style="margin:0;color:#ea580c;">SHIV CONSTRUCTION</h2>
-          <p style="margin:3px 0 12px 0;font-weight:bold;color:#475569;">સાઇટ ખર્ચ અને ચોખ્ખો નફો પત્રક</p>
+          ${buildCompanyPrintHeaderHTML('સાઇટ ખર્ચ અને ચોખ્ખો નફો પત્રક')}
           <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid #cbd5e1;">
             <b>ગ્રાહક:</b> ${c.name} | <b>સાઇટ:</b> ${s.siteName}<br>
             <b>સરનામું:</b> ${s.siteAddress || c.address}
@@ -2978,6 +3476,7 @@
               <b>ચોખ્ખો સાઇટ નફો (Profit): ₹ ${profit}</b>
             </div>
           </div>
+          ${buildCompanySignatureFooterHTML()}
         </body></html>
       `);
       win.document.close();
@@ -2986,6 +3485,7 @@
     };
 
     window.shareSiteKharchWhatsApp = function() {
+      if (!activeCustomer) return;
       const c = activeCustomer;
       const s = c.sites.find(x => x.siteId === activeSiteId) || { siteName: "સાઇટ", siteAddress: c.address };
       const res = getSiteBillCalculation(c.id, s.siteId);
@@ -2993,7 +3493,7 @@
       const totExp = document.getElementById("statExpTotal").innerText;
       const profit = document.getElementById("statExpProfit").innerText;
 
-      let msg = `*🏗️ SHIV CONSTRUCTION - સાઇટ ખર્ચ અને નફો*%0A*ગ્રાહક:* ${c.name}%0A*સાઇટ:* ${s.siteName}%0A*સરનામું:* ${s.siteAddress || c.address}%0A--------------------------------%0A*ખર્ચ વિગત:*%0A`;
+      let msg = `*🏗️ ${appSettings.companyName || 'SHIV CONSTRUCTION'} - સાઇટ ખર્ચ અને નફો*%0A*ગ્રાહક:* ${c.name}%0A*સાઇટ:* ${s.siteName}%0A*સરનામું:* ${s.siteAddress || c.address}%0A--------------------------------%0A*ખર્ચ વિગત:*%0A`;
       if (isLiveAttExpenseActive) {
         msg += `1. Attendance (લાઈવ કારીગર હાજરી) = *₹ ${document.getElementById("liveAttAmtVal").innerText}*%0A`;
       }
@@ -3019,7 +3519,6 @@
       reader.readAsDataURL(file);
     };
 
-    // Use one consistent photo salary-card layout for every attendance print option.
     function generatePrintableReport(helper, mode, params) {
       if (!helper) return;
 
@@ -3069,6 +3568,10 @@
       const photo = helper.photo
         ? `<img class="helper-photo" src="${helper.photo}" alt="કારીગરનો ફોટો">`
         : '<div class="helper-photo photo-placeholder">👷</div>';
+      const signBlock = appSettings.signature
+        ? `<img src="${appSettings.signature}" alt="Authorized Sign" style="max-height:42px;object-fit:contain;"><div style="font-size:9px;margin-top:2px;">અધિકૃત સહી</div>`
+        : `મેળવનારની સહી / અંગૂઠો`;
+
       const cards = summaries.map(period => {
         const startDate = period.startDate || new Date(period.year, period.month, period.start);
         const endDate = period.endDate || new Date(period.year, period.month, period.end);
@@ -3099,7 +3602,7 @@
         }).join("");
         return `
           <main class="pay-card">
-            <h1>SHIV CONSTRUCTION</h1>
+            <h1>${escapeHtml(appSettings.companyName || 'SHIV CONSTRUCTION')}</h1>
             <div class="card-title">કારીગર પગાર કાર્ડ</div>
             <section class="identity">${photo}<div class="identity-details">
               <div><b>કારીગરનું નામ:</b> ${escapeHtml(helper.name)}</div>
@@ -3113,7 +3616,7 @@
                 <div><b>કુલ ઉપાડ</b><strong>₹ ${window.money(upad)}</strong></div>
                 <div class="balance"><b>બાકી રકમ</b><strong>₹ ${window.money(balance)}</strong></div>
               </div>
-              <div class="signature">મેળવનારની સહી / અંગૂઠો</div>
+              <div class="signature">${signBlock}</div>
             </section>
             <div class="counts">હાજર: ${p} દિવસ &nbsp; | &nbsp; અડધો: ${hd} દિવસ &nbsp; | &nbsp; ગેરહાજર: ${a} દિવસ &nbsp; | &nbsp; OT: ${ot} કલાક</div>
             <table class="days-table"><thead><tr><th>તારીખ</th><th>હાજરી</th><th>ઉપાડ ₹</th><th>OT કલાક</th><th>નોંધ</th></tr></thead><tbody>${dateRows}</tbody></table>
@@ -3136,7 +3639,7 @@
           .identity-details{flex:1}.helper-photo{width:76px;height:76px;object-fit:cover;border:1px solid #64748b;border-radius:6px;flex-shrink:0}.photo-placeholder{display:flex;align-items:center;justify-content:center;background:#ffedd5;font-size:38px}
           .summary{display:grid;grid-template-columns:1.3fr 1fr;gap:8px;margin:10px 0}.summary-table{border:1px solid #1f2937;border-radius:7px;overflow:hidden}
           .summary-table>div{display:flex;justify-content:space-between;border-bottom:1px solid #64748b;padding:7px 9px;font-size:11px}.summary-table>div:last-child{border-bottom:0}
-          .summary-table .balance{font-size:13px;font-weight:bold;background:#fff7ed;color:#c2410c}.signature{border:1px solid #1f2937;border-radius:7px;min-height:88px;display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:10px;font-weight:bold}
+          .summary-table .balance{font-size:13px;font-weight:bold;background:#fff7ed;color:#c2410c}.signature{border:1px solid #1f2937;border-radius:7px;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:10px;font-weight:bold}
           .counts{text-align:center;font-weight:bold;background:#f1f5f9;padding:6px;margin:8px 0}.days-table{width:100%;border-collapse:collapse;font-size:9px;table-layout:fixed}
           .days-table th,.days-table td{border:1px solid #475569;padding:4px 3px;text-align:center;overflow-wrap:anywhere}.days-table th{background:#e2e8f0;font-weight:bold}
           .days-table td:last-child{text-align:left}.card-footer{border-top:1px solid #94a3b8;margin-top:8px;padding-top:5px;text-align:center;font-size:9px;color:#475569}
@@ -3149,6 +3652,14 @@
 
     /* INITIALIZATION */
     window.onload = function() {
+      applyAppSettingsToUI();
+
+      const now = new Date();
+      const dateBanner = document.getElementById("liveGujDateBanner");
+      if (dateBanner) {
+        dateBanner.innerText = `${gujDaysFull[now.getDay()]}, ${now.getDate()} ${gujMonths[now.getMonth()]}, ${now.getFullYear()}`;
+      }
+
       const savedQr = localStorage.getItem("SHIV_QR_PURE_V14");
       if (savedQr) {
         const qrEl = document.getElementById("upiQrImg");
@@ -3157,12 +3668,20 @@
 
       populateGlobalSiteDropdowns();
       createAutoBackupIfDue();
+      initSalarySummarySwipe();
       window.setInterval(createAutoBackupIfDue, 24 * 60 * 60 * 1000);
 
+      // Step 1: White Boot Card (Image 1) -> Step 2: Brand Splash (Image 2) -> Step 3: PIN or Home (Image 5)
       setTimeout(() => {
-        document.getElementById("screenSplash").classList.remove("active");
-        window.navToScreen('screenDashboard');
-      }, 1500);
+        window.navToScreen("screenSplash");
+        setTimeout(() => {
+          if (appSettings.pin && appSettings.pin.length >= 4) {
+            window.navToScreen("screenPinLock");
+          } else {
+            window.navToScreen("screenDashboard");
+          }
+        }, 1200);
+      }, 900);
     };
   </script>
 </body>
